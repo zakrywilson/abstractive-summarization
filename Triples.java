@@ -2,14 +2,16 @@ import edu.stanford.nlp.naturalli.SentenceFragment;
 import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
 import edu.stanford.nlp.naturalli.OpenIE;
 
+import edu.stanford.nlp.dcoref.CorefCoreAnnotations.CorefChainAnnotation;
 import edu.stanford.nlp.ie.util.RelationTriple;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.pipeline.DeterministicCorefAnnotator;
+import edu.stanford.nlp.pipeline.HybridCorefAnnotator;
 import edu.stanford.nlp.pipeline.ParserAnnotator;
-import edu.stanford.nlp.util.CoreMap;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sequences.ColumnDocumentReaderAndWriter;
+import edu.stanford.nlp.util.CoreMap;
 
 import edu.stanford.nlp.ie.*;
 
@@ -22,6 +24,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
+/**
+ * Handles extracting basic semantic units from a document
+ */
 public class Triples {
 
   /*
@@ -33,9 +38,26 @@ public class Triples {
   private String inputFile = null;
 
 
+ /**
+  * Default Constructor
+  */
+  private Triples() {
+    // not used
+  }
+
+
+ /**
+  * Constructor
+  * Reads in file, processes it, extracts triples, prints them to standard
+  * out and (optionally) writes data to new file (original-bsu.txt).
+  * 
+  * @param document - name of the file containing the input text
+  * @param writeToFile - determines if output will be written to file
+  */
   protected Triples(String document, boolean writeToFile) {
     this.inputFile = document;                // Set original file
     String text = getText(document);          // Read and store file
+    doCoreferenceSubstitution(text);          // Do coreference substitution
     boolean success = getTriples(text);       // Extract the triples
     if (success) { 
       printTriples(writeToFile);
@@ -45,11 +67,11 @@ public class Triples {
   }
 
 
-  private void doCoreferenceSubstitution(String document) {
-    System.out.println("inside doCoreferenceSubstitution()");
-  }
-
-
+ /**
+  * Reads text from input file and returns it
+  * @param document
+  * @return text
+  */
   private static String getText(String document) {
     File file = new File(document);
     String text = null;
@@ -63,6 +85,21 @@ public class Triples {
   }
 
 
+ /**
+  * Performs coreference resolution and substitution
+  * @param text
+  */
+  private void doCoreferenceSubstitution(String text) {
+    System.out.println("inside doCoreferenceSubstitution()");
+  }
+
+
+ /**
+  * Extracts triples from text, prints them to standard out, and (optionally)
+  * writes them back to file
+  * @param text
+  * @return true - if processing was successful
+  */
   private boolean getTriples(String text) {
 
     // If something went wrong with getting the text, stop processing
@@ -71,21 +108,22 @@ public class Triples {
 
     // Create the Stanford CoreNLP pipeline
     Properties props = new Properties();
-
     props.setProperty("annotators", 
                       "tokenize, ssplit, pos, parse, depparse, " + 
                       "lemma, ner, dcoref, natlog, openie");
                       // "lemma, natlog, openie");
     StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-
     Annotation doc = new Annotation(text);
     pipeline.annotate(doc);
+
+    // EXTRACTING TRIPLES ////////////////////////////////////////////////////
+
+    System.out.println("Extracting triples...");
 
     // Initialize the Hashmap for storing triples
     bsus = new HashMap<String, List<String>>();
 
     // Loop over sentences in the document
-    System.out.println("Extracting triples...");
     for (CoreMap sent : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
 
       // Get the OpenIE triples for the sentence
@@ -113,6 +151,10 @@ public class Triples {
   }
 
 
+ /**
+  * Prints triples to standard out; writes them to file if writeToFile is true
+  * @param writeToFile - determinds whether data should be written to file
+  */
   private void printTriples(boolean writeToFile) {
     for (Map.Entry<String, List<String>> pair : this.bsus.entrySet()) {
       System.out.println("\n\nSENTENCE: " + pair.getKey());
@@ -125,6 +167,9 @@ public class Triples {
   }
 
 
+ /**
+  * Writes extracted data to file
+  */
   private void writeToFile() {
     
     if (inputFile == null || !inputFile.endsWith(".txt")) {
@@ -162,19 +207,31 @@ public class Triples {
   }
 
 
+ /**
+  * Prints "done"
+  */
   private void done() {
     System.out.println("done.");
   }
 
 
+ /**
+  * Prints "failure"
+  */
   private void failure() {
     System.out.println("failure.");
   }
 
 
+ /**
+  * Main
+  * Two configurations: file name and whether output data should be
+  * written to file
+  */
   public static void main(String[] args) throws Exception {
     String document = "tolstoy.txt";
     boolean writeToFile = true;
     Triples triples = new Triples(document, writeToFile);
   }
+
 }
