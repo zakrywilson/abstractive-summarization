@@ -3,17 +3,27 @@ import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
 import edu.stanford.nlp.naturalli.OpenIE;
 
 import edu.stanford.nlp.dcoref.CorefCoreAnnotations.CorefChainAnnotation;
-import edu.stanford.nlp.ie.util.RelationTriple;
+
+import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
+
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.DeterministicCorefAnnotator;
 import edu.stanford.nlp.pipeline.HybridCorefAnnotator;
 import edu.stanford.nlp.pipeline.ParserAnnotator;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+
+import edu.stanford.nlp.ie.util.RelationTriple;
+import edu.stanford.nlp.ie.*;
+import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
 import edu.stanford.nlp.sequences.ColumnDocumentReaderAndWriter;
 import edu.stanford.nlp.util.CoreMap;
-
-import edu.stanford.nlp.ie.*;
 
 import java.util.*;
 import java.io.File;
@@ -29,12 +39,14 @@ import java.io.IOException;
  */
 public class Triples {
 
-  /*
-   * This map is what we're storing all the extracted information in. It's
+
+  /**
+   * This map is what we're storing all the extracted BSU information in. It's
    * key is the sentence and it's value is a string list containing all
    * the triples produced from the given sentence.
    */
   private Map<String, List<String>> bsus = null;
+  private Map<String, String> ner = null;
   private String inputFile = null;
 
 
@@ -111,17 +123,47 @@ public class Triples {
     props.setProperty("annotators", 
                       "tokenize, ssplit, pos, parse, depparse, " + 
                       "lemma, ner, dcoref, natlog, openie");
-                      // "lemma, natlog, openie");
+                      // "tokenize, ssplit, pos, depparse, 
+                      // lemma, natlog, openie");
     StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
     Annotation doc = new Annotation(text);
     pipeline.annotate(doc);
 
-    // EXTRACTING TRIPLES ////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+    // COREFERENCE RESOLUTION ////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
 
-    System.out.println("Extracting triples...");
+    List<CoreMap> sentences = doc.get(SentencesAnnotation.class);
+    this.ner = new HashMap<String, String>();
+    for(CoreMap sentence: sentences) {
+      // traversing the words in the current sentence
+      // a CoreLabel is a CoreMap with additional token-specific methods
+      for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
+        // this is the text of the token
+        String word = token.get(TextAnnotation.class);
+        // this is the POS tag of the token
+        String pos = token.get(PartOfSpeechAnnotation.class);
+        // this is the NER label of the token
+        String ne = token.get(NamedEntityTagAnnotation.class);
+        if (ne.length() != 1) {
+          ner.put(word, ne);
+        }
+      }
+
+      // this is the parse tree of the current sentence
+      // Tree tree = sentence.get(TreeAnnotation.class);
+
+      // this is the Stanford dependency graph of the current sentence
+      // SemanticGraph dependencies = sentence.get(
+        // CollapsedCCProcessedDependenciesAnnotation.class);
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    // EXTRACTING TRIPLES ////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
 
     // Initialize the Hashmap for storing triples
-    bsus = new HashMap<String, List<String>>();
+    this.bsus = new HashMap<String, List<String>>();
 
     // Loop over sentences in the document
     for (CoreMap sent : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
@@ -140,13 +182,14 @@ public class Triples {
       // Print the triples
       String keySentence = clauses.toString();
       for (RelationTriple triple : triples) {
-        valueBSU.add("[" + triple.subjectLemmaGloss()  + " | " +
-                           triple.relationLemmaGloss() + " | " +
-                           triple.objectLemmaGloss()   + "]");
+        valueBSU.add("[" + triple.subjectGloss()  + " | " +
+                           triple.relationGloss() + " | " +
+                           triple.objectGloss()   + "]");
       }
       this.bsus.put(keySentence, valueBSU);
     }
-    System.out.println("\ntriples successfully extracted.");
+    System.out.print("\n---------------------\n");
+    System.out.print("\ninformation extracted");
     return true;
   }
 
@@ -156,6 +199,7 @@ public class Triples {
   * @param writeToFile - determinds whether data should be written to file
   */
   private void printTriples(boolean writeToFile) {
+    // Print out sentences and BSUs
     for (Map.Entry<String, List<String>> pair : this.bsus.entrySet()) {
       System.out.println("\n\nSENTENCE: " + pair.getKey());
       List<String> triples = pair.getValue();
@@ -163,6 +207,11 @@ public class Triples {
         System.out.println("\tBSU: " + triple);
       }
     }
+    // Print out NER
+    for (Map.Entry<String, String> pair : this.ner.entrySet()) {
+      System.out.println("NER: " + pair.getKey() + " -> " + pair.getValue());
+    }
+    // Write this all to file
     if (writeToFile) writeToFile();
   }
 
@@ -186,6 +235,7 @@ public class Triples {
       file.createNewFile();
       writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
       
+      // Write sentences and BSUs to file
       for (Map.Entry<String, List<String>> pair : this.bsus.entrySet()) {
         writer.write("SENTENCE: " + pair.getKey()); 
         writer.newLine();
@@ -197,13 +247,21 @@ public class Triples {
         writer.newLine();
       }
 
+      // Write NER information to file
+      for (Map.Entry<String, String> pair : this.ner.entrySet()) {
+        System.out.println("NER: " + pair.getKey() + " -> " + pair.getValue());
+        writer.write("NER: " + pair.getKey() + " -> " + pair.getValue());
+        writer.newLine();
+      }
+
     } catch (IOException e) {
-      System.out.println("ERROR: caugh one of those cool IOExceptions.");
+      System.out.println("ERROR: unable to write to file."); return;
     } finally {
       if (writer != null) {
         try { writer.close(); } catch (IOException e) { /* who cares? */ }
       }
     }
+    System.out.println("\ninformation written to file");
   }
 
 
@@ -211,7 +269,7 @@ public class Triples {
   * Prints "done"
   */
   private void done() {
-    System.out.println("done.");
+    System.out.println("\ndone.");
   }
 
 
@@ -219,7 +277,7 @@ public class Triples {
   * Prints "failure"
   */
   private void failure() {
-    System.out.println("failure.");
+    System.out.println("\nfailure.");
   }
 
 
@@ -229,7 +287,7 @@ public class Triples {
   * written to file
   */
   public static void main(String[] args) throws Exception {
-    String document = "tolstoy.txt";
+    String document = "nautilus.txt";
     boolean writeToFile = true;
     Triples triples = new Triples(document, writeToFile);
   }
