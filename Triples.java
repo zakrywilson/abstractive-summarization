@@ -2,6 +2,7 @@ import edu.stanford.nlp.naturalli.SentenceFragment;
 import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
 import edu.stanford.nlp.naturalli.OpenIE;
 
+import edu.stanford.nlp.dcoref.CorefChain;
 import edu.stanford.nlp.dcoref.CorefCoreAnnotations.CorefChainAnnotation;
 
 import edu.stanford.nlp.ling.CoreLabel;
@@ -23,6 +24,8 @@ import edu.stanford.nlp.ie.*;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
 import edu.stanford.nlp.sequences.ColumnDocumentReaderAndWriter;
+import edu.stanford.nlp.trees.Tree;
+import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
 import edu.stanford.nlp.util.CoreMap;
 
 import java.util.*;
@@ -130,43 +133,38 @@ public class Triples {
     pipeline.annotate(doc);
 
     //////////////////////////////////////////////////////////////////////////
-    // COREFERENCE RESOLUTION ////////////////////////////////////////////////
+    // NAMED ENTITY RECOGNITION //////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////
 
-    List<CoreMap> sentences = doc.get(SentencesAnnotation.class);
+    // Create link graph for coreference resolution
+    // Map<Integer, CorefChain> graph = doc.get(CorefChainAnnotation.class);
+    // graph.getMentionsInTextualOrder();
+
+    //////////////////////////////////////////////////////////////////////////
+    // EXTRACTING TRIPLES & NAMED ENTITY RECOGNITION /////////////////////////
+    //////////////////////////////////////////////////////////////////////////
+
+    // Initialize the Hashmaps for storing triples and NER
+    this.bsus = new HashMap<String, List<String>>();
     this.ner = new HashMap<String, String>();
-    for(CoreMap sentence: sentences) {
+
+    // Loop over sentences in the document
+    for (CoreMap sent : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
+
       // traversing the words in the current sentence
       // a CoreLabel is a CoreMap with additional token-specific methods
-      for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
+      for (CoreLabel token: sent.get(TokensAnnotation.class)) {
         // this is the text of the token
         String word = token.get(TextAnnotation.class);
         // this is the POS tag of the token
         String pos = token.get(PartOfSpeechAnnotation.class);
         // this is the NER label of the token
         String ne = token.get(NamedEntityTagAnnotation.class);
-        if (ne.length() != 1) {
-          ner.put(word, ne);
-        }
+        if ((ne.length() != 1) && !word.equals(",")) ner.put(word, ne);
       }
 
       // this is the parse tree of the current sentence
-      // Tree tree = sentence.get(TreeAnnotation.class);
-
-      // this is the Stanford dependency graph of the current sentence
-      // SemanticGraph dependencies = sentence.get(
-        // CollapsedCCProcessedDependenciesAnnotation.class);
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    // EXTRACTING TRIPLES ////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-
-    // Initialize the Hashmap for storing triples
-    this.bsus = new HashMap<String, List<String>>();
-
-    // Loop over sentences in the document
-    for (CoreMap sent : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
+      // Tree tree = sent.get(TreeAnnotation.class);
 
       // Get the OpenIE triples for the sentence
       Collection<RelationTriple> triples = 
@@ -177,18 +175,17 @@ public class Triples {
         new OpenIE(props).clausesInSentence(sent);
 
       // This is where we'll store the extracted triples
-      List<String> valueBSU = new ArrayList<>();
+      List<String> valueBSUs = new ArrayList<>();
 
-      // Print the triples
-      String keySentence = clauses.toString();
+      // Store the triples
+      String keySentence = sent.toString();
       for (RelationTriple triple : triples) {
-        valueBSU.add("[" + triple.subjectGloss()  + " | " +
-                           triple.relationGloss() + " | " +
-                           triple.objectGloss()   + "]");
+        valueBSUs.add("[" + triple.subjectGloss()  + " | " +
+                            triple.relationGloss() + " | " +
+                            triple.objectGloss()   + "]");
       }
-      this.bsus.put(keySentence, valueBSU);
+      this.bsus.put(keySentence, valueBSUs);
     }
-    System.out.print("\n---------------------\n");
     System.out.print("\ninformation extracted");
     return true;
   }
@@ -287,7 +284,7 @@ public class Triples {
   * written to file
   */
   public static void main(String[] args) throws Exception {
-    String document = "nautilus.txt";
+    String document = "tolstoy.txt";
     boolean writeToFile = true;
     Triples triples = new Triples(document, writeToFile);
   }
