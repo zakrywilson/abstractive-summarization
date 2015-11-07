@@ -38,14 +38,15 @@ import java.io.IOException;
 
 
 /**
+ * @author Zach Wilson
  * Handles extracting basic semantic units from a document
  */
 public class Triples {
 
 
   /**
-   * This map is what we're storing all the extracted BSU information in. It's
-   * key is the sentence and it's value is a string list containing all
+   * This map is what we're storing all the extracted BSU information;
+   * its key is the sentence and it's value is a string list containing all
    * the triples produced from the given sentence.
    */
   private Map<String, List<String>> bsus = null;
@@ -79,14 +80,23 @@ public class Triples {
   * @param writeToFile - determines if output will be written to file
   */
   protected Triples(String document, boolean writeToFile) {
-    this.inputFile = document;                 // Set original file
-    String text = getText(document);           // Read and store file
-    boolean success = processText(text);       // Extract the triples
-    if (success) { 
+    
+    // Set original file
+    this.inputFile = document;
+
+    // Read and store file
+    String text = getText(document);
+
+    // Extract the triples
+    boolean success = processText(text);
+
+    // Display results if successful
+    if (success) {
       printTriples(writeToFile);
       done();
+    } else {
+      failure();
     }
-    else failure();
   }
 
 
@@ -123,10 +133,6 @@ public class Triples {
       return false;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    // CORENLP PIPELINE //////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
-
     // Create the Stanford CoreNLP pipeline
     Properties props = new Properties();
     props.setProperty("annotators", 
@@ -136,24 +142,35 @@ public class Triples {
     Annotation doc = new Annotation(text);
     pipeline.annotate(doc);
 
-    //////////////////////////////////////////////////////////////////////////
-    // NAMED ENTITY RECOGNITION //////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////
+    computeCoref(doc);
 
+    extractData(doc);
+    return true;
+  }
+
+
+ /**
+  * Computes coreference resolution and substitues the anaphoras out 
+  */
+  private void computeCoref(Annotation doc) {
     // Create link graph for coreference resolution
-    // Map<Integer, CorefChain> graph = doc.get(CorefChainAnnotation.class);
-    // Collection<CorefChain> corefChains = graph.values();
-    // for (CorefChain corefChain : corefChains) {
-    //   //System.out.println(corefChain.getMentionsWithSameHead().toString());
-    //   System.out.println(corefChain.toString());
-    // }
+    Map<Integer, CorefChain> graph = doc.get(CorefChainAnnotation.class);
+    Collection<CorefChain> corefChains = graph.values();
+    for (CorefChain corefChain : corefChains) {
+      // System.out.println(corefChain.getMentionsWithSameHead().toString());
+      System.out.println(corefChain.getMentionMap().toString());
+      // System.out.println(corefChain.toString());
+    }
     // graph.toString();
     // System.out.println("GRAPH:\n" + graph);
+  }
 
-    //////////////////////////////////////////////////////////////////////////
-    // EXTRACTING TRIPLES & NAMED ENTITY RECOGNITION /////////////////////////
-    //////////////////////////////////////////////////////////////////////////
 
+ /**
+  * Extracts the triples, NER information, and stores it in bsus map
+  */
+  private void extractData(Annotation doc) {
+    
     // Initialize the Hashmaps for storing triples and NER
     this.bsus = new HashMap<String, List<String>>();
     this.ner = new HashMap<String, String>();
@@ -202,7 +219,6 @@ public class Triples {
     } // Finished extracting information
 
     System.out.print("\ninformation extracted");
-    return true;
   }
 
 
@@ -305,7 +321,7 @@ public class Triples {
   * written to file
   */
   public static void main(String[] args) throws Exception {
-    String document = "cat.txt";
+    String document = "cr.txt";
     boolean writeToFile = true;
     Triples triples = new Triples(document, writeToFile);
   }
