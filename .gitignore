@@ -1,0 +1,8 @@
+# Do not share these files
+
+Makefile
+*.class
+*.txt
+*.jar
+run-make
+
