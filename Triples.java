@@ -1,3 +1,4 @@
+
 import edu.stanford.nlp.naturalli.SentenceFragment;
 import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
 import edu.stanford.nlp.naturalli.OpenIE;
@@ -45,18 +46,10 @@ public class Triples {
 
 
   /**
-   * This is the semantic link network, containing all of the bsus, their
-   * original sentences and the ASR, VSR, and CSS information amongst all
-   * the other basic semantic unites.
+   * This contains the original sentence (key) and the BSU
+   * objects containing information about each sentence.
    */
-  private Map<String, BSU> network = null;
-
-  /**
-   * This map is what we're storing all the extracted BSU information;
-   * its key is the sentence and it's value is a string list containing all
-   * the triples produced from the given sentence.
-   */
-  private Map<String, List<String>> bsus = null;
+  private Network network = new Network();
 
   /**
    * This map contains the named entiy recognition information by the word
@@ -77,71 +70,6 @@ public class Triples {
     // not used
   }
 
-  /**
-   * BSU inner class:<p>
-   * This data structure contains a BSU and its association amongst all
-   * other BSUs in the form of<p>
-   * (1) ASR: arguments semantic relatedness, 
-   * (2) VSR: action-verbs semantic relatedness, 
-   * (3) CSS: coreference semantic relatedness.
-   */
-  private class BSU {
-
-    private String sentence, bsu = null;
-    private List<String> asr, vsr, css = new ArrayList<String>();
-    private Map<String, List<String>> map = null;
-    
-    /*
-     * Constructor for BSU: takes the BSU
-     */
-    private BSU(final String sentence) {
-      this.sentence = sentence;
-    }
-
-    private String getSentence() {
-      return this.sentence;
-    }
-
-    private String getBSU() {
-      return this.bsu;
-    }
-
-    private void setBSU(final String bsu) {
-      this.bsu = bsu;
-    }
-
-    private Map<String, List<String>> getAllBSUs() {
-      return this.map;
-    }
-
-    private void setAllBSUs(final Map<String, List<String>> map) {
-      this.map = map;
-    }
-
-    private List<String> getASR() {
-      return this.asr;
-    }
-
-    private void setASR(final String bsu) {
-      this.asr.add(bsu);
-    }
-
-    private List<String> getVSR() {
-      return this.vsr;
-    }
-
-    private void setVSR(final String bsu) {
-      this.vsr.add(bsu);
-    }
-
-    private List<String> getCSS() {
-      return this.css;
-    }
-
-    private void setCSS(final String bsu) {
-      this.css.add(bsu);
-    }
-  }
 
  /**
   * Constructor
@@ -162,13 +90,20 @@ public class Triples {
     // Extract the triples
     boolean success = processText(text);
 
-    // Display results if successful
+    // Display results and return triples if successful
     if (success) {
-      printTriples(writeToFile);
+      System.out.println(this.network.toString());
       done();
     } else {
       failure();
     }
+  }
+
+  /**
+   * Extracts all the triples and 
+   */
+  protected Network getTriples() {
+    return this.network;
   }
 
 
@@ -218,8 +153,6 @@ public class Triples {
 
     extractData(doc, props);
 
-    createNetwork();
-
     return true;
   }
 
@@ -247,7 +180,6 @@ public class Triples {
   private void extractData(Annotation doc, Properties props) {
     
     // Initialize the Hashmaps for storing triples and NER
-    this.bsus = new HashMap<String, List<String>>();
     this.ner = new HashMap<String, String>();
 
     // Loop over sentences in the document
@@ -278,119 +210,103 @@ public class Triples {
         new OpenIE(props).clausesInSentence(sent);
 
       // This is where we'll store the extracted triples
-      List<String> valueBSUs = new ArrayList<String>();
+      List<BSU> bsus = new ArrayList<BSU>();
+
+      // Create a sentence object
+      Sentence sentence = new Sentence(sent.toString());
 
       // Store the triples
-      String keySentence = sent.toString();
       for (RelationTriple triple : triples) {
-        valueBSUs.add("[" + triple.subjectGloss()  + " | " +
-                            triple.relationGloss() + " | " +
-                            triple.objectGloss()   + "]");
+        BSU bsu = new BSU(triple.subjectGloss(), 
+                          triple.relationGloss(), 
+                          triple.objectGloss());
+        bsus.add(bsu);
       }
-
-      // Store sentences and associated BSUs inside map
-      this.bsus.put(keySentence, valueBSUs);
+      // Store sentences and associated BSUs inside triples object
+      sentence.setAllBSUs(bsus);
+      this.network.add(sentence.getSentence(), sentence);
 
     } // Finished extracting information
 
-    System.out.print("\ninformation extracted");
-  }
-
-  /**
-   * Taking the first triple for each sentence
-   * and creating a BSU object out of it.
-   */
-  private void createNetwork() {
-    // Initialization of semantic link network
-    network = new HashMap<String, BSU>();
-
-    for (Map.Entry<String, List<String>> pair : this.bsus.entrySet()) {
-      BSU unit = new BSU(pair.getKey());
-      List<String> triples = pair.getValue();
-      for (String triple : triples) {
-        unit.setBSU(triple);
-        break; // only take the first triple
-      }
-      unit.setAllBSUs(this.bsus);
-      network.put(unit.getSentence(), unit);
-    }
-  }
-
- /**
-  * Prints triples to standard out; writes them to file if writeToFile is true
-  * @param writeToFile - determinds whether data should be written to file
-  */
-  private void printTriples(boolean writeToFile) {
-
-    // Print out sentences and BSUs
-    for (Map.Entry<String, List<String>> pair : this.bsus.entrySet()) {
-      System.out.println("\n\nSENTENCE: " + pair.getKey());
-      List<String> triples = pair.getValue();
-      for (String triple : triples) {
-        System.out.println("\tBSU: " + triple);
-      }
-    }
-
-    // Print out NER
-    for (Map.Entry<String, String> pair : this.ner.entrySet()) {
-      System.out.println("\nNER: " + pair.getKey() + " -> " + pair.getValue());
-    }
-
-    // Write this all to file
-    if (writeToFile) writeToFile();
+    System.out.println("\ninformation extracted");
   }
 
 
- /**
-  * Writes extracted data to file
-  */
-  private void writeToFile() {
+ // /**
+ //  * Prints triples to standard out; writes them to file if writeToFile is true
+ //  * @param writeToFile - determinds whether data should be written to file
+ //  */
+ //  private void printTriples(boolean writeToFile) {
+
+ //    // Print out sentences and BSUs
+ //    for (Map.Entry<String, List<String>> pair : this.bsus.entrySet()) {
+ //      System.out.println("\n\nSENTENCE: " + pair.getKey());
+ //      List<String> triples = pair.getValue();
+ //      for (String triple : triples) {
+ //        System.out.println("\tBSU: " + triple);
+ //      }
+ //    }
+
+ //    // Print out NER
+ //    for (Map.Entry<String, String> pair : this.ner.entrySet()) {
+ //      System.out.println("\nNER: " + pair.getKey() + " -> " + pair.getValue());
+ //    }
+
+ //    // Write this all to file
+ //    if (writeToFile) writeToFile();
+ //  }
+
+
+ // /**
+ //  * Writes extracted data to file
+ //  */
+ //  private void writeToFile() {
     
-    // Check if the input file is valid
-    if (inputFile == null || !inputFile.endsWith(".txt")) {
-      System.out.println("ERROR: invalid file."); 
-      return;
-    }
+ //    // Check if the input file is valid
+ //    if (inputFile == null || !inputFile.endsWith(".txt")) {
+ //      System.out.println("ERROR: invalid file."); 
+ //      return;
+ //    }
 
-    BufferedWriter writer = null;
+ //    BufferedWriter writer = null;
 
-    try {
+ //    try {
 
-      // Create new file to write to
-      File file = new File(inputFile.replace(".txt", "-bsu.txt"));
-      if (file.exists()) file.delete();
-      file.createNewFile();
-      writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
+ //      // Create new file to write to
+ //      File file = new File(inputFile.replace(".txt", "-bsu.txt"));
+ //      if (file.exists()) file.delete();
+ //      file.createNewFile();
+ //      writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
       
-      // Write sentences and BSUs to file
-      for (Map.Entry<String, List<String>> pair : this.bsus.entrySet()) {
-        writer.write("SENTENCE: " + pair.getKey()); 
-        writer.newLine();
-        List<String> triples = pair.getValue();
-        for (String triple : triples) {
-          writer.write("     BSU: " + triple);
-          writer.newLine();
-        }
-        writer.newLine();
-      }
+ //      // Write sentences and BSUs to file
+ //      for (Map.Entry<String, List<String>> pair : this.bsus.entrySet()) {
+ //        writer.write("SENTENCE: " + pair.getKey()); 
+ //        writer.newLine();
+ //        List<String> triples = pair.getValue();
+ //        for (String triple : triples) {
+ //          writer.write("     BSU: " + triple);
+ //          writer.newLine();
+ //        }
+ //        writer.newLine();
+ //      }
 
-      // Write NER information to file
-      for (Map.Entry<String, String> pair : this.ner.entrySet()) {
-        writer.write("NER: " + pair.getKey() + " -> " + pair.getValue());
-        writer.newLine();
-      }
+ //      // Write NER information to file
+ //      for (Map.Entry<String, String> pair : this.ner.entrySet()) {
+ //        writer.write("NER: " + pair.getKey() + " -> " + pair.getValue());
+ //        writer.newLine();
+ //      }
 
-    } catch (IOException e) {
-      System.out.println("ERROR: unable to write to file."); return;
+ //    } catch (IOException e) {
+ //      System.out.println("ERROR: unable to write to file."); return;
 
-    } finally {
-      if (writer != null) {
-        try { writer.close(); } catch (IOException e) { /* who cares? */ }
-      }
-    }
+ //    } finally {
+ //      if (writer != null) {
+ //        try { writer.close(); } catch (IOException e) { /* who cares? */ }
+ //      }
+ //    }
 
-    System.out.println("\ninformation written to file");
-  }
+ //    System.out.println("\ninformation written to file");
+// }
 
 
  /**
@@ -415,9 +331,10 @@ public class Triples {
   * written to file
   */
   public static void main(String[] args) throws Exception {
-    String document = "cr.txt";
-    boolean writeToFile = true;
+    String document = "tolstoy.txt";
+    boolean writeToFile = true;:)
     Triples triples = new Triples(document, writeToFile);
+    triples.getTriples();
   }
 
 }
