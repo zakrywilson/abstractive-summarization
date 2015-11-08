@@ -4,5 +4,6 @@ Makefile
 *.class
 *.txt
 *.jar
+.idea
 run-make
 
