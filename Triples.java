@@ -40,7 +40,11 @@ import java.io.IOException;
 
 /**
  * @author Zach Wilson
- * Handles extracting basic semantic units from a document
+ * Handles extracting information from a document:
+ * <p>
+ * (1) Basic semantic units: stored in Network
+ * (2) Named entity information: stored in NamedEntities
+ * </p>
  */
 public class Triples {
 
@@ -52,10 +56,9 @@ public class Triples {
   private Network network = new Network();
 
   /**
-   * This map contains the named entiy recognition information by the word
-   * being the key and the associated NER tag being the value.
+   * Contains all of the named entity recognition information in LinkedHashMap.
    */
-  private Map<String, String> ner = null;
+  private NamedEntities ner = new NamedEntities();
 
   /**
    * The input file containing the text to be processed.
@@ -64,7 +67,7 @@ public class Triples {
 
 
   /**
-   * Default Constructor
+   * Default Constructor: private - not to be used
    */
   private Triples() {
     // not used
@@ -73,6 +76,7 @@ public class Triples {
 
  /**
   * Constructor
+  *
   * Reads in file, processes it, extracts triples, prints them to standard
   * out and (optionally) writes data to new file (original-bsu.txt).
   * 
@@ -92,24 +96,21 @@ public class Triples {
 
     // Display results and return triples if successful
     if (success) {
-      System.out.println(this.network.toString());
+      // Print network and NER
+      System.out.println(this.network.toString() + this.ner.toString());
+      // Write it all to file
+      if (writeToFile) writeToFile();
       done();
     } else {
       failure();
     }
   }
 
-  /**
-   * Extracts all the triples and 
-   */
-  protected Network getTriples() {
-    return this.network;
-  }
-
 
  /**
   * Reads text from input file and returns it
-  * @param document
+  *
+  * @param document - the document containing text to process
   * @return text - if there was an error, text will be equal to null
   */
   private static String getText(String document) {
@@ -129,7 +130,8 @@ public class Triples {
  /** 
   * Extracts triples and NER, stores the information in seperate maps, prints
   * the information to standard out and (optionally) writes data to file.
-  * @param text
+  *
+  * @param text - text that is to be processed
   * @return true - if processing was successful
   */
   private boolean processText(String text) {
@@ -158,7 +160,10 @@ public class Triples {
 
 
  /**
-  * Computes coreference resolution and substitues the anaphoras out 
+  * Computes coreference resolution and substitues the anaphoras out
+  *
+  * @param doc - annotated document
+  * @param props - properties
   */
   private void computeCoref(Annotation doc, Properties props) {
     // Create link graph for coreference resolution
@@ -176,12 +181,12 @@ public class Triples {
 
  /**
   * Extracts the triples, NER information, and stores it in bsus map
+  *
+  * @param doc - annotated document
+  * @param props - properties
   */
   private void extractData(Annotation doc, Properties props) {
     
-    // Initialize the Hashmaps for storing triples and NER
-    this.ner = new HashMap<String, String>();
-
     // Loop over sentences in the document
     for (CoreMap sent : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
 
@@ -195,7 +200,7 @@ public class Triples {
         String ne = token.get(NamedEntityTagAnnotation.class);
         // Store NER if NER exists (also omitting ',' -> date error)
         if ((ne.length() != 1) && !word.equals(",")) 
-          this.ner.put(word, ne);
+          this.ner.add(word, ne);
       }
 
       // This is the parse tree of the current sentence
@@ -206,8 +211,8 @@ public class Triples {
         sent.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
 
       // Using the clause splitter
-      List<SentenceFragment> clauses = 
-        new OpenIE(props).clausesInSentence(sent);
+      //List<SentenceFragment> clauses =
+      //  new OpenIE(props).clausesInSentence(sent);
 
       // This is where we'll store the extracted triples
       List<BSU> bsus = new ArrayList<BSU>();
@@ -228,85 +233,83 @@ public class Triples {
 
     } // Finished extracting information
 
-    System.out.println("\ninformation extracted");
+    System.out.println("\ninformation extracted\n");
   }
 
 
- // /**
- //  * Prints triples to standard out; writes them to file if writeToFile is true
- //  * @param writeToFile - determinds whether data should be written to file
- //  */
- //  private void printTriples(boolean writeToFile) {
+  /**
+   * Writes extracted data to file
+   */
+   private void writeToFile() {
 
- //    // Print out sentences and BSUs
- //    for (Map.Entry<String, List<String>> pair : this.bsus.entrySet()) {
- //      System.out.println("\n\nSENTENCE: " + pair.getKey());
- //      List<String> triples = pair.getValue();
- //      for (String triple : triples) {
- //        System.out.println("\tBSU: " + triple);
- //      }
- //    }
-
- //    // Print out NER
- //    for (Map.Entry<String, String> pair : this.ner.entrySet()) {
- //      System.out.println("\nNER: " + pair.getKey() + " -> " + pair.getValue());
- //    }
-
- //    // Write this all to file
- //    if (writeToFile) writeToFile();
- //  }
-
-
- // /**
- //  * Writes extracted data to file
- //  */
- //  private void writeToFile() {
+     System.out.println("preparing to write to file...");
     
- //    // Check if the input file is valid
- //    if (inputFile == null || !inputFile.endsWith(".txt")) {
- //      System.out.println("ERROR: invalid file."); 
- //      return;
- //    }
+     // Check if the input file is valid
+     if (inputFile == null || !inputFile.endsWith(".txt")) {
+       System.out.println("ERROR: invalid file.");
+       return;
+     }
 
- //    BufferedWriter writer = null;
+     // Create writer
+     BufferedWriter writer = null;
 
- //    try {
+     try {
 
- //      // Create new file to write to
- //      File file = new File(inputFile.replace(".txt", "-bsu.txt"));
- //      if (file.exists()) file.delete();
- //      file.createNewFile();
- //      writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
+       // Create new file to write to
+       File file = new File(inputFile.replace(".txt", "-bsu.txt"));
+       if (file.exists()) file.delete();
+       file.createNewFile();
+       writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
       
- //      // Write sentences and BSUs to file
- //      for (Map.Entry<String, List<String>> pair : this.bsus.entrySet()) {
- //        writer.write("SENTENCE: " + pair.getKey()); 
- //        writer.newLine();
- //        List<String> triples = pair.getValue();
- //        for (String triple : triples) {
- //          writer.write("     BSU: " + triple);
- //          writer.newLine();
- //        }
- //        writer.newLine();
- //      }
+       // Write network and ner to file
+       writer.write(this.network.toString());
+       writer.write(this.ner.toString());
 
- //      // Write NER information to file
- //      for (Map.Entry<String, String> pair : this.ner.entrySet()) {
- //        writer.write("NER: " + pair.getKey() + " -> " + pair.getValue());
- //        writer.newLine();
- //      }
+     } catch (IOException e) {
 
- //    } catch (IOException e) {
- //      System.out.println("ERROR: unable to write to file."); return;
+       System.out.println("ERROR: unable to write to file.");
+       return;
 
- //    } finally {
- //      if (writer != null) {
- //        try { writer.close(); } catch (IOException e) { /* who cares? */ }
- //      }
- //    }
+     } finally {
 
- //    System.out.println("\ninformation written to file");
-// }
+       if (writer != null) {
+         try {
+           writer.close();
+         } catch (IOException e) {
+           System.out.println("ERROR: Unable to close writer resource for file");
+         }
+       }
+     }
+
+     System.out.println("\ninformation written to file");
+ }
+
+
+  /**
+   * Getter for all triples
+   * @return triples - stored in a Network object
+   */
+  protected Network getTriples() {
+    return this.network;
+  }
+
+
+  /**
+   * Getter for Network
+   * @return network
+   */
+  protected Network getNetwork() {
+    return this.network;
+  }
+
+
+  /**
+   * Getter for named entity recognition
+   * @return named entity recognition
+   */
+  protected NamedEntities getNER() {
+    return this.ner;
+  }
 
 
  /**
@@ -331,8 +334,8 @@ public class Triples {
   * written to file
   */
   public static void main(String[] args) throws Exception {
-    String document = "tolstoy.txt";
-    boolean writeToFile = true;:)
+    String document = "cat.txt";
+    boolean writeToFile = true;
     Triples triples = new Triples(document, writeToFile);
     triples.getTriples();
   }
