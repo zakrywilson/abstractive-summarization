@@ -8,11 +8,11 @@ public class NamedEntities {
     this.ner = new LinkedHashMap();
   }
 
-  protected void add(String noun, String ner) {
+  protected void add(final String noun, final String ner) {
     this.ner.put(noun, ner);
   }
 
-  protected String get(String noun) {
+  protected String get(final String noun) {
     return this.ner.get(noun);
   }
 
@@ -22,6 +22,6 @@ public class NamedEntities {
     for (Map.Entry<String, String> pair : this.ner.entrySet()) {
       output += pair.getKey() + " -> " + pair.getValue() + "\n";
     }
-    return output;
+    return output + "\n";
   }
 }

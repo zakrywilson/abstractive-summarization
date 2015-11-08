@@ -8,7 +8,7 @@ public class Network {
     this.network = new HashMap<String, Sentence>();
   }
   
-  protected Network(Map<String, Sentence> network) {
+  protected Network(final Map<String, Sentence> network) {
     this.network = network;
   }
 
@@ -16,7 +16,7 @@ public class Network {
     this.network.put(sentence, data);
   }
 
-  protected Sentence get(String sentence) {
+  protected Sentence get(final String sentence) {
     return this.network.get(sentence);
   }
 
@@ -26,8 +26,7 @@ public class Network {
     Iterator it = this.network.entrySet().iterator();
     while (it.hasNext()) {
       Map.Entry pair = (Map.Entry) it.next();
-      output += pair.getValue().toString() + "\n";
-      it.remove();
+      output += pair.getValue() + "\n";
     }
     return output;
   }

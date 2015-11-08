@@ -82,9 +82,9 @@
     public String toString() {
       String output = ""; 
       output += this.sentence + "\n";
-      for (BSU bsu : bsus) {
-        output += "   " + bsu.toString();
+      for (BSU bsu : this.bsus) {
+        output += "   " + bsu;
       }
-      return output + "\n";
+      return output;
     }
   }

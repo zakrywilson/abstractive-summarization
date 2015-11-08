@@ -22,7 +22,7 @@ public class BSU {
    * @param action
    * @param receiver
    */
-  public BSU(String actor, String action, String receiver) {
+  public BSU(final String actor, final String action, final String receiver) {
     this.actor = actor;
     this.action = action;
     this.receiver = receiver;

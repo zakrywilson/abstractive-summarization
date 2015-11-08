@@ -83,7 +83,7 @@ public class Triples {
   * @param document - name of the file containing the input text
   * @param writeToFile - determines if output will be written to file
   */
-  protected Triples(String document, boolean writeToFile) {
+  protected Triples(final String document, final boolean writeToFile) {
     
     // Set original file
     this.inputFile = document;
@@ -94,16 +94,8 @@ public class Triples {
     // Extract the triples
     boolean success = processText(text);
 
-    // Display results and return triples if successful
-    if (success) {
-      // Print network and NER
-      System.out.println(this.network.toString() + this.ner.toString());
-      // Write it all to file
-      if (writeToFile) writeToFile();
-      done();
-    } else {
-      failure();
-    }
+    // Write extracted information to file if successful
+    if (success && writeToFile) writeToFile();
   }
 
 
@@ -113,7 +105,7 @@ public class Triples {
   * @param document - the document containing text to process
   * @return text - if there was an error, text will be equal to null
   */
-  private static String getText(String document) {
+  private static String getText(final String document) {
     File file = new File(document);
     String text = null;
 
@@ -134,7 +126,7 @@ public class Triples {
   * @param text - text that is to be processed
   * @return true - if processing was successful
   */
-  private boolean processText(String text) {
+  private boolean processText(final String text) {
 
     // Ensure there is text to process
     if (text == null) {
@@ -165,7 +157,7 @@ public class Triples {
   * @param doc - annotated document
   * @param props - properties
   */
-  private void computeCoref(Annotation doc, Properties props) {
+  private void computeCoref(final Annotation doc, final Properties props) {
     // Create link graph for coreference resolution
     Map<Integer, CorefChain> graph = doc.get(CorefChainAnnotation.class);
     Collection<CorefChain> corefChains = graph.values();
@@ -185,7 +177,7 @@ public class Triples {
   * @param doc - annotated document
   * @param props - properties
   */
-  private void extractData(Annotation doc, Properties props) {
+  private void extractData(final Annotation doc, final Properties props) {
     
     // Loop over sentences in the document
     for (CoreMap sent : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
@@ -281,17 +273,8 @@ public class Triples {
        }
      }
 
-     System.out.println("\ninformation written to file");
+     System.out.println("\ninformation written to file\n");
  }
-
-
-  /**
-   * Getter for all triples
-   * @return triples - stored in a Network object
-   */
-  protected Network getTriples() {
-    return this.network;
-  }
 
 
   /**
@@ -312,32 +295,12 @@ public class Triples {
   }
 
 
- /**
-  * Prints "done"
-  */
-  private void done() {
-    System.out.println("\ndone.");
+  /**
+   * Returns a string that is a representation of the Network and NER objects
+   * @return String representation of network and NER objects
+   */
+  @Override
+  public String toString() {
+    return this.network.toString() + this.ner.toString();
   }
-
-
- /**
-  * Prints "failure"
-  */
-  private void failure() {
-    System.out.println("\nfailure.");
-  }
-
-
- /**
-  * Main
-  * Two configurations: file name and whether output data should be
-  * written to file
-  */
-  public static void main(String[] args) throws Exception {
-    String document = "cat.txt";
-    boolean writeToFile = true;
-    Triples triples = new Triples(document, writeToFile);
-    triples.getTriples();
-  }
-
 }
