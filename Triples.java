@@ -45,6 +45,13 @@ public class Triples {
 
 
   /**
+   * This is the semantic link network, containing all of the bsus, their
+   * original sentences and the ASR, VSR, and CSS information amongst all
+   * the other basic semantic unites.
+   */
+  private Map<String, BSU> network = null;
+
+  /**
    * This map is what we're storing all the extracted BSU information;
    * its key is the sentence and it's value is a string list containing all
    * the triples produced from the given sentence.
@@ -63,13 +70,78 @@ public class Triples {
   private String inputFile = null;
 
 
- /**
-  * Default Constructor
-  */
+  /**
+   * Default Constructor
+   */
   private Triples() {
     // not used
   }
 
+  /**
+   * BSU inner class:<p>
+   * This data structure contains a BSU and its association amongst all
+   * other BSUs in the form of<p>
+   * (1) ASR: arguments semantic relatedness, 
+   * (2) VSR: action-verbs semantic relatedness, 
+   * (3) CSS: coreference semantic relatedness.
+   */
+  private class BSU {
+
+    private String sentence, bsu = null;
+    private List<String> asr, vsr, css = new ArrayList<String>();
+    private Map<String, List<String>> map = null;
+    
+    /*
+     * Constructor for BSU: takes the BSU
+     */
+    private BSU(final String sentence) {
+      this.sentence = sentence;
+    }
+
+    private String getSentence() {
+      return this.sentence;
+    }
+
+    private String getBSU() {
+      return this.bsu;
+    }
+
+    private void setBSU(final String bsu) {
+      this.bsu = bsu;
+    }
+
+    private Map<String, List<String>> getAllBSUs() {
+      return this.map;
+    }
+
+    private void setAllBSUs(final Map<String, List<String>> map) {
+      this.map = map;
+    }
+
+    private List<String> getASR() {
+      return this.asr;
+    }
+
+    private void setASR(final String bsu) {
+      this.asr.add(bsu);
+    }
+
+    private List<String> getVSR() {
+      return this.vsr;
+    }
+
+    private void setVSR(final String bsu) {
+      this.vsr.add(bsu);
+    }
+
+    private List<String> getCSS() {
+      return this.css;
+    }
+
+    private void setCSS(final String bsu) {
+      this.css.add(bsu);
+    }
+  }
 
  /**
   * Constructor
@@ -142,9 +214,12 @@ public class Triples {
     Annotation doc = new Annotation(text);
     pipeline.annotate(doc);
 
-    computeCoref(doc);
+    //computeCoref(doc, props);
 
-    extractData(doc);
+    extractData(doc, props);
+
+    createNetwork();
+
     return true;
   }
 
@@ -152,7 +227,7 @@ public class Triples {
  /**
   * Computes coreference resolution and substitues the anaphoras out 
   */
-  private void computeCoref(Annotation doc) {
+  private void computeCoref(Annotation doc, Properties props) {
     // Create link graph for coreference resolution
     Map<Integer, CorefChain> graph = doc.get(CorefChainAnnotation.class);
     Collection<CorefChain> corefChains = graph.values();
@@ -169,7 +244,7 @@ public class Triples {
  /**
   * Extracts the triples, NER information, and stores it in bsus map
   */
-  private void extractData(Annotation doc) {
+  private void extractData(Annotation doc, Properties props) {
     
     // Initialize the Hashmaps for storing triples and NER
     this.bsus = new HashMap<String, List<String>>();
@@ -203,7 +278,7 @@ public class Triples {
         new OpenIE(props).clausesInSentence(sent);
 
       // This is where we'll store the extracted triples
-      List<String> valueBSUs = new ArrayList<>();
+      List<String> valueBSUs = new ArrayList<String>();
 
       // Store the triples
       String keySentence = sent.toString();
@@ -221,6 +296,25 @@ public class Triples {
     System.out.print("\ninformation extracted");
   }
 
+  /**
+   * Taking the first triple for each sentence
+   * and creating a BSU object out of it.
+   */
+  private void createNetwork() {
+    // Initialization of semantic link network
+    network = new HashMap<String, BSU>();
+
+    for (Map.Entry<String, List<String>> pair : this.bsus.entrySet()) {
+      BSU unit = new BSU(pair.getKey());
+      List<String> triples = pair.getValue();
+      for (String triple : triples) {
+        unit.setBSU(triple);
+        break; // only take the first triple
+      }
+      unit.setAllBSUs(this.bsus);
+      network.put(unit.getSentence(), unit);
+    }
+  }
 
  /**
   * Prints triples to standard out; writes them to file if writeToFile is true
@@ -239,7 +333,7 @@ public class Triples {
 
     // Print out NER
     for (Map.Entry<String, String> pair : this.ner.entrySet()) {
-      System.out.println("NER: " + pair.getKey() + " -> " + pair.getValue());
+      System.out.println("\nNER: " + pair.getKey() + " -> " + pair.getValue());
     }
 
     // Write this all to file
