@@ -66,14 +66,6 @@ public class Triples {
   private String inputFile = null;
 
 
-  /**
-   * Default Constructor: private - not to be used
-   */
-  private Triples() {
-    // not used
-  }
-
-
  /**
   * Constructor
   *

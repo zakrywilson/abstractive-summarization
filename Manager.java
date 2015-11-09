@@ -1,12 +1,6 @@
 public class Manager {
 
   /**
-   * Default constructor is not to be called.
-   */
-  private Manager() {}
-
-
-  /**
    * Runs the entire program
    * @param args
    */
