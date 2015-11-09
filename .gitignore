@@ -1,12 +1,15 @@
 # Do not share these files
 
-*.class
+# No input files except for the sample
 *txt
 !sample.txt
+
+# No .class file or JAR files
+bin/
 lib/
+
+# No misc stuff
 .idea/
 *.iml
 *.sh
 Makefile
-run-make
-
