@@ -4,10 +4,10 @@ Automatic abstractive summarization for articles
 ## How to use
 * Download [CoreNLP](http://nlp.stanford.edu/software/corenlp.shtml#Download) 
 and [OpenIE](http://nlp.stanford.edu/software/openie.shtml#Download) from Stanford.edu.  
-*Be sure to download the code and the modules for both!*
+Be sure to download the code and the modules for both!
 * Clone repo.
 * Put all four JARS in repo.
-* Run `make run` on command line.
+* Run `Manager.java`.
 
 ## How it works
 * Reads in file and extracts text.  
