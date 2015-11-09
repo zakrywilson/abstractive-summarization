@@ -3,7 +3,6 @@
 *.class
 *.txt
 *.jar
-.idea
-.idea/*
+.idea/
 run-make
 
