@@ -1,8 +1,9 @@
 # Do not share these files
 
 *.class
-*.txt
-*.jar
+*txt
+!sample.txt
+lib/
 .idea/
 *.iml
 *.sh

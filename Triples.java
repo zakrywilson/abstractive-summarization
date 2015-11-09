@@ -65,6 +65,10 @@ public class Triples {
    */
   private String inputFile = null;
 
+  /**
+   * Default path for input files: should be kept in ./resources/
+   */
+  private static final String PATH = "./resources/";
 
  /**
   * Constructor
@@ -98,9 +102,20 @@ public class Triples {
   * @return text - if there was an error, text will be equal to null
   */
   private static String getText(final String document) {
-    File file = new File(document);
+
+    // Check for resources directory
+    File dir = new File(PATH);
+    if (!dir.exists()) {
+      System.out.println("ERROR: 'resources' directory does not exist! " +
+                         "Create './resources' directory and move input files into it.");
+      return null;
+    }
+
+    // Create file for reading
+    File file = new File(PATH + document);
     String text = null;
 
+    // Read in file
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
       text = reader.readLine();
     } catch (IOException e) {
@@ -240,7 +255,7 @@ public class Triples {
      try {
 
        // Create new file to write to
-       File file = new File(inputFile.replace(".txt", "-bsu.txt"));
+       File file = new File(PATH + inputFile.replace(".txt", "-bsu.txt"));
        if (file.exists()) file.delete();
        file.createNewFile();
        writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
