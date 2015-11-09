@@ -80,8 +80,7 @@
 
     @Override
     public String toString() {
-      String output = ""; 
-      output += this.sentence + "\n";
+      String output = this.sentence + "\n";
       for (BSU bsu : this.bsus) {
         output += "   " + bsu;
       }

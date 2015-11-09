@@ -5,5 +5,7 @@
 *.jar
 .idea/
 *.iml
+*.sh
+Makefile
 run-make
 
