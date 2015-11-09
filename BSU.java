@@ -6,12 +6,6 @@ public class BSU {
   private String action;
   private String receiver;
 
-  /**
-   * Default Constructor
-   */
-  private BSU() {
-    // Default constructor is not to be used.
-  }
 
   /**
    * Constructor
