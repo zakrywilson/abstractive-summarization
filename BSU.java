@@ -1,22 +1,21 @@
-import java.util.*;
-
+/**
+ * Representation of a single Basic Semantic Unit
+ */
 public class BSU {
   
-  private String actor;
-  private String action;
-  private String receiver;
+  private String actor, action, receiver;
 
 
   /**
    * Constructor
    * <p>
-   * Basic Semantic Unit containing actor, action, receiver.
-   *
+   *   Creates a Basic Semantic Unit containing a single actor-action-receiver triple.
+   * </p>
    * @param actor
    * @param action
    * @param receiver
    */
-  public BSU(final String actor, final String action, final String receiver) {
+  protected BSU(final String actor, final String action, final String receiver) {
     this.actor = actor;
     this.action = action;
     this.receiver = receiver;

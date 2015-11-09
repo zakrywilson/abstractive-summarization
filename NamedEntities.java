@@ -1,9 +1,21 @@
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+
+/**
+ * Contains all Named Entity Recognition information for a single body of text.
+ */
 public class NamedEntities {
 
   private Map<String, String> ner;
 
+  /**
+   * Constructor
+   * <p>
+   *  Initializes collection to hold NER information where
+   *  the key is the entity and the value is the entity label.
+   * </p>
+   */
   protected NamedEntities() {
     this.ner = new LinkedHashMap();
   }
