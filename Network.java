@@ -85,12 +85,5 @@ public class Network {
       output += pair.getValue() + "\n";
     }
     return output;
-//    String output = "";
-//    Iterator it = this.network.entrySet().iterator();
-//    while (it.hasNext()) {
-//      Map.Entry pair = (Map.Entry) it.next();
-//      output += pair.getValue() + "\n";
-//    }
-//    return output;
   }
 }
