@@ -1,5 +1,6 @@
 /**
  * Manages entire program.
+ * @author Zach Wilson
  */
 public class Manager {
 

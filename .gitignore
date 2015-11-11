@@ -1,7 +1,7 @@
 # Do not share these files
 
 # No input files except for the sample
-*txt
+*.txt
 !sample.txt
 
 # No .class file or JAR files

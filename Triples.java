@@ -29,21 +29,20 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
 import edu.stanford.nlp.util.CoreMap;
 
-import java.util.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.*;
 
 
 /**
- * @author Zach Wilson
  * Handles extracting information from a document:
  * <p>
- * (1) Basic semantic units: stored in Network
- * (2) Named entity information: stored in NamedEntities
+ *   (1) Basic semantic units: stored in Network
+ *   (2) Named entity information: stored in NamedEntities
  * </p>
  */
 public class Triples {
@@ -206,7 +205,7 @@ public class Triples {
       // Tree tree = sent.get(TreeAnnotation.class);
 
       // Get the OpenIE triples for the sentence
-      Collection<RelationTriple> triples = 
+      Collection<RelationTriple> triples =
         sent.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
 
       // Using the clause splitter
