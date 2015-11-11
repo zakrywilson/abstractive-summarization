@@ -35,7 +35,7 @@ public class Network {
    * </p>
    * @param network - a collection of all sentences in the body of text
    */
-  protected Network(final Map<String, Sentence> network) {
+  protected Network(ConcurrentHashMap<String, Sentence> network) {
     this.network = network;
   }
 
