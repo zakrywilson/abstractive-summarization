@@ -5,9 +5,9 @@ import java.util.List;
 /**
  * Sentence
  * <p>
- *  This data structure contains a sentence, it's BSUs,
- *  and its association amongst all other BSUs in the form of...
- * </p>
+ *   This data structure contains a sentence, it's BSUs,
+ *   and its association amongst all other BSUs in the form of...
+ * <p>
  *   (1) ASR: arguments semantic relatedness,
  *   (2) VSR: action-verbs semantic relatedness,
  *   (3) CSS: co-reference semantic relatedness.
