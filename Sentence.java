@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -9,15 +10,15 @@ import java.util.List;
  * </p>
  *   (1) ASR: arguments semantic relatedness,
  *   (2) VSR: action-verbs semantic relatedness,
- *   (3) CSS: coreference semantic relatedness.
+ *   (3) CSS: co-reference semantic relatedness.
  */
 public class Sentence {
 
   private String sentence, bsu = null;
-
-  private List<String> asr, vsr, css = new ArrayList<String>();
-
-  private List<BSU> bsus = null;
+  private List<String> asr = new ArrayList<String>();
+  private List<String> vsr = new ArrayList<String>();
+  private List<String> css = new ArrayList<String>();
+  private List<BSU> bsus = new ArrayList<BSU>();
 
   /*
    * Constructor
@@ -72,6 +73,23 @@ public class Sentence {
 
   protected void setCSS(final String bsu) {
     this.css.add(bsu);
+  }
+
+  /**
+   * Purging BSUs that have a confidence score of less than 1.000
+   * @return list of removed BSUs
+   */
+  protected List<BSU> purge() {
+    List<BSU> removedBSUs = new ArrayList<BSU>();
+    Iterator<BSU> it = this.bsus.iterator();
+    while (it.hasNext()) {
+      BSU bsu = it.next();
+      if (!bsu.getScore().startsWith("1")) {
+        removedBSUs.add(bsu);
+        it.remove();
+      }
+    }
+    return removedBSUs;
   }
 
   @Override

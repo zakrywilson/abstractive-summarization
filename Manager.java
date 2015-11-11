@@ -15,6 +15,9 @@ public class Manager {
 
     // Running program
     Triples triples = new Triples(file, writeToFile);
-    System.out.print(triples);
+    Network network = triples.getNetwork();
+    network.purgeBSUs();
+    network.purgeSentences();
+    System.out.print(network);
   }
 }

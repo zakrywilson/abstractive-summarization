@@ -223,7 +223,8 @@ public class Triples {
       for (RelationTriple triple : triples) {
         BSU bsu = new BSU(triple.subjectGloss(), 
                           triple.relationGloss(), 
-                          triple.objectGloss());
+                          triple.objectGloss(),
+                          triple.confidenceGloss());
         bsus.add(bsu);
       }
       // Store sentences and associated BSUs inside triples object

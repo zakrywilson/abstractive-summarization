@@ -1,6 +1,7 @@
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -21,7 +22,7 @@ public class Network {
    * </p>
    */
   protected Network() {
-    this.network = new HashMap<String, Sentence>();
+    this.network = new ConcurrentHashMap<String, Sentence>();
   }
 
   /**
@@ -32,7 +33,7 @@ public class Network {
    *   Key: the original sentence.<br>
    *   Value: its Sentence object containing semantic information on sentence.
    * </p>
-   * @param network
+   * @param network - a collection of all sentences in the body of text
    */
   protected Network(final Map<String, Sentence> network) {
     this.network = network;
@@ -46,14 +47,50 @@ public class Network {
     return this.network.get(sentence);
   }
 
+  /**
+   * Purging BSUs that have a confidence score of less than 1.000
+   * out of every Sentence in the Network.
+   * @return a list of all removed BSUs
+   */
+  protected List<BSU> purgeBSUs() {
+    List<BSU> removedBSUs = new ArrayList<BSU>();
+    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+      Sentence sentence = pair.getValue();
+      removedBSUs.addAll(sentence.purge());
+    }
+    return removedBSUs;
+  }
+
+  /**
+   * Purging Sentences that do not have any BSUs in them.
+   * @return list of removed sentences
+   */
+  protected List<String> purgeSentences() {
+    List<String> removedSentences = new ArrayList<String>();
+    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+      Sentence sentence = pair.getValue();
+      if (sentence.getAllBSUs().isEmpty()) {
+        String removed = sentence.getSentence();
+        removedSentences.add(removed);
+        this.network.remove(removed);
+      }
+    }
+    return removedSentences;
+  }
+
   @Override
   public String toString() {
     String output = "";
-    Iterator it = this.network.entrySet().iterator();
-    while (it.hasNext()) {
-      Map.Entry pair = (Map.Entry) it.next();
+    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
       output += pair.getValue() + "\n";
     }
     return output;
+//    String output = "";
+//    Iterator it = this.network.entrySet().iterator();
+//    while (it.hasNext()) {
+//      Map.Entry pair = (Map.Entry) it.next();
+//      output += pair.getValue() + "\n";
+//    }
+//    return output;
   }
 }
