@@ -114,11 +114,21 @@ public class Triples {
     File file = new File(PATH + document);
     String text = null;
 
-    // Read in file
-    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+    // Read in file into String text
+    BufferedReader reader = null;
+    try {
+      reader = new BufferedReader(new FileReader(file));
       text = reader.readLine();
     } catch (IOException e) {
       System.out.println("ERROR: unable to read file: " + document);
+    } finally {
+      if (reader != null) {
+        try {
+          reader.close();
+        } catch (IOException e) {
+          System.out.print("Unable to close reader on file " + file.getName());
+        }
+      }
     }
 
     return text;

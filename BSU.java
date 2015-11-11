@@ -28,6 +28,7 @@ public class BSU {
    * @param actor - subject
    * @param action - verb or verb phrase
    * @param receiver - direct object or object of predicate
+   * @param score - confidence score assigned to each BSU
    */
   protected BSU(final String actor, final String action, final String receiver, final String score) {
     this.actor = actor;
