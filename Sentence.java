@@ -54,7 +54,7 @@ public class Sentence {
     this.bsus = bsus;
   }
 
-  protected List<String> getASR() {
+  protected List<String> getASRs() {
     return this.asr;
   }
 
