@@ -14,11 +14,14 @@ import java.util.List;
  */
 public class Sentence {
 
+  // The sentence and it's associated BSUs
   private String sentence, bsu = null;
+  private List<BSU> bsus = new ArrayList<BSU>();
+
+  // The data comprising the semantic link network
   private List<String> asr = new ArrayList<String>();
   private List<String> vsr = new ArrayList<String>();
   private List<String> css = new ArrayList<String>();
-  private List<BSU> bsus = new ArrayList<BSU>();
 
   /*
    * Constructor
@@ -55,23 +58,23 @@ public class Sentence {
     return this.asr;
   }
 
-  protected void setASR(final String bsu) {
+  protected void addASR(final String bsu) {
     this.asr.add(bsu);
   }
 
-  protected List<String> getVSR() {
+  protected List<String> getVSRs() {
     return this.vsr;
   }
 
-  protected void setVSR(final String bsu) {
+  protected void addVSRs(final String bsu) {
     this.vsr.add(bsu);
   }
 
-  protected List<String> getCSS() {
+  protected List<String> getCSSs() {
     return this.css;
   }
 
-  protected void setCSS(final String bsu) {
+  protected void addCSS(final String bsu) {
     this.css.add(bsu);
   }
 
