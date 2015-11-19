@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sentence
@@ -15,10 +16,11 @@ import java.util.List;
 public class Sentence {
 
   // The sentence and it's associated BSUs
-  private String sentence, bsu = null;
+  private String sentence = null;
+  private BSU bsu = null;
   private List<BSU> bsus = new ArrayList<BSU>();
 
-  // The data comprising the semantic link network
+  // The data comprising its external relationships
   private List<String> asr = new ArrayList<String>();
   private List<String> vsr = new ArrayList<String>();
   private List<String> css = new ArrayList<String>();
@@ -38,11 +40,11 @@ public class Sentence {
     return this.sentence;
   }
 
-  protected String getBSU() {
+  protected BSU getBSU() {
     return this.bsu;
   }
 
-  protected void setBSU(final String bsu) {
+  protected void setBSU(final BSU bsu) {
     this.bsu = bsu;
   }
 
@@ -93,6 +95,26 @@ public class Sentence {
       }
     }
     return removedBSUs;
+  }
+
+  /**
+   * Chooses BSU to represent sentence
+   * @param index
+   */
+  protected void chooseBSU(int index) {
+    setBSU(this.bsus.get(index));
+  }
+
+  protected void chooseLongestBSU() {
+    BSU longestBSU = null;
+    for (BSU nextBSU : this.bsus) {
+      if (longestBSU == null) {
+        longestBSU = nextBSU;
+      } else if (nextBSU.toString().length() > longestBSU.toString().length()) {
+          longestBSU = nextBSU;
+      }
+    }
+    setBSU(longestBSU);
   }
 
   @Override

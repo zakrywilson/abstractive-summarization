@@ -19,6 +19,8 @@ public class Manager {
     Network network = triples.getNetwork();
     network.purgeBSUs();
     network.purgeSentences();
-    System.out.print(network);
+    network.chooseLongestBSUs();
+    network.printBSUs(true);
+    //System.out.print(network);
   }
 }

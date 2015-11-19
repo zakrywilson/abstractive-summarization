@@ -78,6 +78,51 @@ public class Network {
     return removedSentences;
   }
 
+  /**
+   * Traversing every Sentence object and computing the semantic
+   * relation amongst all Sentences.
+   */
+  protected void generateSemanticLinkNetwork() {
+
+  }
+
+  /**
+   * Forces each Sentence to choose its top BSU
+   */
+  protected void chooseBSUs() {
+    chooseBSUs(0);
+  }
+
+  /**
+   * Forces each Sentence to choose the BSU based on the index provided
+   * @param index - index of the collection that contains a BSU
+   */
+  protected void chooseBSUs(int index) {
+    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+      pair.getValue().chooseBSU(index);
+    }
+  }
+
+  /**
+   * Print chosen BSUs
+   * @param printOriginalSentence - prints original sentence if true
+   */
+  protected void printBSUs(boolean printOriginalSentence) {
+    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+      Sentence sentence = pair.getValue();
+      if (printOriginalSentence) {
+        System.out.println(sentence.getSentence());
+      }
+      System.out.println(sentence.getBSU());
+    }
+  }
+
+  protected void chooseLongestBSUs() {
+    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+      pair.getValue().chooseLongestBSU();
+    }
+  }
+
   @Override
   public String toString() {
     String output = "";
