@@ -99,12 +99,15 @@ public class Sentence {
 
   /**
    * Chooses BSU to represent sentence
-   * @param index
+   * @param index - sets the BSU as whatever index was provided
    */
   protected void chooseBSU(int index) {
     setBSU(this.bsus.get(index));
   }
 
+  /**
+   * Chooses the longest BSU to represent the sentence
+   */
   protected void chooseLongestBSU() {
     BSU longestBSU = null;
     for (BSU nextBSU : this.bsus) {
