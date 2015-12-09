@@ -1,11 +1,13 @@
 /**
  * Manages entire program.
+ *
  * @author Zach Wilson
  */
 public class Manager {
 
   /**
    * Main: Runs program by calling Triples to extract information from file.
+   *
    * @param args
    */
   public static void main(String[] args) {

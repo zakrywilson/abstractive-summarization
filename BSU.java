@@ -11,6 +11,7 @@ public class BSU {
    *   Creates a Basic Semantic Unit containing a single actor-action-receiver triple.
    *   Confidence score is set to empty String.
    * </p>
+   *
    * @param actor - subject
    * @param action - verb or verb phrase
    * @param receiver - direct object or object of predicate
@@ -25,6 +26,7 @@ public class BSU {
    *   Creates a Basic Semantic Unit containing a single actor-action-receiver triple
    *   and a confidence score.
    * </p>
+   *
    * @param actor - subject
    * @param action - verb or verb phrase
    * @param receiver - direct object or object of predicate

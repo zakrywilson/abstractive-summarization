@@ -33,6 +33,7 @@ public class Network {
    *   Key: the original sentence.<br>
    *   Value: its Sentence object containing semantic information on sentence.
    * </p>
+   *
    * @param network - a collection of all sentences in the body of text
    */
   protected Network(ConcurrentHashMap<String, Sentence> network) {
@@ -50,6 +51,7 @@ public class Network {
   /**
    * Purging BSUs that have a confidence score of less than 1.000
    * out of every Sentence in the Network.
+   *
    * @return a list of all removed BSUs
    */
   protected List<BSU> purgeBSUs() {
@@ -63,6 +65,7 @@ public class Network {
 
   /**
    * Purging Sentences that do not have any BSUs in them.
+   *
    * @return list of removed sentences
    */
   protected List<String> purgeSentences() {
@@ -94,17 +97,8 @@ public class Network {
   }
 
   /**
-   * Forces each Sentence to choose the BSU based on the index provided
-   * @param index - index of the collection that contains a BSU
-   */
-  protected void chooseBSUs(int index) {
-    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
-      pair.getValue().chooseBSU(index);
-    }
-  }
-
-  /**
    * Print chosen BSUs
+   *
    * @param printOriginalSentence - prints original sentence if true
    */
   protected void printBSUs(boolean printOriginalSentence) {
@@ -117,6 +111,21 @@ public class Network {
     }
   }
 
+  /**
+   * Forces each Sentence to choose the BSU based on the index provided
+   *
+   * @param index - index of the collection that contains a BSU
+   */
+  protected void chooseBSUs(int index) {
+    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+      pair.getValue().chooseBSU(index);
+    }
+  }
+
+  /**
+   * Forces each Sentence to choose the longest
+   * BSU to be its representative BSU
+   */
   protected void chooseLongestBSUs() {
     for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
       pair.getValue().chooseLongestBSU();

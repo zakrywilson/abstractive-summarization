@@ -30,6 +30,7 @@ public class Sentence {
    * <p>
    *   Takes a single sentence.
    * </p>
+   *
    * @param sentence
    */
   protected Sentence(final String sentence) {
@@ -82,6 +83,7 @@ public class Sentence {
 
   /**
    * Purging BSUs that have a confidence score of less than 1.000
+   *
    * @return list of removed BSUs
    */
   protected List<BSU> purge() {
@@ -99,6 +101,7 @@ public class Sentence {
 
   /**
    * Chooses BSU to represent sentence
+   *
    * @param index - sets the BSU as whatever index was provided
    */
   protected void chooseBSU(int index) {

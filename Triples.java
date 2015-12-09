@@ -71,10 +71,10 @@ public class Triples {
 
  /**
   * Constructor
-  *
-  * Reads in file, processes it, extracts triples, prints them to standard
-  * out and (optionally) writes data to new file (original-bsu.txt).
-  * 
+  * <p>
+  *   Reads in file, processes it, extracts triples, prints them to standard
+  *   out and (optionally) writes data to new file (original-bsu.txt).
+  * </p>
   * @param document - name of the file containing the input text
   * @param writeToFile - determines if output will be written to file
   */
