@@ -8,30 +8,31 @@ import java.io.IOException;
  */
 public class FileWriter {
 
-  private BufferedWriter writer = null;
-
 
   /**
-   * Constructor
-   * <p>
-   *   Takes a file name String, creates the file, and creates the BufferedWriter
-   * </p>
-   * @param filename - file name that will be created if it doesn't already exist
-   * @throws Exception
+   * Takes a file name and text, and writes the text to the file.
+   * If the file does not exist, it will be created.
+   *
+   * @param filename - name of the file to write to
+   * @param text - text to be written to file
    */
-  protected FileWriter(final String filename) throws Exception {
-    this.writer = new BufferedWriter(new java.io.FileWriter(createFile(filename)));
+  protected static void write(final String filename, final String text) {
+    try (BufferedWriter writer = new BufferedWriter(new java.io.FileWriter(createFile(filename)))) {
+      writer.write(text);
+    } catch (IOException e) {
+      System.err.println("Failed to write to file.");
+    }
   }
 
 
   /**
-   * Creates a file, given a file name
+   * Creates a file, given a file name.
    *
    * @param filename - desired name for the file
    * @return file - a file that exists on disk
    * @throws IOException
    */
-  private File createFile(final String filename) throws IOException {
+  private static File createFile(final String filename) throws IOException {
 
     File file = new File(filename);
 
@@ -47,30 +48,4 @@ public class FileWriter {
 
     return file;
   }
-
-
-  /**
-   * Takes a String and writes it to file
-   *
-   * @param text - text to be written to file
-   * @throws IOException
-   */
-  protected void write(String text) throws IOException {
-    this.writer.write(text);
-  }
-
-
-  /**
-   * Closes BufferedWriter
-   */
-  protected void close() {
-    if (this.writer != null) {
-      try {
-        this.writer.close();
-      } catch (IOException e) {
-        System.err.println("Failed to close BufferedWriter resource.");
-      }
-    }
-  }
-
 }
