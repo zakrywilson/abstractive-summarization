@@ -18,11 +18,16 @@ public class Manager {
 
     // Running program
     Triples triples = new Triples(file, writeToFile);
+
     Network network = triples.getNetwork();
     network.purgeBSUs();
     network.purgeSentences();
     network.chooseLongestBSUs();
     network.printBSUs(true);
+
+    System.out.println("\nCompressed text...");
+    System.out.println(network.getCompressedText());
     //System.out.print(network);
+
   }
 }

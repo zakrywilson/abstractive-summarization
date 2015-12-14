@@ -123,6 +123,52 @@ public class Sentence {
     setBSU(longestBSU);
   }
 
+  /**
+   * Takes the representative BSU and creates a sentence out of it.
+   *
+   * @return compressed sentence - a sentence taken from a BSU
+   */
+  protected String getCompressedSentence() {
+    return formatSentence(this.bsu.getActor(),
+                          this.bsu.getAction(),
+                          this.bsu.getReceiver());
+  }
+
+  private String formatActor (String s) {
+    if (!Character.isUpperCase(s.charAt(0))) {
+      return capitalize(s);
+    }
+    return s;
+  }
+
+
+  private String formatAction (String s) {
+    return s.toLowerCase();
+  }
+
+  private String formatReceiver (String s) {
+    return s;
+  }
+
+  private String formatSentence(String actor, String action, String receiver) {
+    // Make sure there isn't any spaces between a word and it's apostrophe
+    String sentence = formatActor(actor) + " " + formatAction(action) + " " + formatReceiver(receiver) + ". ";
+    if (sentence.contains(" 's")) {
+      sentence = sentence.replaceAll(" 's ", "'s ");
+    }
+    return sentence;
+  }
+
+  /**
+   * Capitalizing the first letter of a String
+   *
+   * @param s - String that will have its first character capitalized
+   * @return capitalized string
+   */
+  private String capitalize(String s) {
+    return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+  }
+
   @Override
   public String toString() {
     String output = this.sentence + "\n";

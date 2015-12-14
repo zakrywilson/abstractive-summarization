@@ -132,6 +132,19 @@ public class Network {
     }
   }
 
+  /**
+   * Creates a list of all the compressed strings.
+   *
+   * @return text - a compressed, summarized representation of the original text
+   */
+  protected String getCompressedText() {
+    String text = "";
+    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+      text += pair.getValue().getCompressedSentence();
+    }
+    return text;
+  }
+
   @Override
   public String toString() {
     String output = "";
