@@ -105,8 +105,9 @@ public class Triples {
     // Check for resources directory
     File dir = new File(PATH);
     if (!dir.exists()) {
-      System.out.println("ERROR: 'resources' directory does not exist! " +
-                         "Create './resources' directory and move input files into it.");
+      if (!dir.mkdir()) {
+        System.err.println("ERROR: failed to create 'resources' directory.");
+      }
       return null;
     }
 
@@ -135,7 +136,7 @@ public class Triples {
 
     // Ensure there is text to process
     if (text == null) {
-      System.out.println("ERROR: text was null.");
+      System.err.println("ERROR: text was null.");
       return false;
     }
 
@@ -244,7 +245,7 @@ public class Triples {
     
      // Check if the input file is valid
      if (inputFile == null || !inputFile.endsWith(".txt")) {
-       System.out.println("ERROR: invalid file.");
+       System.err.println("ERROR: invalid file.");
        return;
      }
 
