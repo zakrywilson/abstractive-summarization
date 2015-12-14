@@ -118,7 +118,7 @@ public class Triples {
     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
       text = reader.readLine();
     } catch (IOException e) {
-      System.out.println("ERROR: unable to read file: " + document);
+      System.err.println("ERROR: unable to read file: " + document);
     }
     return text;
   }
@@ -265,7 +265,7 @@ public class Triples {
 
      } catch (IOException e) {
 
-       System.out.println("ERROR: unable to write to file.");
+       System.err.println("ERROR: unable to write to file.");
        return;
 
      } finally {
@@ -274,7 +274,7 @@ public class Triples {
          try {
            writer.close();
          } catch (IOException e) {
-           System.out.println("ERROR: Unable to close writer resource for file");
+           System.err.println("ERROR: Unable to close writer resource for file");
          }
        }
      }
