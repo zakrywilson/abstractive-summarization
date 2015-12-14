@@ -5,6 +5,7 @@
  */
 public class Manager {
 
+
   /**
    * Main: Runs program by calling Triples to extract information from file.
    *
@@ -13,21 +14,21 @@ public class Manager {
   public static void main(String[] args) {
 
     // Options
-    String file = "sample.txt";
+    String file = "compressed-text.txt";
     boolean writeToFile = true;
 
     // Running program
     Triples triples = new Triples(file, writeToFile);
 
+    // Process the text
     Network network = triples.getNetwork();
     network.purgeBSUs();
     network.purgeSentences();
     network.chooseLongestBSUs();
-    network.printBSUs(true);
 
-    System.out.println("\nCompressed text...");
-    System.out.println(network.getCompressedText());
-    //System.out.print(network);
+    // Display results
+    network.printBSUs(true);
+    System.out.println("\nCompressed text...\n" + network.getCompressedText());
 
   }
 }
