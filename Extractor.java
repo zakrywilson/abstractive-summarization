@@ -287,35 +287,20 @@ public class Extractor {
        return;
      }
 
-     // Create writer
-     BufferedWriter writer = null;
+     // Create new file to write to
+     File file = new File(PATH + inputFile.replace(".txt", "-bsu.txt"));
+     if (!FileManager.thoroughlyCreate(file)) return;
 
-     try {
+     // Start writing
+     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()))) {
 
-       // Create new file to write to
-       File file = new File(PATH + inputFile.replace(".txt", "-bsu.txt"));
-       if (file.exists()) file.delete();
-       file.createNewFile();
-       writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
-      
        // Write network and ner to file
        writer.write(this.network.toString());
        writer.write(this.ner.toString());
 
      } catch (IOException e) {
-
        System.err.println("ERROR: unable to write to file.");
        return;
-
-     } finally {
-
-       if (writer != null) {
-         try {
-           writer.close();
-         } catch (IOException e) {
-           System.err.println("ERROR: Unable to close writer resource for file");
-         }
-       }
      }
 
      System.out.println("\ninformation written to file\n");

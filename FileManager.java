@@ -4,10 +4,35 @@ import java.io.IOException;
 
 
 /**
- * File writer utility class
+ * File manager utility class
  */
-public class FileWriter {
+public class FileManager {
 
+
+  /**
+   * Creates file on disk by deleting any file with the same name.
+   *
+   * @param file - file to be created
+   * @return true if creation was successful
+   */
+  protected static boolean thoroughlyCreate(File file) {
+    if (file.exists()) {
+      if (!file.delete()) {
+        System.err.println("ERROR: unable to delete file " + file.getAbsolutePath());
+        return false;
+      }
+    }
+    try {
+      if (!file.createNewFile()) {
+        System.err.println("ERROR: unable to create file " + file.getName());
+        return false;
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
+    }
+    return true;
+  }
 
   /**
    * Takes a file name and text, and writes the text to the file.
