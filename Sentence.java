@@ -91,8 +91,7 @@ public class Sentence {
     Iterator<BSU> it = this.bsus.iterator();
     while (it.hasNext()) {
       BSU bsu = it.next();
-//      if (lowScore(bsu) || tooShort(bsu)) {
-      if (lowScore(bsu)) {
+      if (lowScore(bsu) || tooShort(bsu)) {
         removedBSUs.add(bsu);
         it.remove();
       }

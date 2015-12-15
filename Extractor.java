@@ -31,10 +31,9 @@ import edu.stanford.nlp.util.CoreMap;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 
@@ -113,15 +112,25 @@ public class Extractor {
 
     // Create file for reading
     File file = new File(PATH + document);
-    String text = null;
+    List<String> lines = null;
 
-    // Read in file into String text
-    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-      text = reader.readLine();
+    // Read lines
+    try {
+      lines = Files.readAllLines(file.toPath());
     } catch (IOException e) {
       System.err.println("ERROR: unable to read file: " + document);
     }
-    return text;
+
+    // Append lines to one String
+    StringBuilder text = null;
+    if (lines != null) {
+      text = new StringBuilder();
+      for (String line : lines) {
+        text.append(line.trim());
+      }
+    }
+
+    return (text == null) ? null : text.toString();
   }
 
 
