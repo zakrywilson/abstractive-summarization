@@ -41,10 +41,22 @@ public class Network {
     this.network = network;
   }
 
+  /**
+   * Adding a sentence number and a Sentence object to the network
+   *
+   * @param sentenceNumber - the sentence number
+   * @param sentence - instance of Sentence
+   */
   protected void add(Integer sentenceNumber, Sentence sentence) {
     this.network.put(sentenceNumber, sentence);
   }
 
+  /**
+   * Providing an instance of Sentence returns the sentence it's based on
+   *
+   * @param sentence - instance of Sentence
+   * @return the original sentence
+   */
   protected Sentence get(final String sentence) {
     return this.network.get(sentence);
   }
@@ -140,19 +152,20 @@ public class Network {
    * @return text - a compressed, summarized representation of the original text
    */
   protected String getCompressedText() {
-    String text = "";
+    StringBuilder text = new StringBuilder();
     for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
-      text += pair.getValue().getCompressedSentence();
+      text.append(pair.getValue().getCompressedSentence());
     }
-    return text;
+    return text.toString();
   }
 
   @Override
   public String toString() {
-    String output = "";
+    StringBuilder output = new StringBuilder();
     for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
-      output += pair.getValue() + "\n";
+      output.append(pair.getValue());
+      output.append("\n");
     }
-    return output;
+    return output.toString();
   }
 }

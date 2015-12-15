@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Sentence
@@ -222,10 +221,13 @@ public class Sentence {
 
   @Override
   public String toString() {
-    String output = this.sentence + "\n";
+    StringBuilder output = new StringBuilder();
+    output.append(this.sentence);
+    output.append("\n");
     for (BSU bsu : this.bsus) {
-      output += "   " + bsu;
+      output.append("   ");
+      output.append(bsu);
     }
-    return output;
+    return output.toString();
   }
 }
