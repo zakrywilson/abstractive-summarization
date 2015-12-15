@@ -174,9 +174,7 @@ public class Sentence {
   private String formatSentence(String actor, String action, String receiver) {
     // Make sure there isn't any spaces between a word and it's apostrophe
     String sentence = formatActor(actor) + " " + formatAction(action) + " " + formatReceiver(receiver) + ". ";
-    if (sentence.contains(" 's")) {
-      sentence = sentence.replaceAll(" 's ", "'s ");
-    }
+    sentence = sentence.replaceAll("\\w's\\w", "'s ");
     return sentence;
   }
 
