@@ -236,7 +236,7 @@ public class Extractor {
         String ne = token.get(NamedEntityTagAnnotation.class);
         // Store NER if NER exists (also omitting ',' -> date error)
         if ((ne.length() != 1) && !word.equals(",")) 
-          this.ner.add(word, ne);
+          this.ner.add(word, ne, sentenceNumber);
       }
 
       // This is the parse tree of the current sentence

@@ -23,7 +23,7 @@ public class Network {
    * </p>
    */
   protected Network() {
-    this.network = new ConcurrentHashMap<>();
+    this.network = new ConcurrentHashMap<Integer, Sentence>();
   }
 
   /**
@@ -39,6 +39,16 @@ public class Network {
    */
   protected Network(ConcurrentHashMap<Integer, Sentence> network) {
     this.network = network;
+  }
+
+  /**
+   * Returns the network containing the sentence Strings with their
+   * associated Sentence objects.
+   *
+   * @return network
+   */
+  protected Map<Integer, Sentence> getCollection() {
+    return this.network;
   }
 
   /**
@@ -144,19 +154,6 @@ public class Network {
     for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
       pair.getValue().chooseLongestBSU();
     }
-  }
-
-  /**
-   * Creates a list of all the compressed strings.
-   *
-   * @return text - a compressed, summarized representation of the original text
-   */
-  protected String getCompressedText() {
-    StringBuilder text = new StringBuilder();
-    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
-      text.append(pair.getValue().getCompressedSentence());
-    }
-    return text.toString();
   }
 
   @Override
