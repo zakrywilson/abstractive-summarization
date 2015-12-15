@@ -166,15 +166,16 @@ public class Extractor {
 
     // Create the Stanford CoreNLP pipeline
     Properties props = new Properties();
-    props.setProperty("annotators", 
-                      "tokenize, ssplit, pos, parse, depparse, " + 
-                      "lemma, ner, dcoref, natlog, openie");
+    String pipe = "tokenize, ssplit, pos, parse, depparse, lemma, ner, dcoref, natlog, openie";
+    props.setProperty("annotators", pipe);
     StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
     Annotation doc = new Annotation(text);
     pipeline.annotate(doc);
 
-    computeCoref(doc, props);
+    // Store coreference resolution data
+//    computeCoref(doc, props);
 
+    // Get NER data, extract triples, and store the data
     extractData(doc, props);
 
     return true;

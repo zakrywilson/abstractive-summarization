@@ -174,6 +174,10 @@ public class Sentence {
     // Make sure there isn't any spaces between a word and it's apostrophe
     String sentence = formatActor(actor) + " " + formatAction(action) + " " + formatReceiver(receiver) + ". ";
     sentence = sentence.replaceAll("\\s's\\s", "'s ");
+    sentence = sentence.replaceAll("\\s'd\\s", "'d ");
+    sentence = sentence.replaceAll("\\s'ed\\s", "'ed ");
+    sentence = sentence.replaceAll("\\s,\\s", ", ");
+    sentence = sentence.replaceAll("\\s;\\s", "; ");
     return sentence;
   }
 
