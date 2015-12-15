@@ -126,10 +126,25 @@ public class Extractor {
     if (lines != null) {
       text = new StringBuilder();
       for (String line : lines) {
-        text.append(line.trim());
+
+        // Remove all unnecessary whitespace
+        line = line.trim();
+
+        // Disregard whitespace lines and empty strings
+        if (line.length() == 0) {
+          continue;
+        }
+
+        // Guarding against bad punctuation
+        if (line.matches(".*\\p{Punct}")) {
+          text.append(line);
+          text.append(" ");
+        } else {
+          text.append(line);
+          text.append(". ");
+        }
       }
     }
-
     return (text == null) ? null : text.toString();
   }
 
