@@ -1,3 +1,4 @@
+import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Network {
 
-  private Map<String, Sentence> network;
+  private Map<Integer, Sentence> network;
 
   /**
    * Default Constructor
@@ -22,7 +23,7 @@ public class Network {
    * </p>
    */
   protected Network() {
-    this.network = new ConcurrentHashMap<String, Sentence>();
+    this.network = new ConcurrentHashMap<>();
   }
 
   /**
@@ -36,12 +37,12 @@ public class Network {
    *
    * @param network - a collection of all sentences in the body of text
    */
-  protected Network(ConcurrentHashMap<String, Sentence> network) {
+  protected Network(ConcurrentHashMap<Integer, Sentence> network) {
     this.network = network;
   }
 
-  protected void add(String sentence, Sentence data) {
-    this.network.put(sentence, data);
+  protected void add(Integer sentenceNumber, Sentence sentence) {
+    this.network.put(sentenceNumber, sentence);
   }
 
   protected Sentence get(final String sentence) {
@@ -56,7 +57,7 @@ public class Network {
    */
   protected List<BSU> purgeBSUs() {
     List<BSU> removedBSUs = new ArrayList<BSU>();
-    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
       Sentence sentence = pair.getValue();
       removedBSUs.addAll(sentence.purge());
     }
@@ -69,13 +70,14 @@ public class Network {
    * @return list of removed sentences
    */
   protected List<String> purgeSentences() {
-    List<String> removedSentences = new ArrayList<String>();
-    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+    List<String> removedSentences = new ArrayList<>();
+    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
+      Integer sentenceNumber = pair.getKey();
       Sentence sentence = pair.getValue();
       if (sentence.getAllBSUs().isEmpty()) {
-        String removed = sentence.getSentence();
-        removedSentences.add(removed);
-        this.network.remove(removed);
+        String removedSentence = sentence.getSentence();
+        removedSentences.add(removedSentence);
+        this.network.remove(sentenceNumber);
       }
     }
     return removedSentences;
@@ -102,7 +104,7 @@ public class Network {
    * @param printOriginalSentence - prints original sentence if true
    */
   protected void printBSUs(boolean printOriginalSentence) {
-    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
       Sentence sentence = pair.getValue();
       if (printOriginalSentence) {
         System.out.println(sentence.getSentence());
@@ -117,7 +119,7 @@ public class Network {
    * @param index - index of the collection that contains a BSU
    */
   protected void chooseBSUs(int index) {
-    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
       pair.getValue().chooseBSU(index);
     }
   }
@@ -127,7 +129,7 @@ public class Network {
    * BSU to be its representative BSU
    */
   protected void chooseLongestBSUs() {
-    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
       pair.getValue().chooseLongestBSU();
     }
   }
@@ -139,7 +141,7 @@ public class Network {
    */
   protected String getCompressedText() {
     String text = "";
-    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
       text += pair.getValue().getCompressedSentence();
     }
     return text;
@@ -148,7 +150,7 @@ public class Network {
   @Override
   public String toString() {
     String output = "";
-    for (Map.Entry<String, Sentence> pair: this.network.entrySet()) {
+    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
       output += pair.getValue() + "\n";
     }
     return output;

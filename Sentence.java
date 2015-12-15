@@ -91,7 +91,8 @@ public class Sentence {
     Iterator<BSU> it = this.bsus.iterator();
     while (it.hasNext()) {
       BSU bsu = it.next();
-      if (!bsu.getScore().startsWith("1")) {
+//      if (lowScore(bsu) || tooShort(bsu)) {
+      if (lowScore(bsu)) {
         removedBSUs.add(bsu);
         it.remove();
       }
@@ -125,7 +126,6 @@ public class Sentence {
 
   /**
    * Takes the representative BSU and creates a sentence out of it.
-   *
    * @return compressed sentence - a sentence taken from a BSU
    */
   protected String getCompressedSentence() {
@@ -134,22 +134,43 @@ public class Sentence {
                           this.bsu.getReceiver());
   }
 
-  private String formatActor (String s) {
-    if (!Character.isUpperCase(s.charAt(0))) {
-      return capitalize(s);
+  /**
+   * Formats the actor of the triple
+   * @param string - string to be capitalized
+   * @return string capitalized
+   */
+  private String formatActor (String string) {
+    if (!Character.isUpperCase(string.charAt(0))) {
+      return capitalize(string);
     }
-    return s;
+    return string;
   }
 
-
-  private String formatAction (String s) {
-    return s.toLowerCase();
+  /**
+   * Formats the action of the triple
+   * @param string - text to be converted to lowercase
+   * @return string - string converted to lowercase
+   */
+  private String formatAction (String string) {
+    return string.toLowerCase();
   }
 
-  private String formatReceiver (String s) {
-    return s;
+  /**
+   * Formats the receiver of the triple
+   * @param string - text to be formatted
+   * @return formatted string
+   */
+  private String formatReceiver (String string) {
+    return string;
   }
 
+  /**
+   * Formats the entire sentence
+   * @param actor - actor of the triple
+   * @param action - action of the triple
+   * @param receiver - receiver of the triple
+   * @return formatted sentence
+   */
   private String formatSentence(String actor, String action, String receiver) {
     // Make sure there isn't any spaces between a word and it's apostrophe
     String sentence = formatActor(actor) + " " + formatAction(action) + " " + formatReceiver(receiver) + ". ";
@@ -162,11 +183,40 @@ public class Sentence {
   /**
    * Capitalizing the first letter of a String
    *
-   * @param s - String that will have its first character capitalized
+   * @param string - String that will have its first character capitalized
    * @return capitalized string
    */
-  private String capitalize(String s) {
-    return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+  private String capitalize(String string) {
+    return Character.toUpperCase(string.charAt(0)) + string.substring(1);
+  }
+
+  /**
+   * Checks for a low confidence score
+   * @param bsu - basic semantic unit to be checked
+   * @return true if the BSU has a score lower than 1
+   */
+  private boolean lowScore(BSU bsu) {
+    return !bsu.getScore().startsWith("1");
+  }
+
+  /**
+   * Checks whether the BSU is composed of 3 or less words
+   * @param bsu - basic semantic unit to be checked
+   * @return true if the BSU is made up of 3 or less words
+   */
+  private boolean tooShort(BSU bsu) {
+    return containsOneWord(bsu.getActor())  &&
+           containsOneWord(bsu.getAction()) &&
+           containsOneWord(bsu.getReceiver());
+  }
+
+  /**
+   * Checks whether the string contains less than 1 word
+   * @param string - string to be checked
+   * @return true if string contains less than 1 word
+   */
+  private boolean containsOneWord(String string) {
+    return !string.contains(" ") || string.equals("");
   }
 
   @Override

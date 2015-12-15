@@ -18,15 +18,16 @@ public class Manager {
     boolean writeToFile = true;
 
     // Running program
-    Triples triples = new Triples(file, writeToFile);
+    Extractor extractor = new Extractor(file, writeToFile);
 
     // Process the text
-    Network network = triples.getNetwork();
+    Network network = extractor.getNetwork();
     network.purgeBSUs();
     network.purgeSentences();
     network.chooseLongestBSUs();
 
     // Display results
+    System.out.println("PRINTING BSUs");
     network.printBSUs(true);
     System.out.println("\nCompressed text...\n" + network.getCompressedText());
 

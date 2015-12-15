@@ -45,7 +45,7 @@ import java.util.*;
  *   (2) Named entity information: stored in NamedEntities
  * </p>
  */
-public class Triples {
+public class Extractor {
 
 
   /**
@@ -78,7 +78,7 @@ public class Triples {
   * @param document - name of the file containing the input text
   * @param writeToFile - determines if output will be written to file
   */
-  protected Triples(final String document, final boolean writeToFile) {
+  protected Extractor(final String document, final boolean writeToFile) {
     
     // Set original file
     this.inputFile = document;
@@ -149,7 +149,7 @@ public class Triples {
     Annotation doc = new Annotation(text);
     pipeline.annotate(doc);
 
-    //computeCoref(doc, props);
+    computeCoref(doc, props);
 
     extractData(doc, props);
 
@@ -164,14 +164,26 @@ public class Triples {
   * @param props - properties
   */
   private void computeCoref(final Annotation doc, final Properties props) {
+
     // Create link graph for coreference resolution
     Map<Integer, CorefChain> graph = doc.get(CorefChainAnnotation.class);
     Collection<CorefChain> corefChains = graph.values();
+
+    System.out.println("\n***** PRINTING COREFERENCE RESOLUTION INFORMATION *****\n");
+
     for (CorefChain corefChain : corefChains) {
       // System.out.println(corefChain.getMentionsWithSameHead().toString());
-      System.out.println(corefChain.getMentionMap().toString());
+      System.out.println("--------------------------------------------");
+
+      for (CorefChain.CorefMention corefMention : corefChain.getMentionsInTextualOrder()) {
+        System.out.println("SENT NUM: " + corefMention.sentNum);
+        System.out.println("TO STRING: " + corefMention.toString());
+      }
+      System.out.println("MENTIONS: " + corefChain.getMentionsInTextualOrder());
+      // System.out.println(corefChain.getMentionMap());
       // System.out.println(corefChain.toString());
     }
+    System.out.println("\n ***** END *****\n");
     // graph.toString();
     // System.out.println("GRAPH:\n" + graph);
   }
@@ -186,10 +198,11 @@ public class Triples {
   private void extractData(final Annotation doc, final Properties props) {
     
     // Loop over sentences in the document
+    int sentenceNumber = 1;
     for (CoreMap sent : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
 
       // Traversing the words in the current sentence
-      for (CoreLabel token: sent.get(TokensAnnotation.class)) {
+      for (CoreLabel token : sent.get(TokensAnnotation.class)) {
         // Text of the token
         String word = token.get(TextAnnotation.class);
         // POS tag of the token
@@ -202,15 +215,11 @@ public class Triples {
       }
 
       // This is the parse tree of the current sentence
-      // Tree tree = sent.get(TreeAnnotation.class);
+      //Tree tree = sent.get(TreeAnnotation.class);
 
       // Get the OpenIE triples for the sentence
       Collection<RelationTriple> triples =
         sent.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
-
-      // Using the clause splitter
-      //List<SentenceFragment> clauses =
-      //  new OpenIE(props).clausesInSentence(sent);
 
       // This is where we'll store the extracted triples
       List<BSU> bsus = new ArrayList<BSU>();
@@ -226,9 +235,13 @@ public class Triples {
                           triple.confidenceGloss());
         bsus.add(bsu);
       }
+
       // Store sentences and associated BSUs inside triples object
       sentence.setAllBSUs(bsus);
-      this.network.add(sentence.getSentence(), sentence);
+      this.network.add(sentenceNumber, sentence);
+
+      // Increment sentence number
+      sentenceNumber++;
 
     } // Finished extracting information
 

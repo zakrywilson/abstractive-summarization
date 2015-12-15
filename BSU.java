@@ -39,18 +39,34 @@ public class BSU {
     this.score = score;
   }
 
+  /**
+   * Getter for actor
+   * @return actor
+   */
   protected String getActor() {
     return this.actor;
   }
 
+  /**
+   * Getter for action
+   * @return action
+   */
   protected String getAction() {
     return this.action;
   }
 
+  /**
+   * Getter for receiver
+   * @return receiver
+   */
   protected String getReceiver() {
     return this.receiver;
   }
 
+  /**
+   * Getter for score
+   * @return score
+   */
   protected String getScore() {
     return this.score;
   }
