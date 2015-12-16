@@ -226,6 +226,8 @@ public class Extractor {
     int sentenceNumber = 1;
     for (CoreMap sent : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
 
+      NamedEntities entities = new NamedEntities();
+
       // Traversing the words in the current sentence
       for (CoreLabel token : sent.get(TokensAnnotation.class)) {
         // Text of the token
@@ -235,7 +237,8 @@ public class Extractor {
         // NER label of the token
         String ne = token.get(NamedEntityTagAnnotation.class);
         // Store NER if NER exists (also omitting ',' -> date error)
-        if ((ne.length() != 1) && !word.equals(",")) 
+        if ((ne.length() != 1) && !word.equals(","))
+          entities.add(word, ne, sentenceNumber);
           this.ner.add(word, ne, sentenceNumber);
       }
 
@@ -251,6 +254,7 @@ public class Extractor {
 
       // Create a sentence object
       Sentence sentence = new Sentence(sent.toString());
+      sentence.addEntities(entities);
 
       // Store the triples
       for (RelationTriple triple : triples) {
@@ -288,7 +292,7 @@ public class Extractor {
      }
 
      // Create new file to write to
-     File file = new File(PATH + inputFile.replace(".txt", "-bsu.txt"));
+     File file = new File(PATH + inputFile.replace(".txt", "-meta.txt"));
      if (!FileManager.thoroughlyCreate(file)) return;
 
      // Start writing

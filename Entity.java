@@ -3,20 +3,32 @@ import java.util.List;
 
 class Entity {
 
-  private String entity;
+  private String noun;
+  private String type;
   private List<Integer> sentenceNumbers;
 
-  protected Entity(final String entity, final int sentenceNumber) {
-    this.entity = entity;
+  /**
+   * Constructor
+   *
+   * @param type - the type of named entity
+   * @param sentenceNumber - the sentence number in which the NER was found
+   */
+  protected Entity(final String noun, final String type, final int sentenceNumber) {
+    this.noun = noun;
+    this.type = type;
     this.sentenceNumbers = new ArrayList<Integer>(1);
     this.sentenceNumbers.add(sentenceNumber);
   }
 
-  protected String getEntity() {
-    return entity;
+  protected String getNoun() {
+    return this.noun;
+  }
+
+  protected String getType() {
+    return this.type;
   }
 
   protected List<Integer> getSentenceNumbers() {
-    return sentenceNumbers;
+    return this.sentenceNumbers;
   }
 }

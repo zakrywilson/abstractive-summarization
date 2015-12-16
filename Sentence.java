@@ -19,6 +19,9 @@ public class Sentence {
   private BSU bsu = null;
   private List<BSU> bsus = new ArrayList<BSU>();
 
+  // The sentence's associated namted entities
+  private NamedEntities ner;
+
   // The data comprising its external relationships
   private List<String> asr = new ArrayList<String>();
   private List<String> vsr = new ArrayList<String>();
@@ -34,6 +37,14 @@ public class Sentence {
    */
   protected Sentence(final String sentence) {
     this.sentence = sentence;
+  }
+
+  protected void addEntities(NamedEntities entities) {
+    this.ner = entities;
+  }
+
+  protected String getTimeEntities() {
+    return this.ner.getTimeEntity();
   }
 
   protected String getSentence() {

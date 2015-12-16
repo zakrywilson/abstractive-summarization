@@ -33,7 +33,6 @@ public class Manager {
 
     // Display summary
     printSummary(file, network, namedEntities);
-
   }
 
   /**
