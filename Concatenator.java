@@ -2,6 +2,11 @@ import java.util.Map;
 
 public class Concatenator {
 
+  private static String[] months = {"January", "February", "March",
+                                    "April", "May", "June", "July",
+                                    "August", "September", "October",
+                                    "November", "December"};
+
   /**
    * Fuses the sentences and the time information from NER data
    *
@@ -66,11 +71,10 @@ public class Concatenator {
 
   private static String getPreposition(String time) {
     String[] tokens = time.trim().split("\\s+");
-    final int FIRST = 0;
     final int numberOfElements = tokens.length;
-
-    // DEBUG
-    System.err.println(java.util.Arrays.toString(tokens));
+    final int FIRST = 0;
+    final int SECOND = 1;
+    final int THIRD = 2;
 
     switch (numberOfElements) {
 
@@ -87,8 +91,19 @@ public class Concatenator {
           return " in the";
         }
 
+        break;
+
       // Two words
       case (2):
+        break;
+
+      case (3):
+        for (String month : months) {
+          if (tokens[FIRST].trim().compareTo(month) == 0) {
+            return " on";
+          }
+        }
+
       }
 
     return "";

@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Sentence
@@ -188,6 +189,8 @@ public class Sentence {
     sentence = sentence.replaceAll("\\s'ed\\s", "'ed ");
     sentence = sentence.replaceAll("\\s,\\s", ", ");
     sentence = sentence.replaceAll("\\s;\\s", "; ");
+    sentence = sentence.replaceAll("\\ws\\s'\\s", "s' ");
+    sentence = sentence.replaceAll("\\Q$\\E\\s", "\\$");
     return sentence;
   }
 
