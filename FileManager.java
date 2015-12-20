@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class FileManager {
 
-  
+
   /**
    * Reads text from input file and returns it
    *

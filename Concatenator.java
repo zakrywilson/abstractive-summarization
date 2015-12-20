@@ -4,10 +4,9 @@ import java.util.Map;
 public class Concatenator {
 
 
-  private static String[] months = {"January", "February", "March",
-                                    "April", "May", "June", "July",
-                                    "August", "September", "October",
-                                    "November", "December"};
+  private static String[] months = {"January", "February", "March", "April",
+                                    "May", "June", "July", "August", "September",
+                                    "October", "November", "December"};
 
 
   /**
@@ -48,7 +47,7 @@ public class Concatenator {
     String fused = sentence;
     String endingString = sentence.substring(sentence.length() - 2, sentence.length());
     if (needsToBeAppended(sentence, time)) {
-      String preposition = getPreposition(time);
+      String preposition = getDatePreposition(time);
       String newEndingString = preposition + time + endingString;
       fused = sentence.replace(endingString, newEndingString);
     }
@@ -75,9 +74,15 @@ public class Concatenator {
   }
 
 
-  private static String getPreposition(String time) {
-    String[] tokens = time.trim().split("\\s+");
-    final int numberOfElements = tokens.length;
+  /**
+   * Checks the date format and provide the appropriate preposition.
+   *
+   * @param time - the named entity time information
+   * @return the preposition to be appended to the sentence
+   */
+  private static String getDatePreposition(String time) {
+    String[] timeTokens = time.trim().split("\\s+");
+    final int numberOfElements = timeTokens.length;
     final int FIRST = 0;
     final int SECOND = 1;
     final int THIRD = 2;
@@ -88,12 +93,12 @@ public class Concatenator {
       case (1):
 
         // Only a simple year like "1990"
-        if (tokens[FIRST].trim().matches("\\d{4}")) {
+        if (timeTokens[FIRST].trim().matches("\\d{4}")) {
           return " in";
         }
 
         // Only a year, but has an "s" like "1990's"
-        if (tokens[FIRST].trim().matches("\\d{4}s")) {
+        if (timeTokens[FIRST].trim().matches("\\d{4}s")) {
           return " in the";
         }
 
@@ -105,7 +110,7 @@ public class Concatenator {
 
       case (3):
         for (String month : months) {
-          if (tokens[FIRST].trim().compareTo(month) == 0) {
+          if (timeTokens[FIRST].trim().compareTo(month) == 0) {
             return " on";
           }
         }

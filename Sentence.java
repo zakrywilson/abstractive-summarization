@@ -47,6 +47,7 @@ public class Sentence {
     this.ner = entities;
   }
 
+
   protected String getTimeEntities() {
     return this.ner.getTimeEntity();
   }

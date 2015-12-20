@@ -68,17 +68,6 @@ public class Network {
 
 
   /**
-   * Providing an instance of Sentence returns the sentence it's based on
-   *
-   * @param sentence - instance of Sentence
-   * @return the original sentence
-   */
-  protected Sentence get(final String sentence) {
-    return this.network.get(sentence);
-  }
-
-
-  /**
    * Purging BSUs that have a confidence score of less than 1.000
    * out of every Sentence in the Network.
    *
@@ -118,9 +107,7 @@ public class Network {
    * Traversing every Sentence object and computing the semantic
    * relation amongst all Sentences.
    */
-  protected void generateSemanticLinkNetwork() {
-
-  }
+  protected void generateSemanticLinkNetwork() {}
 
 
   /**
