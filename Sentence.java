@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Sentence
@@ -139,69 +138,9 @@ public class Sentence {
    * @return compressed sentence - a sentence taken from a BSU
    */
   protected String getCompressedSentence() {
-    return formatSentence(this.bsu.getActor(),
-                          this.bsu.getAction(),
-                          this.bsu.getReceiver());
-  }
-
-  /**
-   * Formats the actor of the triple
-   * @param string - string to be capitalized
-   * @return string capitalized
-   */
-  private String formatActor (String string) {
-    if (!Character.isUpperCase(string.charAt(0))) {
-      return capitalize(string);
-    }
-    return string;
-  }
-
-  /**
-   * Formats the action of the triple
-   * @param string - text to be converted to lowercase
-   * @return string - string converted to lowercase
-   */
-  private String formatAction (String string) {
-    return string.toLowerCase();
-  }
-
-  /**
-   * Formats the receiver of the triple
-   * @param string - text to be formatted
-   * @return formatted string
-   */
-  private String formatReceiver (String string) {
-    return string;
-  }
-
-  /**
-   * Formats the entire sentence
-   * @param actor - actor of the triple
-   * @param action - action of the triple
-   * @param receiver - receiver of the triple
-   * @return formatted sentence
-   */
-  private String formatSentence(String actor, String action, String receiver) {
-    // Make sure there isn't any spaces between a word and it's apostrophe
-    String sentence = formatActor(actor) + " " + formatAction(action) + " " + formatReceiver(receiver) + ". ";
-    sentence = sentence.replaceAll("\\s's\\s", "'s ");
-    sentence = sentence.replaceAll("\\s'd\\s", "'d ");
-    sentence = sentence.replaceAll("\\s'ed\\s", "'ed ");
-    sentence = sentence.replaceAll("\\s,\\s", ", ");
-    sentence = sentence.replaceAll("\\s;\\s", "; ");
-    sentence = sentence.replaceAll("\\ws\\s'\\s", "s' ");
-    sentence = sentence.replaceAll("\\Q$\\E\\s", "\\$");
-    return sentence;
-  }
-
-  /**
-   * Capitalizing the first letter of a String
-   *
-   * @param string - String that will have its first character capitalized
-   * @return capitalized string
-   */
-  private String capitalize(String string) {
-    return Character.toUpperCase(string.charAt(0)) + string.substring(1);
+    return Formatter.formatSentence(this.bsu.getActor(),
+                                    this.bsu.getAction(),
+                                    this.bsu.getReceiver());
   }
 
   /**

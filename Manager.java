@@ -14,7 +14,7 @@ public class Manager {
   public static void main(String[] args) {
 
     // Options
-    String file = "sample.txt";
+    String file = "characters.txt";
     boolean writeToFile = true;
 
     // Running program
