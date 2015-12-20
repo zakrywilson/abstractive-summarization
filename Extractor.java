@@ -1,4 +1,3 @@
-
 import edu.stanford.nlp.naturalli.SentenceFragment;
 import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
 import edu.stanford.nlp.naturalli.OpenIE;
@@ -53,20 +52,24 @@ public class Extractor {
    */
   private Network network = new Network();
 
+
   /**
    * Contains all of the named entity recognition information in LinkedHashMap.
    */
   private NamedEntities ner = new NamedEntities();
+
 
   /**
    * The input file containing the text to be processed.
    */
   private String inputFile = null;
 
+
   /**
    * Default path for input files: should be kept in ./resources/
    */
   private static final String PATH = "./resources/";
+
 
  /**
   * Constructor
@@ -78,12 +81,12 @@ public class Extractor {
   * @param writeToFile - determines if output will be written to file
   */
   protected Extractor(final String document, final boolean writeToFile) {
-    
+
     // Set original file
     this.inputFile = document;
 
     // Read and store file
-    String text = getText(document);
+    String text = FileManager.getText(document, PATH);
 
     // Extract the triples
     boolean success = processText(text);
@@ -94,62 +97,6 @@ public class Extractor {
 
 
  /**
-  * Reads text from input file and returns it
-  *
-  * @param document - the document containing text to process
-  * @return text - if there was an error, text will be equal to null
-  */
-  private static String getText(final String document) {
-
-    // Check for resources directory
-    File dir = new File(PATH);
-    if (!dir.exists()) {
-      if (!dir.mkdir()) {
-        System.err.println("ERROR: failed to create 'resources' directory.");
-      }
-      return null;
-    }
-
-    // Create file for reading
-    File file = new File(PATH + document);
-    List<String> lines = null;
-
-    // Read lines
-    try {
-      lines = Files.readAllLines(file.toPath());
-    } catch (IOException e) {
-      System.err.println("ERROR: unable to read file: " + document);
-    }
-
-    // Append lines to one String
-    StringBuilder text = null;
-    if (lines != null) {
-      text = new StringBuilder();
-      for (String line : lines) {
-
-        // Remove all unnecessary whitespace
-        line = line.trim();
-
-        // Disregard whitespace lines and empty strings
-        if (line.length() == 0) {
-          continue;
-        }
-
-        // Guarding against bad punctuation
-        if (line.matches(".*\\p{Punct}")) {
-          text.append(line);
-          text.append(" ");
-        } else {
-          text.append(line);
-          text.append(". ");
-        }
-      }
-    }
-    return (text == null) ? null : text.toString();
-  }
-
-
- /** 
   * Extracts triples and NER, stores the information in seperate maps, prints
   * the information to standard out and (optionally) writes data to file.
   *

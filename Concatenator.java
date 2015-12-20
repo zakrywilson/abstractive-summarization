@@ -1,11 +1,14 @@
 import java.util.Map;
 
+
 public class Concatenator {
+
 
   private static String[] months = {"January", "February", "March",
                                     "April", "May", "June", "July",
                                     "August", "September", "October",
                                     "November", "December"};
+
 
   /**
    * Fuses the sentences and the time information from NER data
@@ -33,6 +36,7 @@ public class Concatenator {
     return summary.toString();
   }
 
+
   /**
    * Appends the time NER information to a given sentence
    *
@@ -51,6 +55,7 @@ public class Concatenator {
     return fused;
   }
 
+
   /**
    * Checks whether the time string exists inside of the sentence already
    *
@@ -68,6 +73,7 @@ public class Concatenator {
     }
     return true;
   }
+
 
   private static String getPreposition(String time) {
     String[] tokens = time.trim().split("\\s+");

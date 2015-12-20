@@ -2,8 +2,10 @@
  * Representation of a single Basic Semantic Unit
  */
 public class BSU {
-  
+
+
   private String actor, action, receiver, score;
+
 
   /**
    * Constructor
@@ -19,6 +21,7 @@ public class BSU {
   protected BSU(final String actor, final String action, final String receiver) {
     this(actor, action, receiver, "");
   }
+
 
   /**
    * Constructor
@@ -39,6 +42,7 @@ public class BSU {
     this.score = score;
   }
 
+
   /**
    * Getter for actor
    * @return actor
@@ -46,6 +50,7 @@ public class BSU {
   protected String getActor() {
     return this.actor;
   }
+
 
   /**
    * Getter for action
@@ -55,6 +60,7 @@ public class BSU {
     return this.action;
   }
 
+
   /**
    * Getter for receiver
    * @return receiver
@@ -63,6 +69,7 @@ public class BSU {
     return this.receiver;
   }
 
+
   /**
    * Getter for score
    * @return score
@@ -70,6 +77,7 @@ public class BSU {
   protected String getScore() {
     return this.score;
   }
+
 
   @Override
   public String toString() {

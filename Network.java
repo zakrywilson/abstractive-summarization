@@ -12,7 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Network {
 
+
   private Map<Integer, Sentence> network;
+
 
   /**
    * Default Constructor
@@ -25,6 +27,7 @@ public class Network {
   protected Network() {
     this.network = new ConcurrentHashMap<Integer, Sentence>();
   }
+
 
   /**
    * Constructor
@@ -41,6 +44,7 @@ public class Network {
     this.network = network;
   }
 
+
   /**
    * Returns the network containing the sentence Strings with their
    * associated Sentence objects.
@@ -50,6 +54,7 @@ public class Network {
   protected Map<Integer, Sentence> getCollection() {
     return this.network;
   }
+
 
   /**
    * Adding a sentence number and a Sentence object to the network
@@ -61,6 +66,7 @@ public class Network {
     this.network.put(sentenceNumber, sentence);
   }
 
+
   /**
    * Providing an instance of Sentence returns the sentence it's based on
    *
@@ -70,6 +76,7 @@ public class Network {
   protected Sentence get(final String sentence) {
     return this.network.get(sentence);
   }
+
 
   /**
    * Purging BSUs that have a confidence score of less than 1.000
@@ -85,6 +92,7 @@ public class Network {
     }
     return removedBSUs;
   }
+
 
   /**
    * Purging Sentences that do not have any BSUs in them.
@@ -105,6 +113,7 @@ public class Network {
     return removedSentences;
   }
 
+
   /**
    * Traversing every Sentence object and computing the semantic
    * relation amongst all Sentences.
@@ -113,12 +122,14 @@ public class Network {
 
   }
 
+
   /**
    * Forces each Sentence to choose its top BSU
    */
   protected void chooseBSUs() {
     chooseBSUs(0);
   }
+
 
   /**
    * Print chosen BSUs
@@ -135,6 +146,7 @@ public class Network {
     }
   }
 
+
   /**
    * Forces each Sentence to choose the BSU based on the index provided
    *
@@ -146,6 +158,7 @@ public class Network {
     }
   }
 
+
   /**
    * Forces each Sentence to choose the longest
    * BSU to be its representative BSU
@@ -155,6 +168,7 @@ public class Network {
       pair.getValue().chooseLongestBSU();
     }
   }
+
 
   @Override
   public String toString() {

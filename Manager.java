@@ -35,6 +35,7 @@ public class Manager {
     printSummary(file, network, namedEntities);
   }
 
+
   /**
    * Purges unneeded triples and sentences, and the chooses
    * which tiples should be used to represent a given sentence
@@ -46,6 +47,7 @@ public class Manager {
     network.purgeSentences();
     network.chooseLongestBSUs();
   }
+
 
   /**
    * Prints out the summary with NER information embedded inside

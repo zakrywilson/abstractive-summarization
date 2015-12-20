@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
 /**
  * Sentence
  * <p>
@@ -13,6 +14,7 @@ import java.util.List;
  *   (3) CSS: co-reference semantic relatedness.
  */
 public class Sentence {
+
 
   // The sentence and it's associated BSUs
   private String sentence = null;
@@ -27,6 +29,7 @@ public class Sentence {
   private List<String> vsr = new ArrayList<String>();
   private List<String> css = new ArrayList<String>();
 
+
   /*
    * Constructor
    * <p>
@@ -39,6 +42,7 @@ public class Sentence {
     this.sentence = sentence;
   }
 
+
   protected void addEntities(NamedEntities entities) {
     this.ner = entities;
   }
@@ -47,49 +51,61 @@ public class Sentence {
     return this.ner.getTimeEntity();
   }
 
+
   protected String getSentence() {
     return this.sentence;
   }
+
 
   protected BSU getBSU() {
     return this.bsu;
   }
 
+
   protected void setBSU(final BSU bsu) {
     this.bsu = bsu;
   }
+
 
   protected List<BSU> getAllBSUs() {
     return this.bsus;
   }
 
+
   protected void setAllBSUs(final List<BSU> bsus) {
     this.bsus = bsus;
   }
+
 
   protected List<String> getASRs() {
     return this.asr;
   }
 
+
   protected void addASR(final String bsu) {
     this.asr.add(bsu);
   }
+
 
   protected List<String> getVSRs() {
     return this.vsr;
   }
 
+
   protected void addVSRs(final String bsu) {
     this.vsr.add(bsu);
   }
+
 
   protected List<String> getCSSs() {
     return this.css;
   }
 
+
   protected void addCSS(final String bsu) {
     this.css.add(bsu);
   }
+
 
   /**
    * Purging BSUs that have a confidence score of less than 1.000
@@ -109,6 +125,7 @@ public class Sentence {
     return removedBSUs;
   }
 
+
   /**
    * Chooses BSU to represent sentence
    *
@@ -117,6 +134,7 @@ public class Sentence {
   protected void chooseBSU(int index) {
     setBSU(this.bsus.get(index));
   }
+
 
   /**
    * Chooses the longest BSU to represent the sentence
@@ -133,6 +151,7 @@ public class Sentence {
     setBSU(longestBSU);
   }
 
+
   /**
    * Takes the representative BSU and creates a sentence out of it.
    * @return compressed sentence - a sentence taken from a BSU
@@ -143,6 +162,7 @@ public class Sentence {
                                     this.bsu.getReceiver());
   }
 
+
   /**
    * Checks for a low confidence score
    * @param bsu - basic semantic unit to be checked
@@ -151,6 +171,7 @@ public class Sentence {
   private boolean lowScore(BSU bsu) {
     return !bsu.getScore().startsWith("1");
   }
+
 
   /**
    * Checks whether the BSU is composed of 3 or less words
@@ -163,6 +184,7 @@ public class Sentence {
            containsOneWord(bsu.getReceiver());
   }
 
+
   /**
    * Checks whether the string contains less than 1 word
    * @param string - string to be checked
@@ -171,6 +193,7 @@ public class Sentence {
   private boolean containsOneWord(String string) {
     return !string.contains(" ") || string.equals("");
   }
+
 
   @Override
   public String toString() {

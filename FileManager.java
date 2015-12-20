@@ -1,12 +1,70 @@
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
 
 
 /**
  * File manager utility class
  */
 public class FileManager {
+
+  
+  /**
+   * Reads text from input file and returns it
+   *
+   * @param document - the document containing text to process
+   * @return text - if there was an error, text will be equal to null
+   */
+  public static String getText(final String document, final String path) {
+
+    // Check for resources directory
+    File dir = new File(path);
+    if (!dir.exists()) {
+      if (!dir.mkdir()) {
+        System.err.println("ERROR: failed to create 'resources' directory.");
+      }
+      return null;
+    }
+
+    // Create file for reading
+    File file = new File(path + document);
+    List<String> lines = null;
+
+    // Read lines
+    try {
+      lines = Files.readAllLines(file.toPath());
+    } catch (IOException e) {
+      System.err.println("ERROR: unable to read file: " + document);
+    }
+
+    // Append lines to one String
+    StringBuilder text = null;
+    if (lines != null) {
+      text = new StringBuilder();
+      for (String line : lines) {
+
+        // Remove all unnecessary whitespace
+        line = line.trim();
+
+        // Disregard whitespace lines and empty strings
+        if (line.length() == 0) {
+          continue;
+        }
+
+        // Guarding against bad punctuation
+        if (line.matches(".*\\p{Punct}")) {
+          text.append(line);
+          text.append(" ");
+        } else {
+          text.append(line);
+          text.append(". ");
+        }
+      }
+    }
+    return (text == null) ? null : text.toString();
+  }
 
 
   /**

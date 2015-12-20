@@ -1,4 +1,8 @@
+/**
+ * Handles all the sentence string formatting
+ */
 public class Formatter {
+
 
   /**
    * Formats the entire sentence
@@ -11,6 +15,7 @@ public class Formatter {
     String sentence = formatActor(actor) + " " + formatAction(action) + " " + formatReceiver(receiver) + ". ";
     return removeExtraSpaces(sentence);
   }
+
 
   /**
    * Removes weird spaces created by Stanford's Open Information Extractor
@@ -31,6 +36,7 @@ public class Formatter {
     return sentence;
   }
 
+
   /**
    * Formats the actor of the triple
    * @param string - string to be capitalized
@@ -43,6 +49,7 @@ public class Formatter {
     return string;
   }
 
+
   /**
    * Formats the action of the triple
    * @param string - text to be converted to lowercase
@@ -52,6 +59,7 @@ public class Formatter {
     return string.toLowerCase();
   }
 
+
   /**
    * Formats the receiver of the triple
    * @param string - text to be formatted
@@ -60,6 +68,7 @@ public class Formatter {
   private static String formatReceiver (String string) {
     return string;
   }
+
 
   /**
    * Capitalizing the first letter of a String
