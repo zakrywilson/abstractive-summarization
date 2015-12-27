@@ -4,11 +4,6 @@ import java.util.Map;
 public class Concatenator {
 
 
-  private static String[] months = {"January", "February", "March", "April",
-                                    "May", "June", "July", "August", "September",
-                                    "October", "November", "December"};
-
-
   /**
    * Fuses the sentences and the time information from NER data
    *
@@ -47,8 +42,7 @@ public class Concatenator {
     String fused = sentence;
     String endingString = sentence.substring(sentence.length() - 2, sentence.length());
     if (needsToBeAppended(sentence, time)) {
-      String preposition = getDatePreposition(time);
-      String newEndingString = preposition + time + endingString;
+      String newEndingString = TimeInfo.getDateAndPreposition(time) + endingString;
       fused = sentence.replace(endingString, newEndingString);
     }
     return fused;
@@ -71,52 +65,5 @@ public class Concatenator {
       }
     }
     return true;
-  }
-
-
-  /**
-   * Checks the date format and provide the appropriate preposition.
-   *
-   * @param time - the named entity time information
-   * @return the preposition to be appended to the sentence
-   */
-  private static String getDatePreposition(String time) {
-    String[] timeTokens = time.trim().split("\\s+");
-    final int numberOfElements = timeTokens.length;
-    final int FIRST = 0;
-    final int SECOND = 1;
-    final int THIRD = 2;
-
-    switch (numberOfElements) {
-
-      // One word
-      case (1):
-
-        // Only a simple year like "1990"
-        if (timeTokens[FIRST].trim().matches("\\d{4}")) {
-          return " in";
-        }
-
-        // Only a year, but has an "s" like "1990's"
-        if (timeTokens[FIRST].trim().matches("\\d{4}s")) {
-          return " in the";
-        }
-
-        break;
-
-      // Two words
-      case (2):
-        break;
-
-      case (3):
-        for (String month : months) {
-          if (timeTokens[FIRST].trim().compareTo(month) == 0) {
-            return " on";
-          }
-        }
-
-      }
-
-    return "";
   }
 }
