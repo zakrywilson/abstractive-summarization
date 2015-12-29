@@ -46,28 +46,19 @@ import java.util.*;
 public class Extractor {
 
 
-  /**
-   * This contains the original sentence (key) and the BSU
-   * objects containing information about each sentence.
-   */
+  /** An instance of the Nework containing all metadata for text */
   private Network network = new Network();
 
 
-  /**
-   * Contains all of the named entity recognition information in LinkedHashMap.
-   */
+  /** Contains all of the named entity recognition information in LinkedHashMap */
   private NamedEntities ner = new NamedEntities();
 
 
-  /**
-   * The input file containing the text to be processed.
-   */
+  /** The input file containing the text to be processed */
   private String inputFile = null;
 
 
-  /**
-   * Default path for input files: should be kept in ./resources/
-   */
+  /** Default path for input files: should be kept in ./resources/ */
   private static final String PATH = "./resources/";
 
 
@@ -221,7 +212,7 @@ public class Extractor {
 
     } // Finished extracting information
 
-    System.out.println("\ninformation extracted\n");
+    System.out.println("Information extracted");
   }
 
 
@@ -230,8 +221,6 @@ public class Extractor {
    */
    private void writeToFile() {
 
-     System.out.println("preparing to write to file...");
-    
      // Check if the input file is valid
      if (inputFile == null || !inputFile.endsWith(".txt")) {
        System.err.println("ERROR: invalid file.");
@@ -254,7 +243,7 @@ public class Extractor {
        return;
      }
 
-     System.out.println("\ninformation written to file\n");
+     System.out.println("Information written to file");
  }
 
 

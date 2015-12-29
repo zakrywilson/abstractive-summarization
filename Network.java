@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Network {
 
 
+  /** The network of sentence numbers and the Sentence object containing all its metadata */
   private Map<Integer, Sentence> network;
 
 

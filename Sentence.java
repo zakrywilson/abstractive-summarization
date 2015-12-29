@@ -16,18 +16,17 @@ import java.util.List;
 public class Sentence {
 
 
-  // The sentence and it's associated BSUs
+  /** The original sentence */
   private String sentence = null;
+
+  /** The BSU chosen to represent the sentence */
   private BSU bsu = null;
+
+  /** The entire list of BSUs generated off of the original sentence */
   private List<BSU> bsus = new ArrayList<BSU>();
 
-  // The sentence's associated namted entities
+  /** The sentence's associated named entities */
   private NamedEntities ner;
-
-  // The data comprising its external relationships
-  private List<String> asr = new ArrayList<String>();
-  private List<String> vsr = new ArrayList<String>();
-  private List<String> css = new ArrayList<String>();
 
 
   /*
@@ -75,36 +74,6 @@ public class Sentence {
 
   protected void setAllBSUs(final List<BSU> bsus) {
     this.bsus = bsus;
-  }
-
-
-  protected List<String> getASRs() {
-    return this.asr;
-  }
-
-
-  protected void addASR(final String bsu) {
-    this.asr.add(bsu);
-  }
-
-
-  protected List<String> getVSRs() {
-    return this.vsr;
-  }
-
-
-  protected void addVSRs(final String bsu) {
-    this.vsr.add(bsu);
-  }
-
-
-  protected List<String> getCSSs() {
-    return this.css;
-  }
-
-
-  protected void addCSS(final String bsu) {
-    this.css.add(bsu);
   }
 
 

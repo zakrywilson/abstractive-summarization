@@ -57,7 +57,7 @@ public class Manager {
    * @param ner - the named entity information
    */
   private static void printSummary(String filename, Network network, NamedEntities ner) {
-    System.out.println("Summary of " + filename + ":");
+    System.out.println("\nSummary of " + filename + ":");
     String summary = Concatenator.fuse(network, ner);
     System.out.println(summary);
   }
