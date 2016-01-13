@@ -40,10 +40,6 @@ public class TimeInformation {
   protected static String getDateAndPreposition(final String timeInformation) {
     String[] tokens = timeInformation.trim().split("\\s+");
     final int numberOfElements = tokens.length;
-    final int FIRST = 0;
-    final int SECOND = 1;
-    final int THIRD = 2;
-    final int FOURTH = 3;
 
     // Delete unnecessary month information
     String[] timeTokens = removeExtraneousDateInfo(tokens);
@@ -54,34 +50,26 @@ public class TimeInformation {
       case (1):
 
         // Only a simple year like "1990"
-        if (timeTokens[FIRST].trim().matches("\\d{4}")) {
+        if (timeTokens[0].trim().matches("\\d{4}")) {
           return " in" + createString(timeTokens);
         }
 
         // Only a year, but has an "s" like "1990's"
-        if (timeTokens[FIRST].trim().matches("\\d{4}s")) {
+        if (timeTokens[0].trim().matches("\\d{4}s")) {
           return " in the" + createString(timeTokens);
         }
 
-        break;
-
-      // Two words
-      case (2):
         break;
 
       // Three words
       case (3):
 
         for (String month : months) {
-          if (timeTokens[FIRST].trim().compareTo(month) == 0) {
+          if (timeTokens[0].trim().compareTo(month) == 0) {
             return " on" + createString(timeTokens);
           }
         }
 
-        break;
-
-      // Four words
-      case (4):
         break;
 
     } // end of switch

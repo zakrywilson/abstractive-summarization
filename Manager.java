@@ -27,10 +27,6 @@ public class Manager {
     Network network = extractor.getNetwork();
     cleanupSentences(network);
 
-    // Display basic semantic units
-//    System.out.println("PRINTING BSUs");
-//    network.printBSUs(true);
-
     // Display summary
     printSummary(file, network, namedEntities);
   }

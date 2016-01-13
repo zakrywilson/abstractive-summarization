@@ -110,45 +110,10 @@ public class Extractor {
     Annotation doc = new Annotation(text);
     pipeline.annotate(doc);
 
-    // Store coreference resolution data
-//    computeCoref(doc, props);
-
     // Get NER data, extract triples, and store the data
     extractData(doc, props);
 
     return true;
-  }
-
-
- /**
-  * Computes coreference resolution and substitues the anaphoras out
-  *
-  * @param doc - annotated document
-  * @param props - properties
-  */
-  private void computeCoref(final Annotation doc, final Properties props) {
-
-    // Create link graph for coreference resolution
-    Map<Integer, CorefChain> graph = doc.get(CorefChainAnnotation.class);
-    Collection<CorefChain> corefChains = graph.values();
-
-    System.out.println("\n***** PRINTING COREFERENCE RESOLUTION INFORMATION *****\n");
-
-    for (CorefChain corefChain : corefChains) {
-      // System.out.println(corefChain.getMentionsWithSameHead().toString());
-      System.out.println("--------------------------------------------");
-
-      for (CorefChain.CorefMention corefMention : corefChain.getMentionsInTextualOrder()) {
-        System.out.println("SENT NUM: " + corefMention.sentNum);
-        System.out.println("TO STRING: " + corefMention.toString());
-      }
-      System.out.println("MENTIONS: " + corefChain.getMentionsInTextualOrder());
-      // System.out.println(corefChain.getMentionMap());
-      // System.out.println(corefChain.toString());
-    }
-    System.out.println("\n ***** END *****\n");
-    // graph.toString();
-    // System.out.println("GRAPH:\n" + graph);
   }
 
 
@@ -179,9 +144,6 @@ public class Extractor {
           entities.add(word, ne, sentenceNumber);
           this.ner.add(word, ne, sentenceNumber);
       }
-
-      // This is the parse tree of the current sentence
-      //Tree tree = sent.get(TreeAnnotation.class);
 
       // Get the OpenIE triples for the sentence
       Collection<RelationTriple> triples =
