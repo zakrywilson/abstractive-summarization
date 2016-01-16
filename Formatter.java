@@ -1,7 +1,7 @@
 /**
  * Handles all the sentence string formatting
  */
-public class Formatter {
+class Formatter {
 
 
   /**
@@ -11,7 +11,7 @@ public class Formatter {
    * @param receiver - receiver of the triple
    * @return formatted sentence
    */
-  protected static String formatSentence(String actor, String action, String receiver) {
+  static String formatSentence(String actor, String action, String receiver) {
     String sentence = formatActor(actor) + " " + formatAction(action) + " " + formatReceiver(receiver) + ". ";
     return removeExtraSpaces(sentence);
   }
