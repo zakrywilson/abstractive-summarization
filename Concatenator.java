@@ -1,7 +1,7 @@
 import java.util.Map;
 
 
-public class Concatenator {
+class Concatenator {
 
 
   /**
@@ -10,7 +10,7 @@ public class Concatenator {
    * @param network - summarized sentences
    * @return fused sentences with NER time data
    */
-  protected static String fuse(Network network) {
+  static String fuse(Network network) {
 
     // The String that will be fused
     StringBuilder summary = new StringBuilder();
