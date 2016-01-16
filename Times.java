@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class Times {
+class Times {
 
 
   /** A list of all possible months */
@@ -38,7 +38,7 @@ public class Times {
    * @param timeInformation - the named entity time information
    * @return the preposition to be appended to the sentence
    */
-  protected static String getDateAndPreposition(final String timeInformation) {
+  static String getDateAndPreposition(final String timeInformation) {
     String[] tokens = timeInformation.trim().split("\\s+");
     final int numberOfElements = tokens.length;
 
