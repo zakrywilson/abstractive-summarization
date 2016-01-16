@@ -3,7 +3,7 @@
  *
  * @author Zach Wilson
  */
-public class Manager {
+class Manager {
 
 
   /**
