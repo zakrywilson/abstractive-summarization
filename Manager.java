@@ -20,15 +20,12 @@ public class Manager {
     // Running program
     Extractor extractor = new Extractor(file, writeToFile);
 
-    // Gather NER data
-    NamedEntitiesList namedEntities = extractor.getNER();
-
     // Get the network and process it
     Network network = extractor.getNetwork();
     cleanupSentences(network);
 
     // Display summary
-    printSummary(file, network, namedEntities);
+    printSummary(file, network);
   }
 
 
@@ -50,11 +47,10 @@ public class Manager {
    *
    * @param filename - file being summarized
    * @param network - the network of sentences
-   * @param ner - the named entity information
    */
-  private static void printSummary(String filename, Network network, NamedEntitiesList ner) {
+  private static void printSummary(String filename, Network network) {
     System.out.println("\nSummary of " + filename + ":");
-    String summary = Concatenator.fuse(network, ner);
+    String summary = Concatenator.fuse(network);
     System.out.println(summary);
   }
 }

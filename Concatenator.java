@@ -8,10 +8,9 @@ public class Concatenator {
    * Fuses the sentences and the time information from NER data
    *
    * @param network - summarized sentences
-   * @param ner - named entity recognition information
    * @return fused sentences with NER time data
    */
-  protected static String fuse(Network network, NamedEntitiesList ner) {
+  protected static String fuse(Network network) {
 
     // The String that will be fused
     StringBuilder summary = new StringBuilder();
