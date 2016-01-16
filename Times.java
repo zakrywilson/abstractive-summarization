@@ -1,7 +1,8 @@
 import java.util.Arrays;
 import java.util.List;
 
-public class TimeInformation {
+
+public class Times {
 
 
   /** A list of all possible months */

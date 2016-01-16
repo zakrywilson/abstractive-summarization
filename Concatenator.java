@@ -42,7 +42,7 @@ public class Concatenator {
     String fused = sentence;
     String endingString = sentence.substring(sentence.length() - 2, sentence.length());
     if (needsToBeAppended(sentence, time)) {
-      String newEndingString = TimeInformation.getDateAndPreposition(time) + endingString;
+      String newEndingString = Times.getDateAndPreposition(time) + endingString;
       fused = sentence.replace(endingString, newEndingString);
     }
     return fused;
