@@ -23,7 +23,7 @@ public class Sentence {
   private BSU bsu = null;
 
   /** The entire list of BSUs generated off of the original sentence */
-  private List<BSU> bsus = new ArrayList<BSU>();
+  private List<BSU> bsus = new ArrayList<>();
 
   /** The sentence's associated named entities */
   private NamedEntitiesList ner;
@@ -83,7 +83,7 @@ public class Sentence {
    * @return list of removed BSUs
    */
   protected List<BSU> purge() {
-    List<BSU> removedBSUs = new ArrayList<BSU>();
+    List<BSU> removedBSUs = new ArrayList<>();
     Iterator<BSU> it = this.bsus.iterator();
     while (it.hasNext()) {
       BSU bsu = it.next();
