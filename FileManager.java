@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * File manager utility class
  */
-public class FileManager {
+class FileManager {
 
 
   /**
@@ -73,7 +73,7 @@ public class FileManager {
    * @param file - file to be created
    * @return true if creation was successful
    */
-  protected static boolean thoroughlyCreate(File file) {
+  static boolean thoroughlyCreate(File file) {
     if (file.exists()) {
       if (!file.delete()) {
         System.err.println("ERROR: unable to delete file " + file.getAbsolutePath());
