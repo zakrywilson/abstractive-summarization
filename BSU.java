@@ -35,7 +35,7 @@ public class BSU {
    * @param receiver - direct object or object of predicate
    * @param score - confidence score assigned to each BSU
    */
-  protected BSU(final String actor, final String action, final String receiver, final String score) {
+  BSU(final String actor, final String action, final String receiver, final String score) {
     this.actor = actor;
     this.action = action;
     this.receiver = receiver;
@@ -47,7 +47,7 @@ public class BSU {
    * Getter for actor
    * @return actor
    */
-  protected String getActor() {
+  String getActor() {
     return this.actor;
   }
 
@@ -56,7 +56,7 @@ public class BSU {
    * Getter for action
    * @return action
    */
-  protected String getAction() {
+  String getAction() {
     return this.action;
   }
 
@@ -65,7 +65,7 @@ public class BSU {
    * Getter for receiver
    * @return receiver
    */
-  protected String getReceiver() {
+  String getReceiver() {
     return this.receiver;
   }
 
@@ -74,7 +74,7 @@ public class BSU {
    * Getter for score
    * @return score
    */
-  protected String getScore() {
+  String getScore() {
     return this.score;
   }
 
