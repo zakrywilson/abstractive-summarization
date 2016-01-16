@@ -25,8 +25,8 @@ public class Network {
    *   containing information on each sentence is the value.
    * </p>
    */
-  protected Network() {
-    this.network = new ConcurrentHashMap<Integer, Sentence>();
+  Network() {
+    this.network = new ConcurrentHashMap<>();
   }
 
 
@@ -75,7 +75,7 @@ public class Network {
    * @return a list of all removed BSUs
    */
   protected List<BSU> purgeBSUs() {
-    List<BSU> removedBSUs = new ArrayList<BSU>();
+    List<BSU> removedBSUs = new ArrayList<>();
     for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
       Sentence sentence = pair.getValue();
       removedBSUs.addAll(sentence.purge());
@@ -105,53 +105,10 @@ public class Network {
 
 
   /**
-   * Traversing every Sentence object and computing the semantic
-   * relation amongst all Sentences.
-   */
-  protected void generateSemanticLinkNetwork() {}
-
-
-  /**
-   * Forces each Sentence to choose its top BSU
-   */
-  protected void chooseBSUs() {
-    chooseBSUs(0);
-  }
-
-
-  /**
-   * Print chosen BSUs
-   *
-   * @param printOriginalSentence - prints original sentence if true
-   */
-  protected void printBSUs(boolean printOriginalSentence) {
-    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
-      Sentence sentence = pair.getValue();
-      if (printOriginalSentence) {
-        System.out.println(sentence.getSentence());
-      }
-      System.out.println(sentence.getBSU());
-    }
-  }
-
-
-  /**
-   * Forces each Sentence to choose the BSU based on the index provided
-   *
-   * @param index - index of the collection that contains a BSU
-   */
-  protected void chooseBSUs(int index) {
-    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
-      pair.getValue().chooseBSU(index);
-    }
-  }
-
-
-  /**
    * Forces each Sentence to choose the longest
    * BSU to be its representative BSU
    */
-  protected void chooseLongestBSUs() {
+  void chooseLongestBSUs() {
     for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
       pair.getValue().chooseLongestBSU();
     }
