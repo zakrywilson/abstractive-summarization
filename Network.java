@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * which contain the original sentences and associated
  * Basic Semantic Units.
  */
-public class Network {
+class Network {
 
 
   /** The network of sentence numbers and the Sentence object containing all its metadata */
@@ -52,7 +52,7 @@ public class Network {
    *
    * @return network
    */
-  protected Map<Integer, Sentence> getCollection() {
+  Map<Integer, Sentence> getCollection() {
     return this.network;
   }
 
@@ -63,7 +63,7 @@ public class Network {
    * @param sentenceNumber - the sentence number
    * @param sentence - instance of Sentence
    */
-  protected void add(Integer sentenceNumber, Sentence sentence) {
+  void add(Integer sentenceNumber, Sentence sentence) {
     this.network.put(sentenceNumber, sentence);
   }
 
@@ -74,7 +74,7 @@ public class Network {
    *
    * @return a list of all removed BSUs
    */
-  protected List<BSU> purgeBSUs() {
+  List<BSU> purgeBSUs() {
     List<BSU> removedBSUs = new ArrayList<>();
     for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
       Sentence sentence = pair.getValue();
@@ -89,7 +89,7 @@ public class Network {
    *
    * @return list of removed sentences
    */
-  protected List<String> purgeSentences() {
+  List<String> purgeSentences() {
     List<String> removedSentences = new ArrayList<>();
     for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
       Integer sentenceNumber = pair.getKey();
