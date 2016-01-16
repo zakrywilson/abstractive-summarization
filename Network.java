@@ -31,22 +31,6 @@ class Network {
 
 
   /**
-   * Constructor
-   * <p>
-   *   Creates a new collection based on the given parameter.
-   *   The passed in collection should be of the following format:<br>
-   *   Key: the original sentence.<br>
-   *   Value: its Sentence object containing semantic information on sentence.
-   * </p>
-   *
-   * @param network - a collection of all sentences in the body of text
-   */
-  protected Network(ConcurrentHashMap<Integer, Sentence> network) {
-    this.network = network;
-  }
-
-
-  /**
    * Returns the network containing the sentence Strings with their
    * associated Sentence objects.
    *
