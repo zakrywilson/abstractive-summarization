@@ -26,7 +26,7 @@ import java.util.*;
  *   (2) Named entity information: stored in NamedEntitiesList
  * </p>
  */
-public class Extractor {
+class Extractor {
 
 
   /** An instance of the Network containing all metadata for text */
@@ -54,7 +54,7 @@ public class Extractor {
   * @param document - name of the file containing the input text
   * @param writeToFile - determines if output will be written to file
   */
-  protected Extractor(final String document, final boolean writeToFile) {
+  Extractor(final String document, final boolean writeToFile) {
 
     // Set original file
     this.inputFile = document;
@@ -131,7 +131,7 @@ public class Extractor {
         sent.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
 
       // This is where we'll store the extracted triples
-      List<BSU> bsus = new ArrayList<BSU>();
+      List<BSU> bsus = new ArrayList<>();
 
       // Create a sentence object
       Sentence sentence = new Sentence(sent.toString());
@@ -194,7 +194,7 @@ public class Extractor {
    * Getter for Network
    * @return network
    */
-  protected Network getNetwork() {
+  Network getNetwork() {
     return this.network;
   }
 
@@ -203,7 +203,7 @@ public class Extractor {
    * Getter for named entity recognition
    * @return named entity recognition
    */
-  protected NamedEntitiesList getNER() {
+  NamedEntitiesList getNER() {
     return this.ner;
   }
 
