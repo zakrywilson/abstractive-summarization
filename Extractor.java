@@ -94,7 +94,7 @@ class Extractor {
     pipeline.annotate(doc);
 
     // Get NER data, extract triples, and store the data
-    extractData(doc, props);
+    extractData(doc);
 
     return true;
   }
@@ -104,9 +104,8 @@ class Extractor {
   * Extracts the triples, NER information, and stores it in bsus map
   *
   * @param doc - annotated document
-  * @param props - properties
   */
-  private void extractData(final Annotation doc, final Properties props) {
+  private void extractData(final Annotation doc) {
     
     // Loop over sentences in the document
     int sentenceNumber = 1;
