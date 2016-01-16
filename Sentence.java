@@ -13,7 +13,7 @@ import java.util.List;
  *   (2) VSR: action-verbs semantic relatedness,
  *   (3) CSS: co-reference semantic relatedness.
  */
-public class Sentence {
+class Sentence {
 
 
   /** The original sentence */
@@ -37,22 +37,22 @@ public class Sentence {
    *
    * @param sentence
    */
-  protected Sentence(final String sentence) {
+  Sentence(final String sentence) {
     this.sentence = sentence;
   }
 
 
-  protected void addEntities(NamedEntitiesList entities) {
+  void addEntities(NamedEntitiesList entities) {
     this.ner = entities;
   }
 
 
-  protected String getTimeEntities() {
+  String getTimeEntities() {
     return this.ner.getTimeEntity();
   }
 
 
-  protected String getSentence() {
+  String getSentence() {
     return this.sentence;
   }
 
@@ -62,17 +62,17 @@ public class Sentence {
   }
 
 
-  protected void setBSU(final BSU bsu) {
+  private void setBSU(final BSU bsu) {
     this.bsu = bsu;
   }
 
 
-  protected List<BSU> getAllBSUs() {
+  List<BSU> getAllBSUs() {
     return this.bsus;
   }
 
 
-  protected void setAllBSUs(final List<BSU> bsus) {
+  void setAllBSUs(final List<BSU> bsus) {
     this.bsus = bsus;
   }
 
@@ -82,7 +82,7 @@ public class Sentence {
    *
    * @return list of removed BSUs
    */
-  protected List<BSU> purge() {
+  List<BSU> purge() {
     List<BSU> removedBSUs = new ArrayList<>();
     Iterator<BSU> it = this.bsus.iterator();
     while (it.hasNext()) {
@@ -109,7 +109,7 @@ public class Sentence {
   /**
    * Chooses the longest BSU to represent the sentence
    */
-  protected void chooseLongestBSU() {
+  void chooseLongestBSU() {
     BSU longestBSU = null;
     for (BSU nextBSU : this.bsus) {
       if (longestBSU == null) {
@@ -126,7 +126,7 @@ public class Sentence {
    * Takes the representative BSU and creates a sentence out of it.
    * @return compressed sentence - a sentence taken from a BSU
    */
-  protected String getCompressedSentence() {
+  String getCompressedSentence() {
     return Formatter.formatSentence(this.bsu.getActor(),
                                     this.bsu.getAction(),
                                     this.bsu.getReceiver());
