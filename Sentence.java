@@ -26,7 +26,7 @@ public class Sentence {
   private List<BSU> bsus = new ArrayList<BSU>();
 
   /** The sentence's associated named entities */
-  private NamedEntities ner;
+  private NamedEntitiesList ner;
 
 
   /*
@@ -42,7 +42,7 @@ public class Sentence {
   }
 
 
-  protected void addEntities(NamedEntities entities) {
+  protected void addEntities(NamedEntitiesList entities) {
     this.ner = entities;
   }
 

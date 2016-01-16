@@ -21,7 +21,7 @@ public class Manager {
     Extractor extractor = new Extractor(file, writeToFile);
 
     // Gather NER data
-    NamedEntities namedEntities = extractor.getNER();
+    NamedEntitiesList namedEntities = extractor.getNER();
 
     // Get the network and process it
     Network network = extractor.getNetwork();
@@ -34,7 +34,7 @@ public class Manager {
 
   /**
    * Purges unneeded triples and sentences, and the chooses
-   * which tiples should be used to represent a given sentence
+   * which triples should be used to represent a given sentence
    *
    * @param network - the network containing the data to clean up
    */
@@ -52,7 +52,7 @@ public class Manager {
    * @param network - the network of sentences
    * @param ner - the named entity information
    */
-  private static void printSummary(String filename, Network network, NamedEntities ner) {
+  private static void printSummary(String filename, Network network, NamedEntitiesList ner) {
     System.out.println("\nSummary of " + filename + ":");
     String summary = Concatenator.fuse(network, ner);
     System.out.println(summary);

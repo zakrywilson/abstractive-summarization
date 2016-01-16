@@ -1,38 +1,22 @@
-import edu.stanford.nlp.naturalli.SentenceFragment;
 import edu.stanford.nlp.naturalli.NaturalLogicAnnotations;
-import edu.stanford.nlp.naturalli.OpenIE;
-
-import edu.stanford.nlp.dcoref.CorefChain;
-import edu.stanford.nlp.dcoref.CorefCoreAnnotations.CorefChainAnnotation;
 
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
-import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 
 import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.DeterministicCorefAnnotator;
-import edu.stanford.nlp.pipeline.HybridCorefAnnotator;
-import edu.stanford.nlp.pipeline.ParserAnnotator;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
 import edu.stanford.nlp.ie.util.RelationTriple;
-import edu.stanford.nlp.ie.*;
-import edu.stanford.nlp.semgraph.SemanticGraph;
-import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
-import edu.stanford.nlp.sequences.ColumnDocumentReaderAndWriter;
-import edu.stanford.nlp.trees.Tree;
-import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
 import edu.stanford.nlp.util.CoreMap;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.*;
 
 
@@ -40,18 +24,18 @@ import java.util.*;
  * Handles extracting information from a document:
  * <p>
  *   (1) Basic semantic units: stored in Network
- *   (2) Named entity information: stored in NamedEntities
+ *   (2) Named entity information: stored in NamedEntitiesList
  * </p>
  */
 public class Extractor {
 
 
-  /** An instance of the Nework containing all metadata for text */
+  /** An instance of the Network containing all metadata for text */
   private Network network = new Network();
 
 
   /** Contains all of the named entity recognition information in LinkedHashMap */
-  private NamedEntities ner = new NamedEntities();
+  private NamedEntitiesList ner = new NamedEntitiesList();
 
 
   /** The input file containing the text to be processed */
@@ -88,7 +72,7 @@ public class Extractor {
 
 
  /**
-  * Extracts triples and NER, stores the information in seperate maps, prints
+  * Extracts triples and NER, stores the information in separate maps, prints
   * the information to standard out and (optionally) writes data to file.
   *
   * @param text - text that is to be processed
@@ -129,20 +113,18 @@ public class Extractor {
     int sentenceNumber = 1;
     for (CoreMap sent : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
 
-      NamedEntities entities = new NamedEntities();
+      NamedEntitiesList entities = new NamedEntitiesList();
 
       // Traversing the words in the current sentence
       for (CoreLabel token : sent.get(TokensAnnotation.class)) {
-        // Text of the token
+
         String word = token.get(TextAnnotation.class);
-        // POS tag of the token
-        String pos = token.get(PartOfSpeechAnnotation.class);
-        // NER label of the token
-        String ne = token.get(NamedEntityTagAnnotation.class);
+        String namedEntity = token.get(NamedEntityTagAnnotation.class);
+
         // Store NER if NER exists (also omitting ',' -> date error)
-        if ((ne.length() != 1) && !word.equals(","))
-          entities.add(word, ne, sentenceNumber);
-          this.ner.add(word, ne, sentenceNumber);
+        if ((namedEntity.length() != 1) && !word.equals(","))
+          entities.add(word, namedEntity, sentenceNumber);
+          this.ner.add(word, namedEntity, sentenceNumber);
       }
 
       // Get the OpenIE triples for the sentence
@@ -222,7 +204,7 @@ public class Extractor {
    * Getter for named entity recognition
    * @return named entity recognition
    */
-  protected NamedEntities getNER() {
+  protected NamedEntitiesList getNER() {
     return this.ner;
   }
 

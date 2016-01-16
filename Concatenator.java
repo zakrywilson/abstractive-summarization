@@ -11,7 +11,7 @@ public class Concatenator {
    * @param ner - named entity recognition information
    * @return fused sentences with NER time data
    */
-  protected static String fuse(Network network, NamedEntities ner) {
+  protected static String fuse(Network network, NamedEntitiesList ner) {
 
     // The String that will be fused
     StringBuilder summary = new StringBuilder();

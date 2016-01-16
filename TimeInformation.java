@@ -81,7 +81,7 @@ public class TimeInformation {
   private static String createString(String[] array) {
     String time = "";
     for (String s : array) {
-      if (s != null && s != "") {
+      if (s != null && s.equals("")) {
         time += " ";
         time += s;
       }
