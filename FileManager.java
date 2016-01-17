@@ -6,16 +6,15 @@ import java.util.List;
 
 
 /**
- * File manager utility class
+ * File manager utility class.
  */
 class FileManager {
 
 
   /**
-   * Reads text from input file and returns it
-   *
+   * Reads text from input file and returns it.
    * @param document - the document containing text to process
-   * @return text - if there was an error, text will be equal to null
+   * @return text or null if there was an error
    */
   public static String getText(final String document, final String path) {
 
@@ -69,14 +68,13 @@ class FileManager {
 
   /**
    * Creates file on disk by deleting any file with the same name.
-   *
    * @param file - file to be created
    * @return true if creation was successful
    */
   static boolean thoroughlyCreate(File file) {
     if (file.exists()) {
       if (!file.delete()) {
-        System.err.println("ERROR: unable to delete file " + file.getAbsolutePath());
+        System.err.println("ERROR: unable to delete file " + file);
         return false;
       }
     }
@@ -95,7 +93,6 @@ class FileManager {
   /**
    * Takes a file name and text, and writes the text to the file.
    * If the file does not exist, it will be created.
-   *
    * @param filename - name of the file to write to
    * @param text - text to be written to file
    */
@@ -110,9 +107,8 @@ class FileManager {
 
   /**
    * Creates a file, given a file name.
-   *
    * @param filename - desired name for the file
-   * @return file - a file that exists on disk
+   * @return file that exists on disk
    * @throws IOException
    */
   private static File createFile(final String filename) throws IOException {

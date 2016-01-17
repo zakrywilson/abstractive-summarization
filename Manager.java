@@ -33,9 +33,9 @@ class Manager {
    * @param network - the network containing the data to clean up
    */
   private static void cleanupSentences(Network network) {
-    network.purgeBSUs();
+    network.purgeTriples();
     network.purgeSentences();
-    network.chooseLongestBSUs();
+    network.chooseLongestTriples();
   }
 
 

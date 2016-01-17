@@ -2,15 +2,34 @@ import java.util.Arrays;
 import java.util.List;
 
 
+/**
+ * Handles processing all date named entity information.
+ */
 class Times {
 
 
   /** A list of all possible months */
-  private static String[] months = { "January",   "February", "March",    "April",
-                                     "May",       "June",     "July",     "August",
-                                     "September", "October",  "November", "December" };
+  private static String[] months = {
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  };
 
 
+  /**
+   * Removes all extraneous time named entity information.
+   * @param timeTokens - parsed named entity information
+   * @return filtered time information
+   */
   private static String[] removeExtraneousDateInfo(String[] timeTokens) {
 
     List<String> tokens = Arrays.asList(timeTokens);
@@ -34,7 +53,6 @@ class Times {
 
   /**
    * Checks the date format and provide the appropriate preposition.
-   *
    * @param timeInformation - the named entity time information
    * @return the preposition to be appended to the sentence
    */
@@ -79,6 +97,11 @@ class Times {
   }
 
 
+  /**
+   * Creates a String from a String array.
+   * @param array - array to be made into a String
+   * @return String representation of the array
+   */
   private static String createString(String[] array) {
     String time = "";
     for (String s : array) {

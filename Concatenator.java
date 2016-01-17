@@ -1,12 +1,14 @@
 import java.util.Map;
 
 
+/**
+ * Handles concatenating named entity information back onto sentences.
+ */
 class Concatenator {
 
 
   /**
-   * Fuses the sentences and the time information from NER data
-   *
+   * Fuses the sentences and the time information from NER data.
    * @param network - summarized sentences
    * @return fused sentences with NER time data
    */
@@ -31,8 +33,7 @@ class Concatenator {
 
 
   /**
-   * Appends the time NER information to a given sentence
-   *
+   * Appends the time NER information to a given sentence.
    * @param sentence - any String sentence
    * @param time - the NER time data
    * @return time and sentence together in one string
@@ -49,8 +50,7 @@ class Concatenator {
 
 
   /**
-   * Checks whether the time string exists inside of the sentence already
-   *
+   * Checks whether the time string exists inside of the sentence already.
    * @param sentence - sentence that may or may not contain the time data
    * @param time - time NER data
    * @return true if the time data needs to be appended

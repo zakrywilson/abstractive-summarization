@@ -22,7 +22,7 @@ import java.util.*;
 /**
  * Handles extracting information from a document:
  * <p>
- *   (1) Basic semantic units: stored in Network
+ *   (1) Triples: stored in Network
  *   (2) Named entity information: stored in NamedEntitiesList
  * </p>
  */
@@ -33,7 +33,7 @@ class Extractor {
   private Network network = new Network();
 
 
-  /** Contains all of the named entity recognition information in LinkedHashMap */
+  /** Contains all of named entity recognition information in LinkedHashMap */
   private NamedEntitiesList ner = new NamedEntitiesList();
 
 
@@ -46,10 +46,10 @@ class Extractor {
 
 
  /**
-  * Constructor
+  * Constructor.
   * <p>
   *   Reads in file, processes it, extracts triples, prints them to standard
-  *   out and (optionally) writes data to new file (original-bsu.txt).
+  *   out and (optionally) writes data to new file (original-meta.txt).
   * </p>
   * @param document - name of the file containing the input text
   * @param writeToFile - determines if output will be written to file
@@ -73,9 +73,8 @@ class Extractor {
  /**
   * Extracts triples and NER, stores the information in separate maps, prints
   * the information to standard out and (optionally) writes data to file.
-  *
   * @param text - text that is to be processed
-  * @return true - if processing was successful
+  * @return true if processing was successful
   */
   private boolean processText(final String text) {
 
@@ -101,8 +100,7 @@ class Extractor {
 
 
  /**
-  * Extracts the triples, NER information, and stores it in bsus map
-  *
+  * Extracts the triples, NER information, and stores it in triples map.
   * @param doc - annotated document
   */
   private void extractData(final Annotation doc) {
@@ -126,27 +124,27 @@ class Extractor {
       }
 
       // Get the OpenIE triples for the sentence
-      Collection<RelationTriple> triples =
+      Collection<RelationTriple> relationTriples =
         sent.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
 
       // This is where we'll store the extracted triples
-      List<BSU> bsus = new ArrayList<>();
+      List<Triple> triples = new ArrayList<>();
 
       // Create a sentence object
       Sentence sentence = new Sentence(sent.toString());
       sentence.addEntities(entities);
 
       // Store the triples
-      for (RelationTriple triple : triples) {
-        BSU bsu = new BSU(triple.subjectGloss(), 
-                          triple.relationGloss(), 
-                          triple.objectGloss(),
-                          triple.confidenceGloss());
-        bsus.add(bsu);
+      for (RelationTriple t : relationTriples) {
+        Triple triple = new Triple(t.subjectGloss(),
+                          t.relationGloss(),
+                          t.objectGloss(),
+                          t.confidenceGloss());
+        triples.add(triple);
       }
 
-      // Store sentences and associated BSUs inside triples object
-      sentence.setAllBSUs(bsus);
+      // Store sentences and associated Triples inside triples object
+      sentence.setAllTriples(triples);
       this.network.add(sentenceNumber, sentence);
 
       // Increment sentence number
@@ -159,7 +157,7 @@ class Extractor {
 
 
   /**
-   * Writes extracted data to file
+   * Writes extracted data to file.
    */
    private void writeToFile() {
 
@@ -190,7 +188,7 @@ class Extractor {
 
 
   /**
-   * Getter for Network
+   * Getter for Network.
    * @return network
    */
   Network getNetwork() {
@@ -199,7 +197,7 @@ class Extractor {
 
 
   /**
-   * Getter for named entity recognition
+   * Getter for named entity recognition.
    * @return named entity recognition
    */
   NamedEntitiesList getNER() {
@@ -208,7 +206,7 @@ class Extractor {
 
 
   /**
-   * Returns a string that is a representation of the Network and NER objects
+   * Returns a string that is a representation of the Network and NER objects.
    * @return String representation of network and NER objects
    */
   @Override

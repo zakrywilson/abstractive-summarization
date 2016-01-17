@@ -6,8 +6,8 @@ import java.util.List;
 /**
  * Sentence
  * <p>
- *   This data structure contains a sentence, it's BSUs,
- *   and its association amongst all other BSUs in the form of...
+ *   This data structure contains a sentence, it's Triples,
+ *   and its association amongst all other Triples in the form of...
  * <p>
  *   (1) ASR: arguments semantic relatedness,
  *   (2) VSR: action-verbs semantic relatedness,
@@ -19,22 +19,21 @@ class Sentence {
   /** The original sentence */
   private String sentence = null;
 
-  /** The BSU chosen to represent the sentence */
-  private BSU bsu = null;
+  /** The Triple chosen to represent the sentence */
+  private Triple triple = null;
 
-  /** The entire list of BSUs generated off of the original sentence */
-  private List<BSU> bsus = new ArrayList<>();
+  /** The entire list of Triples generated off of the original sentence */
+  private List<Triple> triples = new ArrayList<>();
 
   /** The sentence's associated named entities */
   private NamedEntitiesList ner;
 
 
   /*
-   * Constructor
+   * Constructor.
    * <p>
    *   Takes a single sentence.
    * </p>
-   *
    * @param sentence
    */
   Sentence(final String sentence) {
@@ -42,121 +41,147 @@ class Sentence {
   }
 
 
+  /**
+   * Add a named entities list object.
+   * @param entities - list of named entities to add
+   */
   void addEntities(NamedEntitiesList entities) {
     this.ner = entities;
   }
 
 
+  /**
+   * Getter for time entities.
+   * @return time entities
+   */
   String getTimeEntities() {
     return this.ner.getTimeEntity();
   }
 
 
+  /**
+   * Getter for the Sentence.
+   * @return sentence
+   */
   String getSentence() {
     return this.sentence;
   }
 
 
-  protected BSU getBSU() {
-    return this.bsu;
-  }
-
-
-  private void setBSU(final BSU bsu) {
-    this.bsu = bsu;
-  }
-
-
-  List<BSU> getAllBSUs() {
-    return this.bsus;
-  }
-
-
-  void setAllBSUs(final List<BSU> bsus) {
-    this.bsus = bsus;
+  /**
+   * Getter for Triple.
+   * @return triple
+   */
+  protected Triple getTriple() {
+    return this.triple;
   }
 
 
   /**
-   * Purging BSUs that have a confidence score of less than 1.000
-   *
-   * @return list of removed BSUs
+   * Setter for the Triple.
+   * @param triple - triple to be set as Sentence's representative triple
    */
-  List<BSU> purge() {
-    List<BSU> removedBSUs = new ArrayList<>();
-    Iterator<BSU> it = this.bsus.iterator();
+  private void setTriple(final Triple triple) {
+    this.triple = triple;
+  }
+
+
+  /**
+   * Gets all Triple objects.
+   * @return - all Triples
+   */
+  List<Triple> getAllTriples() {
+    return this.triples;
+  }
+
+
+  /**
+   * Sets all triples.
+   * @param triples - list of triples to be set
+   */
+  void setAllTriples(final List<Triple> triples) {
+    this.triples = triples;
+  }
+
+
+  /**
+   * Purging Triples that have a confidence score of less than 1.000.
+   * @return list of removed Triples
+   */
+  List<Triple> purge() {
+    List<Triple> removedTriples = new ArrayList<>();
+    Iterator<Triple> it = this.triples.iterator();
     while (it.hasNext()) {
-      BSU bsu = it.next();
-      if (lowScore(bsu) || tooShort(bsu)) {
-        removedBSUs.add(bsu);
+      Triple triple = it.next();
+      if (lowScore(triple) || tooShort(triple)) {
+        removedTriples.add(triple);
         it.remove();
       }
     }
-    return removedBSUs;
+    return removedTriples;
   }
 
 
   /**
-   * Chooses BSU to represent sentence
-   *
-   * @param index - sets the BSU as whatever index was provided
+   * Chooses Triple to represent sentence.
+   * @param index - sets the Triple as whatever index was provided
    */
-  protected void chooseBSU(int index) {
-    setBSU(this.bsus.get(index));
+  protected void chooseTriple(int index) {
+    setTriple(this.triples.get(index));
   }
 
 
   /**
-   * Chooses the longest BSU to represent the sentence
+   * Chooses the longest Triple to represent the sentence.
    */
-  void chooseLongestBSU() {
-    BSU longestBSU = null;
-    for (BSU nextBSU : this.bsus) {
-      if (longestBSU == null) {
-        longestBSU = nextBSU;
-      } else if (nextBSU.toString().length() > longestBSU.toString().length()) {
-          longestBSU = nextBSU;
+  void chooseLongestTriples() {
+    Triple longestTriple = null;
+    for (Triple nextTriple : this.triples) {
+      if (longestTriple == null) {
+        longestTriple = nextTriple;
+      } else if (nextTriple.toString().length() > longestTriple.toString().length()) {
+          longestTriple = nextTriple;
       }
     }
-    setBSU(longestBSU);
+    setTriple(longestTriple);
   }
 
 
   /**
-   * Takes the representative BSU and creates a sentence out of it.
-   * @return compressed sentence - a sentence taken from a BSU
+   * Takes the representative Triple and creates a sentence out of it.
+   * @return compressed sentence
    */
   String getCompressedSentence() {
-    return Formatter.formatSentence(this.bsu.getActor(),
-                                    this.bsu.getAction(),
-                                    this.bsu.getReceiver());
+    return Formatter.formatSentence(this.triple.getActor(),
+                                    this.triple.getAction(),
+                                    this.triple.getReceiver());
   }
 
 
   /**
-   * Checks for a low confidence score
-   * @param bsu - basic semantic unit to be checked
-   * @return true if the BSU has a score lower than 1
+   * Checks for a low confidence score.
+   * @param triple - semantic triple to be checked
+   * @return true if the Triple has a score lower than 1
    */
-  private boolean lowScore(BSU bsu) {
-    return !bsu.getScore().startsWith("1");
+  private boolean lowScore(Triple triple) {
+    return !triple.getScore().startsWith("1");
   }
 
 
   /**
-   * Checks whether the BSU is composed of 3 or less words
-   * @param bsu - basic semantic unit to be checked
-   * @return true if the BSU is made up of 3 or less words
+   * Checks whether the Triple is composed of 3 or less words.
+   * @param triple - semantic triple to be checked
+   * @return true if the Triple is made up of 3 or less words
    */
-  private boolean tooShort(BSU bsu) {
-    return containsOneWord(bsu.getActor())  &&
-           containsOneWord(bsu.getAction()) &&
-           containsOneWord(bsu.getReceiver());
+  private boolean tooShort(Triple triple) {
+    return containsOneWord(triple.getActor())  &&
+           containsOneWord(triple.getAction()) &&
+           containsOneWord(triple.getReceiver());
   }
 
 
   /**
-   * Checks whether the string contains less than 1 word
+   * Checks whether the string contains less than 1 word.
    * @param string - string to be checked
    * @return true if string contains less than 1 word
    */
@@ -170,9 +195,9 @@ class Sentence {
     StringBuilder output = new StringBuilder();
     output.append(this.sentence);
     output.append("\n");
-    for (BSU bsu : this.bsus) {
+    for (Triple triple : this.triples) {
       output.append("   ");
-      output.append(bsu);
+      output.append(triple);
     }
     return output.toString();
   }

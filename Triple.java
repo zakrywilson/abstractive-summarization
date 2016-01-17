@@ -1,41 +1,39 @@
 /**
- * Representation of a single Basic Semantic Unit
+ * Representation of a single triple.
  */
-public class BSU {
+public class Triple {
 
 
   private String actor, action, receiver, score;
 
 
   /**
-   * Constructor
+   * Constructor.
    * <p>
-   *   Creates a Basic Semantic Unit containing a single actor-action-receiver triple.
+   *   Creates a Triple, containing a single actor-action-receiver triple.
    *   Confidence score is set to empty String.
    * </p>
-   *
    * @param actor - subject
    * @param action - verb or verb phrase
    * @param receiver - direct object or object of predicate
    */
-  protected BSU(final String actor, final String action, final String receiver) {
+  protected Triple(final String actor, final String action, final String receiver) {
     this(actor, action, receiver, "");
   }
 
 
   /**
-   * Constructor
+   * Constructor.
    * <p>
-   *   Creates a Basic Semantic Unit containing a single actor-action-receiver triple
+   *   Creates a Triple containing a single actor-action-receiver triple
    *   and a confidence score.
    * </p>
-   *
    * @param actor - subject
    * @param action - verb or verb phrase
    * @param receiver - direct object or object of predicate
-   * @param score - confidence score assigned to each BSU
+   * @param score - confidence score assigned to each Triple
    */
-  BSU(final String actor, final String action, final String receiver, final String score) {
+  Triple(final String actor, final String action, final String receiver, final String score) {
     this.actor = actor;
     this.action = action;
     this.receiver = receiver;
@@ -44,7 +42,7 @@ public class BSU {
 
 
   /**
-   * Getter for actor
+   * Getter for actor.
    * @return actor
    */
   String getActor() {
@@ -53,7 +51,7 @@ public class BSU {
 
 
   /**
-   * Getter for action
+   * Getter for action.
    * @return action
    */
   String getAction() {
@@ -62,7 +60,7 @@ public class BSU {
 
 
   /**
-   * Getter for receiver
+   * Getter for receiver.
    * @return receiver
    */
   String getReceiver() {
@@ -71,7 +69,7 @@ public class BSU {
 
 
   /**
-   * Getter for score
+   * Getter for score.
    * @return score
    */
   String getScore() {
