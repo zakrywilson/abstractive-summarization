@@ -3,6 +3,8 @@
 # No input files except for the sample
 *.txt
 !sample.txt
+!news-burglary.txt
+!news-handgun.txt
 
 # No .class file or JAR files
 bin/
