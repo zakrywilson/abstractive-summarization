@@ -15,11 +15,9 @@ class Network {
 
   /**
    * Default Constructor.
-   * <p>
-   *   Creates a new empty HashMap to contain the Sentences where
-   *   the original sentence in the key and the Sentence object
-   *   containing information on each sentence is the value.
-   * </p>
+   * Creates a new empty HashMap to contain the Sentences where
+   * the original sentence in the key and the Sentence object
+   * containing information on each sentence is the value.
    */
   Network() {
     this.network = new HashMap<>();
@@ -27,7 +25,7 @@ class Network {
 
 
   /**
-   * Returns the network containing the sentence Strings with their.
+   * Returns the network containing the sentence Strings with their
    * associated Sentence objects.
    * @return network
    */

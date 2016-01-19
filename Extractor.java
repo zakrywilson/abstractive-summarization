@@ -21,10 +21,8 @@ import java.util.*;
 
 /**
  * Handles extracting information from a document:
- * <p>
- *   (1) Triples: stored in Network
- *   (2) Named entity information: stored in NamedEntitiesList
- * </p>
+ * Triples: stored in Network.
+ * Named entity information: stored in NamedEntitiesList.
  */
 class Extractor {
 
@@ -47,10 +45,8 @@ class Extractor {
 
  /**
   * Constructor.
-  * <p>
-  *   Reads in file, processes it, extracts triples, prints them to standard
-  *   out and (optionally) writes data to new file (original-meta.txt).
-  * </p>
+  * Reads in file, processes it, extracts triples, prints them to standard
+  * out and (optionally) writes data to new file (original-meta.txt).
   * @param document - name of the file containing the input text
   * @param writeToFile - determines if output will be written to file
   */

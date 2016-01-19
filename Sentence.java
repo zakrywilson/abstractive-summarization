@@ -4,14 +4,12 @@ import java.util.List;
 
 
 /**
- * Sentence
- * <p>
- *   This data structure contains a sentence, it's Triples,
- *   and its association amongst all other Triples in the form of...
- * <p>
- *   (1) ASR: arguments semantic relatedness,
- *   (2) VSR: action-verbs semantic relatedness,
- *   (3) CSS: co-reference semantic relatedness.
+ * Sentence.
+ * This data structure contains a sentence, it's Triples,
+ * and its association amongst all other Triples in the form of...
+ * (1) ASR: arguments semantic relatedness,
+ * (2) VSR: action-verbs semantic relatedness,
+ * (3) CSS: co-reference semantic relatedness.
  */
 class Sentence {
 
@@ -31,9 +29,7 @@ class Sentence {
 
   /*
    * Constructor.
-   * <p>
-   *   Takes a single sentence.
-   * </p>
+   * Takes a single sentence.
    * @param sentence
    */
   Sentence(final String sentence) {
