@@ -9,10 +9,8 @@ public class Triple {
 
   /**
    * Constructor.
-   * <p>
-   *   Creates a Triple, containing a single actor-action-receiver triple.
-   *   Confidence score is set to empty String.
-   * </p>
+   * Creates a Triple, containing a single actor-action-receiver triple.
+   * Confidence score is set to empty String.
    * @param actor - subject
    * @param action - verb or verb phrase
    * @param receiver - direct object or object of predicate
@@ -24,10 +22,8 @@ public class Triple {
 
   /**
    * Constructor.
-   * <p>
-   *   Creates a Triple containing a single actor-action-receiver triple
-   *   and a confidence score.
-   * </p>
+   * Creates a Triple containing a single actor-action-receiver triple
+   * and a confidence score.
    * @param actor - subject
    * @param action - verb or verb phrase
    * @param receiver - direct object or object of predicate
