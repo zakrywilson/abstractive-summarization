@@ -1,5 +1,5 @@
 # Abstractive Summarization
-Automatic abstractive summarization for news articles
+Automatic abstractive summarization for news articles.
 
 ## How to use
 * Download [CoreNLP](http://nlp.stanford.edu/software/corenlp.shtml#Download) 
