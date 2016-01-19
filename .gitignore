@@ -2,7 +2,7 @@
 
 # No input files except for the sample
 *.txt
-!sample.txt
+!article-tolstoy.txt
 !news-burglary.txt
 !news-handgun.txt
 
