@@ -12,7 +12,7 @@ class Manager {
   public static void main(String[] args) {
 
     // Options
-    String file = "sample.txt";
+    String file = "article-tolstoy.txt";
     boolean writeToFile = true;
 
     // Running program
