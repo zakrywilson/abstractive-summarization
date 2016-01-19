@@ -23,6 +23,7 @@ class Manager {
     cleanupSentences(network);
 
     // Display summary
+    clearConsole();
     printSummary(file, network);
   }
 
@@ -45,8 +46,17 @@ class Manager {
    * @param network - the network of sentences
    */
   private static void printSummary(String filename, Network network) {
-    System.out.println("\nSummary of " + filename + ":");
+    System.out.println("Summary of " + filename + ":");
     String summary = Concatenator.fuse(network);
     System.out.println(summary);
+  }
+
+
+  /**
+   * Clears console for displaying summarized text.
+   */
+  private static void clearConsole() {
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
   }
 }
