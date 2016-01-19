@@ -11,7 +11,7 @@ Be sure to download both code and modules JARs for CoreNLP and OpenIE.
 * Run `Manager.java`.
 
 ## How it works
-1. Reads in file.  
+1. Program reads in file.  
 2. Extracts important semantic information and writes it to file.
     1. Extracts *semantic triples*
         * Example:`"Bob likes puppies more than cats."`  
