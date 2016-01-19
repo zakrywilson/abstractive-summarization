@@ -1,8 +1,5 @@
-import java.lang.Integer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
+import java.util.Map.Entry;
 
 
 /**
@@ -25,7 +22,7 @@ class Network {
    * </p>
    */
   Network() {
-    this.network = new ConcurrentHashMap<>();
+    this.network = new HashMap<>();
   }
 
 
@@ -55,12 +52,12 @@ class Network {
    * @return a list of all removed Triples
    */
   List<Triple> purgeTriples() {
-    List<Triple> removedtriples = new ArrayList<>();
-    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
+    List<Triple> removedTriples = new ArrayList<>();
+    for (Entry<Integer, Sentence> pair: this.network.entrySet()) {
       Sentence sentence = pair.getValue();
-      removedtriples.addAll(sentence.purge());
+      removedTriples.addAll(sentence.purge());
     }
-    return removedtriples;
+    return removedTriples;
   }
 
 
@@ -68,15 +65,17 @@ class Network {
    * Purging Sentences that do not have any Triples in them.
    * @return list of removed sentences
    */
-  List<String> purgeSentences() {
-    List<String> removedSentences = new ArrayList<>();
-    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
-      Integer sentenceNumber = pair.getKey();
-      Sentence sentence = pair.getValue();
+  ArrayList<String> purgeSentences() {
+
+    ArrayList<String> removedSentences = new ArrayList<>();
+    Iterator<Entry<Integer, Sentence>> it;
+
+    it = this.network.entrySet().iterator();
+    while (it.hasNext()) {
+      Sentence sentence = it.next().getValue();
       if (sentence.getAllTriples().isEmpty()) {
-        String removedSentence = sentence.getSentence();
-        removedSentences.add(removedSentence);
-        this.network.remove(sentenceNumber);
+        removedSentences.add(sentence.getSentence());
+        it.remove();
       }
     }
     return removedSentences;
@@ -88,7 +87,7 @@ class Network {
    * representative Triple.
    */
   void chooseLongestTriples() {
-    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
+    for (Entry<Integer, Sentence> pair: this.network.entrySet()) {
       pair.getValue().chooseLongestTriples();
     }
   }
@@ -97,7 +96,7 @@ class Network {
   @Override
   public String toString() {
     StringBuilder output = new StringBuilder();
-    for (Map.Entry<Integer, Sentence> pair: this.network.entrySet()) {
+    for (Entry<Integer, Sentence> pair: this.network.entrySet()) {
       output.append(pair.getValue());
       output.append("\n");
     }
