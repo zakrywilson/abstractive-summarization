@@ -22,7 +22,7 @@ import java.util.*;
 /**
  * Handles extracting information from a document:
  * Triples: stored in Network.
- * Named entity information: stored in NamedEntitiesList.
+ * Named entity information: stored in EntitiesList.
  */
 class Extractor {
 
@@ -32,7 +32,7 @@ class Extractor {
 
 
   /** Contains all of named entity recognition information in LinkedHashMap */
-  private NamedEntitiesList ner = new NamedEntitiesList();
+  private EntitiesList ner = new EntitiesList();
 
 
   /** The input file containing the text to be processed */
@@ -105,7 +105,7 @@ class Extractor {
     int sentenceNumber = 1;
     for (CoreMap sent : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
 
-      NamedEntitiesList entities = new NamedEntitiesList();
+      EntitiesList entities = new EntitiesList();
 
       // Traversing the words in the current sentence
       for (CoreLabel token : sent.get(TokensAnnotation.class)) {
@@ -196,7 +196,7 @@ class Extractor {
    * Getter for named entity recognition.
    * @return named entity recognition
    */
-  NamedEntitiesList getNER() {
+  EntitiesList getNER() {
     return this.ner;
   }
 

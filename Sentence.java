@@ -24,7 +24,7 @@ class Sentence {
   private List<Triple> triples = new ArrayList<>();
 
   /** The sentence's associated named entities */
-  private NamedEntitiesList ner;
+  private EntitiesList ner;
 
 
   /*
@@ -41,7 +41,7 @@ class Sentence {
    * Add a named entities list object.
    * @param entities - list of named entities to add
    */
-  void addEntities(NamedEntitiesList entities) {
+  void addEntities(EntitiesList entities) {
     this.ner = entities;
   }
 
