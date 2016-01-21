@@ -25,7 +25,7 @@ removed.
 8. Performs formatting.
 9. Displays summay.
 
-###### Notes: 
+## Notes: 
 * This program still needs work, but the system *does* summarize a body of text.
 * If you want change the input file, that can be changed in `Manager.java`.
 * Store input text files in `resources/`.
