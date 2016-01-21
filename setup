@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# Moves directory to new location
+function move_directory() {
+  cd ..
+  mv summread $DIR
+  cd $DIR/summread
+  echo "Project moved to $DIR"
+}
+
+# Download all JARs
+function download_jars() {
+
+  wget -P $TMP $CORE_NLP_CODE_URL
+  wget -P $TMP $CORE_NLP_MODELS_URL
+  wget -P $TMP $OPEN_IE_CODE_URL
+  wget -P $TMP $OPEN_IE_MODELS_URL
+
+  mv "$TMP/$CORE_NLP_CODE" $LIB/$CORE_NLP_CODE
+  echo "Moved $CORE_NLP_CODE JAR to $LIB"
+
+  mv "$TMP/$CORE_NLP_MODELS" $LIB/$CORE_NLP_MODELS
+  echo "Moved $CORE_NLP_MODELS JAR to $LIB"
+
+  mv "$TMP/$OPEN_IE_CODE" $LIB/$OPEN_IE_CODE
+  echo "Moved $OPEN_IE_CODE JAR to $LIB"
+
+  mv "$TMP/$OPEN_IE_MODELS" $LIB/$OPEN_IE_MODELS
+  echo "Moved $OPEN_IE_MODELS JAR to $LIB"
+}
+
+# Ensure only 1 argument was provided
+if [ $# != 1 ]; then
+  echo "Must specify target directory."
+  exit
+fi
+
+DIR="$1"
+LIB="$DIR/summread/lib/"
+TMP="$DIR/summread/tmp/"
+
+# Core NLP Code
+CORE_NLP_CODE_URL="http://download1319.mediafire.com/s7h5wr16gutg/c4vj44gry3rtc5y/stanford-corenlp-3.5.2.jar"
+CORE_NLP_CODE="stanford-corenlp-3.5.2.jar"
+
+# Core NLP Models
+CORE_NLP_MODELS_URL="http://download1511.mediafire.com/diy980jkstwg/xc9dbguc2b3ieyt/stanford-corenlp-3.5.2-models.jar"
+CORE_NLP_MODELS="stanford-corenlp-3.5.2-models.jar"
+
+# Open IE Code
+OPEN_IE_CODE_URL="http://download1079.mediafire.com/ax59huylm42g/sac45ys2uuux8n9/stanford-openie.jar"
+OPEN_IE_CODE="stanford-openie.jar"
+
+# Open IE Models
+OPEN_IE_MODELS_URL="http://download1517.mediafire.com/tmceha171msg/qjqmhwzv574mp4l/stanford-openie-models.jar"
+OPEN_IE_MODELS="stanford-openie-models.jar"
+
+# If the directory exists, move directory, and download JARs
+if [ -d "$DIR" ]; then
+  echo "Specified directory: $DIR"
+  move_directory
+  echo "Downloading Stanford JARs to $LIB"
+  download_jars
+  rm -R tmp
+  echo "Setup complete"
+else
+  echo "Directory does not exist!"
+fi
