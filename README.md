@@ -2,11 +2,8 @@
 Automatic abstractive summarization for news articles.
 
 ## How to use
-* Download [CoreNLP](http://nlp.stanford.edu/software/corenlp.shtml#Download) 
-and [OpenIE](http://nlp.stanford.edu/software/openie.shtml#Download) from 
-Stanford.edu.  
-Be sure to download both code and modules JARs for CoreNLP and OpenIE.
-* Clone repo.
+* Download repository.
+* Run `setup` script to move directory and download Stanford JARs.
 * Add all four JARs to classpath.
 * Run `Manager.java`.
 
