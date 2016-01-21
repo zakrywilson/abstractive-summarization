@@ -31,7 +31,7 @@ function download_jars() {
 
 # Ensure only 1 argument was provided
 if [ $# != 1 ]; then
-  echo "Must specify target directory."
+  echo "Must specify target directory for installation."
   exit
 fi
 
