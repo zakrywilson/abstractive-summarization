@@ -50,13 +50,13 @@ function check_for_jars() {
   fi
 }
 
-echo ""
-
 # Ensure only 1 argument was provided
 if [ $# != 1 ]; then
   echo "Must specify target directory for installation. Target directory must be a real path to an existing directory."
   exit
 fi
+
+echo ""
 
 DIR=${1%/}
 PROJECT="abstractive-summarization-master"
