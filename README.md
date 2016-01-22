@@ -2,12 +2,12 @@
 Automatic abstractive summarization for news articles.
 
 ## How to use
-* Download repository.
-* `cd /path/to/abstractive-summarization-master`
-* `> ./setup [target-directory]` where the *target-directory* is a real path to a directory. 
-    * Project will moved to the target directory.
-    * Stanford JARs will be downloaded into `lib` directory.
-* `> ./demo` to run a demo of the program.
+1. Download repository.
+2. `cd /path/to/abstractive-summarization-master`
+3. `> ./setup [real-path-to-target-directory]`
+    1. Project will moved to the target directory.
+    2. Stanford JARs will be downloaded into `lib` directory.
+4. `> ./demo`
 
 ## How it works
 1. Program reads in file.  
