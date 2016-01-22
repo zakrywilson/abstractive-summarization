@@ -3,7 +3,7 @@ Automatic abstractive summarization for news articles.
 
 ## How to use
 * Download repository.
-* Run `setup` script to move directory and download Stanford JARs.
+* Run `setup [target directory]` to move directory and download Stanford JARs.
 * Run `run` script to demo program.
 
 ## How it works
