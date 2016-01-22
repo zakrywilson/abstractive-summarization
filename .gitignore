@@ -7,11 +7,9 @@
 !news-handgun.txt
 
 # No .class file or JAR files
-bin/
 lib/
 
 # No misc stuff
 .idea/
 *.iml
-*.sh
 Makefile
