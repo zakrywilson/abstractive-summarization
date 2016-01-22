@@ -3,7 +3,7 @@
 # Moves directory to new location
 function move_directory() {
   cd ..
-  mv $PROJECT $DIR
+  mv $PROJECT $DIR/$PROJECT
   cd $DIR/$PROJECT
   echo "Project moved to $DIR"
 }
