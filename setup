@@ -41,7 +41,7 @@ if [ $# != 1 ]; then
 fi
 
 DIR="$1"
-PROJECT="abstractive-summarization"
+PROJECT="abstractive-summarization-master"
 LIB="$DIR/$PROJECT/lib/"
 TMP="$DIR/$PROJECT/tmp/"
 
@@ -65,6 +65,7 @@ OPEN_IE_MODELS="stanford-openie-models.jar"
 if [ -d "$DIR" ]; then
   echo "Specified directory: $DIR"
   move_directory
+  mkdir lib
   echo "Downloading Stanford JARs to $LIB"
   download_jars
   rm -R tmp
