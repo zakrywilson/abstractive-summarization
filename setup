@@ -4,7 +4,7 @@
 function move_directory() {
   cd ..
   mv summread $DIR
-  cd $DIR/summread
+  cd $DIR/$PROJECT
   echo "Project moved to $DIR"
 }
 
@@ -36,8 +36,9 @@ if [ $# != 1 ]; then
 fi
 
 DIR="$1"
-LIB="$DIR/summread/lib/"
-TMP="$DIR/summread/tmp/"
+PROJECT="abstractive-summarization"
+LIB="$DIR/$PROJECT/lib/"
+TMP="$DIR/$PROJECT/tmp/"
 
 # Core NLP Code
 CORE_NLP_CODE_URL="http://download1319.mediafire.com/s7h5wr16gutg/c4vj44gry3rtc5y/stanford-corenlp-3.5.2.jar"
