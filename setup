@@ -64,5 +64,5 @@ if [ -d "$DIR" ]; then
   rm -R tmp
   echo "Setup complete"
 else
-  echo "Directory does not exist!"
+  echo "Directory does not exist! Please provide real path to existing directory."
 fi
