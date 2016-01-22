@@ -1,0 +1,10 @@
+#!/bin/bash
+
+CLASSPATH="-cp .:lib/stanford-openie.jar:lib/stanford-openie-models.jar:lib/stanford-corenlp-3.5.2-models.jar:lib/stanford-corenlp-3.5.2.jar:bin"
+
+# Remove *.class files if they exist
+
+
+javac $CLASSPATH Manager.java *.java
+
+java $CLASSPATH Manager
