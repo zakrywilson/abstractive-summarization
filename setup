@@ -3,39 +3,45 @@
 # Moves directory to new location
 function move_directory() {
   cd ..
-  mv summread $DIR
-  cd $DIR/summread
+  mv $PROJECT $DIR
+  cd $DIR/$PROJECT
   echo "Project moved to $DIR"
 }
 
 # Download all JARs
 function download_jars() {
 
+  # Download JARs
   wget -P $TMP $CORE_NLP_CODE_URL
   wget -P $TMP $CORE_NLP_MODELS_URL
   wget -P $TMP $OPEN_IE_CODE_URL
   wget -P $TMP $OPEN_IE_MODELS_URL
 
+  # Move Core NLP Code JAR to lib directory
   mv "$TMP/$CORE_NLP_CODE" $LIB/$CORE_NLP_CODE
   echo "Moved $CORE_NLP_CODE JAR to $LIB"
 
+  # Move Core NLP Models JAR to lib directory
   mv "$TMP/$CORE_NLP_MODELS" $LIB/$CORE_NLP_MODELS
   echo "Moved $CORE_NLP_MODELS JAR to $LIB"
 
+  # Move Open IE Code JAR to lib directory
   mv "$TMP/$OPEN_IE_CODE" $LIB/$OPEN_IE_CODE
   echo "Moved $OPEN_IE_CODE JAR to $LIB"
 
+  # Move Open IE Models JAR to lib directory
   mv "$TMP/$OPEN_IE_MODELS" $LIB/$OPEN_IE_MODELS
   echo "Moved $OPEN_IE_MODELS JAR to $LIB"
 }
 
 # Ensure only 1 argument was provided
 if [ $# != 1 ]; then
-  echo "Must specify target directory for installation."
+  echo "Must specify target directory for installation. Target directory must be a real path to an existing directory."
   exit
 fi
 
 DIR="$1"
+PROJECT="abstractive-summarization"
 LIB="$DIR/$PROJECT/lib/"
 TMP="$DIR/$PROJECT/tmp/"
 
@@ -64,5 +70,5 @@ if [ -d "$DIR" ]; then
   rm -R tmp
   echo "Setup complete"
 else
-  echo "Directory does not exist!"
+  echo "Directory does not exist! Please provide real path to existing directory."
 fi
