@@ -22,7 +22,7 @@ if [ $# != 1 ]; then
   exit
 fi
 
-DIR="$1"
+DIR=${1%/}
 PROJECT="abstractive-summarization-master"
 LIB="$DIR/$PROJECT/lib/"
 
