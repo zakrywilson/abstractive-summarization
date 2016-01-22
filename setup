@@ -10,28 +10,10 @@ function move_directory() {
 
 # Download all JARs
 function download_jars() {
-
-  # Download JARs
-  wget -P $TMP $CORE_NLP_CODE_URL
-  wget -P $TMP $CORE_NLP_MODELS_URL
-  wget -P $TMP $OPEN_IE_CODE_URL
-  wget -P $TMP $OPEN_IE_MODELS_URL
-
-  # Move Core NLP Code JAR to lib directory
-  mv "$TMP/$CORE_NLP_CODE" $LIB/$CORE_NLP_CODE
-  echo "Moved $CORE_NLP_CODE JAR to $LIB"
-
-  # Move Core NLP Models JAR to lib directory
-  mv "$TMP/$CORE_NLP_MODELS" $LIB/$CORE_NLP_MODELS
-  echo "Moved $CORE_NLP_MODELS JAR to $LIB"
-
-  # Move Open IE Code JAR to lib directory
-  mv "$TMP/$OPEN_IE_CODE" $LIB/$OPEN_IE_CODE
-  echo "Moved $OPEN_IE_CODE JAR to $LIB"
-
-  # Move Open IE Models JAR to lib directory
-  mv "$TMP/$OPEN_IE_MODELS" $LIB/$OPEN_IE_MODELS
-  echo "Moved $OPEN_IE_MODELS JAR to $LIB"
+  wget -P $LIB $CORE_NLP_CODE_URL
+  wget -P $LIB $CORE_NLP_MODELS_URL
+  wget -P $LIB $OPEN_IE_CODE_URL
+  wget -P $LIB $OPEN_IE_MODELS_URL
 }
 
 # Ensure only 1 argument was provided
@@ -43,7 +25,6 @@ fi
 DIR="$1"
 PROJECT="abstractive-summarization-master"
 LIB="$DIR/$PROJECT/lib/"
-TMP="$DIR/$PROJECT/tmp/"
 
 # Core NLP Code
 CORE_NLP_CODE_URL="http://download1319.mediafire.com/s7h5wr16gutg/c4vj44gry3rtc5y/stanford-corenlp-3.5.2.jar"
@@ -65,7 +46,6 @@ OPEN_IE_MODELS="stanford-openie-models.jar"
 if [ -d "$DIR" ]; then
   echo "Specified directory: $DIR"
   move_directory
-  mkdir lib
   echo "Downloading Stanford JARs to $LIB"
   download_jars
   rm -R tmp
