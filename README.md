@@ -3,8 +3,11 @@ Automatic abstractive summarization for news articles.
 
 ## How to use
 * Download repository.
-* Run `setup [target directory]` to move directory and download Stanford JARs.
-* Run `run` script to demo program.
+* `cd /path/to/abstractive-summarization-master`
+* `> ./setup [target-directory]` where the *target-directory* is a real path to a directory. 
+    * Project will moved to the target directory.
+    * Stanford JARs will be downloaded into `lib` directory.
+* `> ./demo` to run a demo of the program.
 
 ## How it works
 1. Program reads in file.  
@@ -22,7 +25,7 @@ removed.
 6. Generates new sentences off of the remaining information.
 7. Adds back in the time named entity information.
 8. Performs formatting.
-9. Displays summay.
+9. Displays summary.
 
 ## Notes: 
 * This program still needs work, but the system *does* summarize a body of text.
