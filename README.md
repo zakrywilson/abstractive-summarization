@@ -4,8 +4,7 @@ Automatic abstractive summarization for news articles.
 ## How to use
 * Download repository.
 * Run `setup` script to move directory and download Stanford JARs.
-* Add all four JARs to classpath.
-* Run `Manager.java`.
+* Run `run` script to demo program.
 
 ## How it works
 1. Program reads in file.  
