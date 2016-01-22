@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Author: Zach Wilson
+#
+# This script takes 1 argument, a target directory,
+# which must be a real path. It then moves the project
+# to the target directory and downloads the 4 JAR files to lib.
+
 # Moves directory to new location
 function move_directory() {
   cd ..
@@ -42,8 +48,6 @@ function check_for_jars() {
     echo "$OPEN_IE_MODELS was not downloaded properly! Please retry download."
     exit
   fi
-
-  echo "JARs download successful."
 }
 
 # Ensure only 1 argument was provided
@@ -79,7 +83,7 @@ if [ -d "$DIR" ]; then
   echo "Downloading Stanford JARs to $LIB"
   download_jars
   check_for_jars
-  echo "Setup complete."
+  echo "Downloads successful. Setup complete."
 else
   echo "Directory does not exist! Please provide real path to existing directory."
 fi
