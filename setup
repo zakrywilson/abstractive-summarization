@@ -16,45 +16,41 @@ function move_directory() {
 
 # Download all JARs
 function download_jars() {
+  echo "Creating 'lib' directory"
+  mkdir lib
+  cd lib
   wget $CORE_NLP_CODE_URL -O $CORE_NLP_CODE
   wget $CORE_NLP_MODELS_URL -O $CORE_NLP_MODELS
   wget $OPEN_IE_CODE_URL -O $OPEN_IE_CODE
   wget $OPEN_IE_MODELS_URL -O $OPEN_IE_MODELS
+  cd ..
 }
 
 # Checks to ensure JARs were downloaded properly
 function check_for_jars() {
 
   # Check Core NLP Code
-  if [ ! -e $DIR/$CORE_NLP_CODE ]; then
+  if [ ! -e $LIB/$CORE_NLP_CODE ]; then
     echo "$CORE_NLP_CODE was not downloaded properly! Please retry download."
     exit
-  else 
-    mv $DIR/$CORE_NLP_CODE $LIB/$CORE_NLP_CODE
   fi
 
   # Check Core NLP Models
-  if [ ! -e $DIR/$CORE_NLP_MODELS ]; then
+  if [ ! -e $LIB/$CORE_NLP_MODELS ]; then
     echo "$CORE_NLP_MODELS was not downloaded properly! Please retry download."
     exit
-  else
-    mv $DIR/$CORE_NLP_MODELS $LIB/$CORE_NLP_MODELS
   fi
 
   # Check Open IE Code
-  if [ ! -e $DIR/$OPEN_IE_CODE ]; then
+  if [ ! -e $LIB/$OPEN_IE_CODE ]; then
     echo "$OPEN_IE_CODE was not downloaded properly! Please retry download."
     exit
-  else
-    mv $DIR/OPEN_IE_CODE $LIB/OPEN_IE_CODE
   fi
 
   # Check Open IE Models
-  if [ ! -e $DIR/$OPEN_IE_MODELS ]; then
+  if [ ! -e $LIB/$OPEN_IE_MODELS ]; then
     echo "$OPEN_IE_MODELS was not downloaded properly! Please retry download."
     exit
-  else
-    mv $DIR/OPEN_IE_MODELS $LIB/OPEN_IE_MODELS
   fi
 }
 
