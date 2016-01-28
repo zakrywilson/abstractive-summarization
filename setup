@@ -16,10 +16,10 @@ function move_directory() {
 
 # Download all JARs
 function download_jars() {
-  wget -P $LIB $CORE_NLP_CODE_URL
-  wget -P $LIB $CORE_NLP_MODELS_URL
-  wget -P $LIB $OPEN_IE_CODE_URL
-  wget -P $LIB $OPEN_IE_MODELS_URL
+  wget -P $LIB $CORE_NLP_CODE_URL -O $CORE_NLP_CODE
+  wget -P $LIB $CORE_NLP_MODELS_URL -O $CORE_NLP_MODELS
+  wget -P $LIB $OPEN_IE_CODE_URL -O $OPEN_IE_CODE
+  wget -P $LIB $OPEN_IE_MODELS_URL -O $OPEN_IE_MODELS
 }
 
 # Checks to ensure JARs were downloaded properly
