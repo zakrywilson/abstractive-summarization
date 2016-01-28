@@ -63,19 +63,19 @@ PROJECT="abstractive-summarization-master"
 LIB="$DIR/$PROJECT/lib/"
 
 # Core NLP Code
-CORE_NLP_CODE_URL="http://download1319.mediafire.com/s7h5wr16gutg/c4vj44gry3rtc5y/stanford-corenlp-3.5.2.jar"
+CORE_NLP_CODE_URL="https://www.dropbox.com/s/9k20n7zfo1tcvpe/stanford-corenlp-3.5.2.jar?dl=0"
 CORE_NLP_CODE="stanford-corenlp-3.5.2.jar"
 
 # Core NLP Models
-CORE_NLP_MODELS_URL="http://download1511.mediafire.com/diy980jkstwg/xc9dbguc2b3ieyt/stanford-corenlp-3.5.2-models.jar"
+CORE_NLP_MODELS_URL="https://www.dropbox.com/s/b1351vjbn4m2sil/stanford-corenlp-3.5.2-models.jar?dl=0"
 CORE_NLP_MODELS="stanford-corenlp-3.5.2-models.jar"
 
 # Open IE Code
-OPEN_IE_CODE_URL="http://download1079.mediafire.com/ax59huylm42g/sac45ys2uuux8n9/stanford-openie.jar"
+OPEN_IE_CODE_URL="https://www.dropbox.com/s/h9idy1tajdnupjv/stanford-openie.jar?dl=0"
 OPEN_IE_CODE="stanford-openie.jar"
 
 # Open IE Models
-OPEN_IE_MODELS_URL="http://download1517.mediafire.com/tmceha171msg/qjqmhwzv574mp4l/stanford-openie-models.jar"
+OPEN_IE_MODELS_URL="https://www.dropbox.com/s/dxd8olkkvix8enq/stanford-openie-models.jar?dl=0"
 OPEN_IE_MODELS="stanford-openie-models.jar"
 
 echo "Specified directory: $DIR"
