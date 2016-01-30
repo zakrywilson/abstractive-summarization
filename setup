@@ -27,42 +27,48 @@ function download_jars() {
   cd ..
 }
 
+# Prints usage of setup
+function print_usage() {
+  echo "usage: ./setup [path/to/target/directory]     installs project in directory"
+  echo "       ./setup                                no arguments installs project to working directory"
+  echo ""
+}
+
+# Prints manual download instructions
+function print_download() {
+  echo "If this is a reoccuring issue, please download the JARs directory"
+  echo "from https://www.dropbox.com/sh/qjvjhgvxlkjpfzk/AACNZfywMVBwvSyJVTovOLSYa?dl=0"
+  echo "and place them in 'lib' directory."
+}
+
 # Checks to ensure JARs were downloaded properly
 function check_for_jars() {
 
   # Check Core NLP Code
   if [ ! -e $LIB/$CORE_NLP_CODE ]; then
     echo "$CORE_NLP_CODE was not downloaded properly! Please retry download."
-    echo "If this is a reoccuring issue, please download the JARs directory"
-    echo "from https://www.dropbox.com/sh/qjvjhgvxlkjpfzk/AACNZfywMVBwvSyJVTovOLSYa?dl=0"
-    echo "and place them in 'lib' directory."
+    print_download
     exit
   fi
 
   # Check Core NLP Models
   if [ ! -e $LIB/$CORE_NLP_MODELS ]; then
     echo "$CORE_NLP_MODELS was not downloaded properly! Please retry download."
-    echo "If this is a reoccuring issue, please download the JARs directory"
-    echo "from https://www.dropbox.com/sh/qjvjhgvxlkjpfzk/AACNZfywMVBwvSyJVTovOLSYa?dl=0"
-    echo "and place them in 'lib' directory."
+    print_download
     exit
   fi
 
   # Check Open IE Code
   if [ ! -e $LIB/$OPEN_IE_CODE ]; then
     echo "$OPEN_IE_CODE was not downloaded properly! Please retry download."
-    echo "If this is a reoccuring issue, please download the JARs directory"
-    echo "from https://www.dropbox.com/sh/qjvjhgvxlkjpfzk/AACNZfywMVBwvSyJVTovOLSYa?dl=0"
-    echo "and place them in 'lib' directory."
+    print_download
     exit
   fi
 
   # Check Open IE Models
   if [ ! -e $LIB/$OPEN_IE_MODELS ]; then
     echo "$OPEN_IE_MODELS was not downloaded properly! Please retry download."
-    echo "If this is a reoccuring issue, please download the JARs directory"
-    echo "from https://www.dropbox.com/sh/qjvjhgvxlkjpfzk/AACNZfywMVBwvSyJVTovOLSYa?dl=0"
-    echo "and place them in 'lib' directory."
+    print_download
     exit
   fi
 
@@ -120,8 +126,7 @@ else
 
   # Command line argument is incorrect; display instructions and exit
   echo "error: too many arguments provided."
-  echo "usage: ./setup [path/to/target/directory]     installs project in directory"
-  echo "       ./setup                                no arguments installs project to working directory"
+  print_usage
   exit 1
 
 fi
@@ -132,4 +137,5 @@ if [ -d "$DIR" ]; then
   check_for_jars
 else
   echo "Unable to create directory $DIR."
+  print_usage
 fi
