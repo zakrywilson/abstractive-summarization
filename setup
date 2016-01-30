@@ -18,7 +18,6 @@ function move_directory() {
 function download_jars() {
   echo "Downloading Stanford JARs to $LIB"
   echo "Creating 'lib' directory in $PROJECT"
-  mkdir lib
   cd lib
   wget $CORE_NLP_CODE_URL -O $CORE_NLP_CODE
   wget $CORE_NLP_MODELS_URL -O $CORE_NLP_MODELS
