@@ -54,15 +54,17 @@ function check_for_jars() {
   fi
 }
 
-# Ensure only 1 argument was provided
-if [ $# != 1 ]; then
-  echo "Must specify target directory for installation. Target directory must be a real path to an existing directory."
-  exit
-fi
-
 echo ""
 
-DIR=${1%/}
+# Ensure only 1 argument was provided
+if [ $# != 1 ]; then
+  DIR="$(basename "$(dirname "$DIR")")"
+  echo "No directory specified: using working directory: $DIR"
+else
+  DIR=${1%/}
+  echo "Specified directory: $DIR"
+fi
+
 PROJECT="abstractive-summarization-master"
 LIB="$DIR/$PROJECT/lib/"
 
@@ -82,7 +84,6 @@ OPEN_IE_CODE="stanford-openie.jar"
 OPEN_IE_MODELS_URL="https://www.dropbox.com/s/dxd8olkkvix8enq/stanford-openie-models.jar?dl=0"
 OPEN_IE_MODELS="stanford-openie-models.jar"
 
-echo "Specified directory: $DIR"
 
 # If the directory does not exist, create it
 if [ ! -d "$DIR" ]; then
