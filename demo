@@ -12,4 +12,4 @@ javac $CLASSPATH *.java
 java $CLASSPATH Manager
 
 # Clean up after running
-rm *.class
+sudo rm *.class
