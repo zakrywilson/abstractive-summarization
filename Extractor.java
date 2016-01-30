@@ -47,7 +47,7 @@ class Extractor {
   * Constructor.
   * Reads in file, processes it, extracts triples, prints them to standard
   * out and (optionally) writes data to new file (original-meta.txt).
-  * @param document - name of the file containing the input text
+  * @param document - file containing the input text
   * @param writeToFile - determines if output will be written to file
   */
   Extractor(final String document, final boolean writeToFile) {

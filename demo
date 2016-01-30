@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CLASSPATH="-cp .:lib/stanford-openie.jar:lib/stanford-openie-models.jar:lib/stanford-corenlp-3.5.2-models.jar:lib/stanford-corenlp-3.5.2.jar:bin"
+CLASSPATH="-cp .:lib/command-line.jar:lib/stanford-openie.jar:lib/stanford-openie-models.jar:lib/stanford-corenlp-3.5.2-models.jar:lib/stanford-corenlp-3.5.2.jar:bin"
 
 # Remove *.class files if they exist
 if [ -e *.class ]; then
@@ -9,7 +9,7 @@ fi
 
 # Run program
 javac $CLASSPATH *.java
-java $CLASSPATH Manager
+java $CLASSPATH Manager $@
 
 # Clean up after running
-sudo rm *.class
+rm *.class
