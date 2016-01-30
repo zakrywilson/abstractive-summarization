@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Author: Zach Wilson
-#
+
 # This script takes 1 argument, a target directory,
 # which must be a real path. It then moves the project
 # to the target directory and downloads the 4 JAR files to lib.
@@ -16,7 +16,8 @@ function move_directory() {
 
 # Download all JARs
 function download_jars() {
-  echo "Creating 'lib' directory"
+  echo "Downloading Stanford JARs to $LIB"
+  echo "Creating 'lib' directory in $PROJECT"
   mkdir lib
   cd lib
   wget $CORE_NLP_CODE_URL -O $CORE_NLP_CODE
@@ -32,41 +33,43 @@ function check_for_jars() {
   # Check Core NLP Code
   if [ ! -e $LIB/$CORE_NLP_CODE ]; then
     echo "$CORE_NLP_CODE was not downloaded properly! Please retry download."
+    echo "If this is a reoccuring issue, please download the JARs directory"
+    echo "from https://www.dropbox.com/sh/qjvjhgvxlkjpfzk/AACNZfywMVBwvSyJVTovOLSYa?dl=0"
+    echo "and place them in 'lib' directory."
     exit
   fi
 
   # Check Core NLP Models
   if [ ! -e $LIB/$CORE_NLP_MODELS ]; then
     echo "$CORE_NLP_MODELS was not downloaded properly! Please retry download."
+    echo "If this is a reoccuring issue, please download the JARs directory"
+    echo "from https://www.dropbox.com/sh/qjvjhgvxlkjpfzk/AACNZfywMVBwvSyJVTovOLSYa?dl=0"
+    echo "and place them in 'lib' directory."
     exit
   fi
 
   # Check Open IE Code
   if [ ! -e $LIB/$OPEN_IE_CODE ]; then
     echo "$OPEN_IE_CODE was not downloaded properly! Please retry download."
+    echo "If this is a reoccuring issue, please download the JARs directory"
+    echo "from https://www.dropbox.com/sh/qjvjhgvxlkjpfzk/AACNZfywMVBwvSyJVTovOLSYa?dl=0"
+    echo "and place them in 'lib' directory."
     exit
   fi
 
   # Check Open IE Models
   if [ ! -e $LIB/$OPEN_IE_MODELS ]; then
     echo "$OPEN_IE_MODELS was not downloaded properly! Please retry download."
+    echo "If this is a reoccuring issue, please download the JARs directory"
+    echo "from https://www.dropbox.com/sh/qjvjhgvxlkjpfzk/AACNZfywMVBwvSyJVTovOLSYa?dl=0"
+    echo "and place them in 'lib' directory."
     exit
   fi
+
+  echo "Downloads successful. Setup complete."
 }
 
-echo ""
-
-# Ensure only 1 argument was provided
-if [ $# != 1 ]; then
-  DIR="$(basename "$(dirname "$DIR")")"
-  echo "No directory specified: using working directory: $DIR"
-else
-  DIR=${1%/}
-  echo "Specified directory: $DIR"
-fi
-
 PROJECT="abstractive-summarization-master"
-LIB="$DIR/$PROJECT/lib/"
 
 # Core NLP Code
 CORE_NLP_CODE_URL="https://www.dropbox.com/s/9k20n7zfo1tcvpe/stanford-corenlp-3.5.2.jar?dl=0"
@@ -84,20 +87,49 @@ OPEN_IE_CODE="stanford-openie.jar"
 OPEN_IE_MODELS_URL="https://www.dropbox.com/s/dxd8olkkvix8enq/stanford-openie-models.jar?dl=0"
 OPEN_IE_MODELS="stanford-openie-models.jar"
 
+echo ""
 
-# If the directory does not exist, create it
-if [ ! -d "$DIR" ]; then
-  echo "$DIR does not exist. Creating directory."
-  mkdir "$DIR"
+# If no installation directory was specified, use the working directory
+if [ $# == 0 ]; then
+
+  # Get parent directory
+  WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  DIR="$(dirname "$WORKING_DIR")"
+  cd ..
+  echo "No directory specified. Using working directory: $PWD"
+  LIB="$DIR/$PROJECT/lib"
+  cd $DIR/$PROJECT
+
+elif [ $# == 1 ]; then
+
+  # Get directory from arguments list and remove trailing '/'
+  DIR=${1%/}
+  echo "Specified directory: $DIR"
+  LIB="$DIR/$PROJECT/lib"
+
+  # If the directory does not exist, create it
+  if [ ! -d "$DIR" ]; then
+    echo "$DIR does not exist. Creating directory."
+    mkdir "$DIR"
+  fi
+
+  # Move project to specified directory
+  move_directory
+
+else
+
+  # Command line argument is incorrect; display instructions and exit
+  echo "error: too many arguments provided."
+  echo "usage: ./setup [path/to/target/directory]     installs project in directory"
+  echo "       ./setup                                no arguments installs project to working directory"
+  exit 1
+
 fi
 
-# If directory exists, move project to target, and download JARs
+# Download JARs
 if [ -d "$DIR" ]; then
-  move_directory
-  echo "Downloading Stanford JARs to $LIB"
   download_jars
   check_for_jars
-  echo "Downloads successful. Setup complete."
 else
   echo "Unable to create directory $DIR."
 fi
