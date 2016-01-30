@@ -31,14 +31,14 @@ class Manager {
     // Create command line option
     CommandLine commandline = new CommandLine();
 
-    // Body of text option
-    Option textOption = new Option();
-    textOption.addShortName("f");
-    textOption.addLongName("file");
-    textOption.addDescription("The body of text to be summarized.");
-    textOption.addExpectedArgCount(1);
-    textOption.isRequired(true);
-    commandline.addOption(textOption);
+    // File option
+    Option fileOption = new Option();
+    fileOption.addShortName("f");
+    fileOption.addLongName("file");
+    fileOption.addDescription("The body of text to be summarized.");
+    fileOption.addExpectedArgCount(1);
+    fileOption.isRequired(true);
+    commandline.addOption(fileOption);
 
     // Write metadata to file option
     Option metaDataOption = new Option();
@@ -56,10 +56,17 @@ class Manager {
     // Parse command line arguments
     commandline.parse(args);
 
-    // Get body of text
-    File file = new File(textOption.getArgument(0));
-    if (!file.exists()) {
-      throw new IllegalArgumentException("File '" + file + "' does not exist.");
+    if (commandline.needHelp()) {
+      System.out.println(commandline.getHelp());
+      return;
+    }
+
+    // Get file containing body of text
+    File file = new File(fileOption.getArgument(0));
+    if (!fileOption.isFound()) {
+      if (!file.exists()) {
+        throw new IllegalArgumentException("File '" + file + "' does not exist.");
+      }
     }
 
     // Get metadata option
@@ -86,15 +93,15 @@ class Manager {
    * @return help information
    */
   private static String getDisplayHelp() {
-    String string = "Abstractive Summarization\n";
+    String string = "\nAbstractive Summarization\n";
     string += "Automatic abstractive summarization for news articles.\n";
-    string += "(https://github.com/zakrywilson/abstractive-summarization)\n";
+    string += "(https://github.com/zakrywilson/abstractive-summarization)\n\n";
     string += "usage: ./demo [arguments]\n\n";
     string += "arguments: \n";
     string += "   -h  or  --help            Help\n";
     string += "   -f  or  --file [filename] Body of text to be summarized\n";
     string += "   -m                        Write metadata to file\n";
-    string += "   -s                        Write summary to file\n\n";
+    string += "   -s                        Write summary to file\n";
     return string;
   }
 
