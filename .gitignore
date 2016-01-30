@@ -6,8 +6,8 @@
 !news-burglary.txt
 !news-handgun.txt
 
-# No .class file or JAR files
-lib/
+# No Stanford JARs
+stanford*.jar
 
 # No misc stuff
 .idea/
