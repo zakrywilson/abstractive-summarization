@@ -10,5 +10,6 @@
 stanford*.jar
 
 # No misc stuff
+bin/
 .idea/
 *.iml
