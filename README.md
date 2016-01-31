@@ -1,14 +1,28 @@
 # Abstractive Summarization
 Automatic abstractive summarization for news articles.
 
-## How to use
+## How to run
 1. Download repository.
-2. `cd /path/to/abstractive-summarization-master`
-3. `> ./setup [path/to/target/directory]`
-    1. Project will moved to the target directory.
-    If no target directory is specified, project is installed in working directory.
-    2. Stanford JARs will be downloaded into `lib` directory.
-4. `> ./demo`
+2. Install directory:
+    1. `> cd /path/to/abstractive-summarization-master`
+    2. `> ./setup [path/to/target/directory]`
+        1. Project will moved to the target directory.
+        If no target directory is specified, project is installed in working directory.
+        2. Stanford JARs will be downloaded into `lib` directory.
+3. Run demo: `> ./demo [arguments]`
+    * If no arguments are specified, an excerpt on Tolstoy's biography 
+    (`./resources/article-tolstoy.txt`) will be summarized for the demo.
+    * If any arguments are specified for `demo`, the default text file will be ignored.
+
+### Optional arguments
+
+`-h  or  --help .......... Help`
+
+`-f  or  --file [filename] Path to file, containing body of text to be summarized`
+
+`-m .................... Write metadata to file`
+
+`-s .................... Write summary to file`
 
 ## How it works
 1. Program reads in file.  
@@ -30,9 +44,8 @@ removed.
 
 ## Notes: 
 * This program still needs work, but the system *does* summarize a body of text.
-* If you want change the input file, that can be changed in `Manager.java`.
-* Store input text files in `resources/`.
-* A text file `article-tolstoy.txt` is provided for testing. 
+* Text files are provided inside `resources`.
 * By default, the summarized text is sent to standard out. 
 * The meta-data (i.e., named entity information and triples) is written to a 
 file: `originalfilename-meta.txt`.
+* The summary is written to a file: `originalfilename-summary.txt`.
