@@ -13,9 +13,6 @@ import edu.stanford.nlp.ie.util.RelationTriple;
 import edu.stanford.nlp.util.CoreMap;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.util.*;
 
 
@@ -28,41 +25,29 @@ class Extractor {
 
 
   /** An instance of the Network containing all metadata for text */
-  private Network network = new Network();
-
+  private Network network;
 
   /** Contains all of named entity recognition information in LinkedHashMap */
-  private EntitiesList ner = new EntitiesList();
-
-
-  /** The input file containing the text to be processed */
-  private String inputFile = null;
-
-
-  /** Default path for input files: should be kept in ./resources/ */
-  private static final String PATH = "./resources/";
+  private EntitiesList ner;
 
 
  /**
   * Constructor.
   * Reads in file, processes it, extracts triples, prints them to standard
-  * out and (optionally) writes data to new file (original-meta.txt).
-  * @param document - file containing the input text
-  * @param writeToFile - determines if output will be written to file
+  * out, and (optionally) writes metadata to new file (original-meta.txt) and
+  * (optionally) writes summary to new file (original-summary.txt).
+  * @param document - valid file containing the input text
   */
-  Extractor(final String document, final boolean writeToFile) {
+  Extractor(File document) throws Exception {
 
-    // Set original file
-    this.inputFile = document;
+    this.network = new Network();
+    this.ner = new EntitiesList();
 
     // Read and store file
-    String text = FileManager.getText(document, PATH);
+    String text = Fyles.getText(document);
 
     // Extract the triples
-    boolean success = processText(text);
-
-    // Write extracted information to file if successful
-    if (success && writeToFile) writeToFile();
+    processText(text);
   }
 
 
@@ -70,14 +55,13 @@ class Extractor {
   * Extracts triples and NER, stores the information in separate maps, prints
   * the information to standard out and (optionally) writes data to file.
   * @param text - text that is to be processed
-  * @return true if processing was successful
+  * @throws Exception
   */
-  private boolean processText(final String text) {
+  private void processText(final String text) throws Exception {
 
     // Ensure there is text to process
     if (text == null) {
-      System.err.println("ERROR: text was null.");
-      return false;
+      throw new Exception("Text was null.");
     }
 
     // Create the Stanford CoreNLP pipeline
@@ -90,8 +74,6 @@ class Extractor {
 
     // Get NER data, extract triples, and store the data
     extractData(doc);
-
-    return true;
   }
 
 
@@ -133,9 +115,9 @@ class Extractor {
       // Store the triples
       for (RelationTriple t : relationTriples) {
         Triple triple = new Triple(t.subjectGloss(),
-                          t.relationGloss(),
-                          t.objectGloss(),
-                          t.confidenceGloss());
+                                   t.relationGloss(),
+                                   t.objectGloss(),
+                                   t.confidenceGloss());
         triples.add(triple);
       }
 
@@ -145,42 +127,8 @@ class Extractor {
 
       // Increment sentence number
       sentenceNumber++;
-
-    } // Finished extracting information
-
-    System.out.println("Information extracted");
+    }
   }
-
-
-  /**
-   * Writes extracted data to file.
-   */
-   private void writeToFile() {
-
-     // Check if the input file is valid
-     if (inputFile == null || !inputFile.endsWith(".txt")) {
-       System.err.println("ERROR: invalid file.");
-       return;
-     }
-
-     // Create new file to write to
-     File file = new File(PATH + inputFile.replace(".txt", "-meta.txt"));
-     if (!FileManager.thoroughlyCreate(file)) return;
-
-     // Start writing
-     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()))) {
-
-       // Write network and ner to file
-       writer.write(this.network.toString());
-       writer.write(this.ner.toString());
-
-     } catch (IOException e) {
-       System.err.println("ERROR: unable to write to file.");
-       return;
-     }
-
-     System.out.println("Information written to file");
- }
 
 
   /**

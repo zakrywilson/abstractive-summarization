@@ -26,7 +26,7 @@ class Manager {
    * Runs the program after validating command line arguments.
    * @param args - command line arguments
    */
-  private static void run(final String[] args) {
+  private static void run(final String[] args) throws Exception {
 
     // Create command line option
     CommandLine commandline = new CommandLine();
@@ -44,11 +44,13 @@ class Manager {
     Option metaDataOption = new Option();
     metaDataOption.addShortName("m");
     metaDataOption.addDescription("Save meta data to file.");
+    commandline.addOption(metaDataOption);
 
     // Write summary to file option
     Option summaryOption = new Option();
     summaryOption.addShortName("s");
     summaryOption.addDescription("Saves summary to file.");
+    commandline.addOption(summaryOption);
 
     // Help option
     commandline.createHelp(getDisplayHelp());
@@ -56,6 +58,7 @@ class Manager {
     // Parse command line arguments
     commandline.parse(args);
 
+    // Check for help
     if (commandline.needHelp()) {
       System.out.println(commandline.getHelp());
       return;
@@ -63,28 +66,37 @@ class Manager {
 
     // Get file containing body of text
     File file = new File(fileOption.getArgument(0));
-    if (!fileOption.isFound()) {
-      if (!file.exists()) {
-        throw new IllegalArgumentException("File '" + file + "' does not exist.");
-      }
+    if (!file.exists()) {
+      throw new IllegalArgumentException("File '" + file + "' does not exist.");
     }
 
     // Get metadata option
-    boolean writeMetaDataToFile = metaDataOption.isFound();
+    boolean writeMetadata = metaDataOption.isFound();
 
     // Get summary option
-    boolean writeSummaryToFile = summaryOption.isFound();
+    boolean writeSummary = summaryOption.isFound();
 
     // Running program
-    Extractor extractor = new Extractor(file.getName(), writeMetaDataToFile);
+    Extractor extractor = new Extractor(file);
 
     // Get the network and process it
     Network network = extractor.getNetwork();
     cleanupSentences(network);
+    String summary = Concatenator.fuse(network);
+
+    // Write metadata to file
+    if (writeMetadata) {
+      write(file, "-meta", network.toString() + extractor.getNER().toString());
+    }
+
+    // Write summary to file
+    if (writeSummary) {
+      write (file, "-summary", summary);
+    }
 
     // Display summary
     clearConsole();
-    printSummary(file.getName(), network);
+    printSummary(file.getName(), summary);
   }
 
 
@@ -121,11 +133,10 @@ class Manager {
   /**
    * Prints out the summary with NER information embedded inside.
    * @param filename - file being summarized
-   * @param network - the network of sentences
+   * @param summary - summary of the file
    */
-  private static void printSummary(String filename, Network network) {
+  private static void printSummary(final String filename, final String summary) {
     System.out.println("Summary of " + filename + ":");
-    String summary = Concatenator.fuse(network);
     System.out.println(summary);
   }
 
@@ -136,5 +147,25 @@ class Manager {
   private static void clearConsole() {
     System.out.print("\033[H\033[2J");
     System.out.flush();
+  }
+
+
+  /**
+   * Writes information to file. File will be given new name based on the
+   * extension: e.g., 'file.txt' & '-ext' ––> 'file-ext.txt'.
+   * @param ext - new extension to file
+   * @param string - string to be written to file
+   * @throws Exception
+   */
+  static private void write(final File original,
+                            final String ext,
+                            final String string) throws Exception {
+
+    // Create new file to write to
+    String oldExtension = Fyles.getFileExtension(original, true);
+    String name = Fyles.removeFileExtension(original);
+
+    // Start writing
+    Fyles.write(name + ext + oldExtension, string);
   }
 }

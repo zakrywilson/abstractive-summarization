@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CLASSPATH="-cp .:lib/command-line.jar:lib/stanford-openie.jar:lib/stanford-openie-models.jar:lib/stanford-corenlp-3.5.2-models.jar:lib/stanford-corenlp-3.5.2.jar:bin"
+DEFAULT="./resources/article-tolstoy.txt"
 
 # Remove *.class files if they exist
 if [ -e *.class ]; then
@@ -9,7 +10,11 @@ fi
 
 # Run program
 javac $CLASSPATH *.java
-java $CLASSPATH Manager $@
+if [ $# == 0 ]; then
+  java $CLASSPATH Manager -f $DEFAULT
+else
+  java $CLASSPATH Manager $@
+fi
 
 # Clean up after running
 rm *.class
