@@ -74,7 +74,17 @@ function check_for_jars() {
   echo "Downloads successful. Setup complete."
 }
 
-PROJECT="abstractive-summarization-master"
+CWD="${PWD##*/}"
+if [ "$CWD" = "abstractive-summarization" ]; then
+  PROJECT="abstractive-summarization"
+elif [ "$CWD" = "abstractive-summarization-master" ]; then
+  PROJECT="abstractive-summarization-master"
+else
+  echo "Please install from within abstractive-summarization project directory."
+  echo "Project directory must be named 'abstractive-summarization' or 'abstractive-summarization-master'."
+  exit 1
+fi
+
 
 # Core NLP Code
 CORE_NLP_CODE_URL="https://www.dropbox.com/s/9k20n7zfo1tcvpe/stanford-corenlp-3.5.2.jar?dl=0"
