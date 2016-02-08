@@ -3,10 +3,10 @@ Automatic abstractive summarization for news articles.
 
 ## How to run
 1. Download repository.
-2. Install directory:
+2. Install project:
     1. `> cd /path/to/abstractive-summarization`
     2. `> ./setup [path/to/target/directory]`
-        1. Project will moved to the target directory.
+        1. Project will be moved to the target directory.
         If no target directory is specified, project is installed in working directory.
         2. Stanford JARs will be downloaded into `lib` directory.
 3. Run demo: `> ./demo [arguments]`
