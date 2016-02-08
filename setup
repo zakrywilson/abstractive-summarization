@@ -2,7 +2,7 @@
 
 # Author: Zach Wilson
 
-# This script takes 1 argument, a target directory,
+# This script takes 1 argument and a target directory
 # which must be a real path. It then moves the project
 # to the target directory and downloads the 4 JAR files to lib.
 
@@ -134,7 +134,7 @@ elif [ $# == 1 ]; then
 else
 
   # Command line argument is incorrect; display instructions and exit
-  echo "error: too many arguments provided."
+  echo "Error: too many arguments provided."
   print_usage
   exit 1
 
